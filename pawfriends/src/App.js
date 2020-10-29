@@ -81,7 +81,8 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <h1>PawFreinds Home</h1>
+        {/* Sorry hiding it because it's showing up on other pages too :( */}
+        {/* <h1>PawFriends Home</h1> */}
         <BrowserRouter>
           <Switch>
             <Route

@@ -1,1 +1,138 @@
-/* Styles for the Profile React component */
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body {
+    background-image: url('./profile-bg.png');
+    background-repeat: repeat;
+    font-family: 'Karla', sans-serif;
+}
+
+.logo {
+    margin-left: 10px;
+    float: left;
+    padding-top: 4px;
+    transition: opacity .5s ease;
+}
+
+.logo:hover {
+    opacity: 50%;
+}
+
+.logout {
+    margin-right: 10px;
+    float: right;
+    padding-top: 4px;
+}
+
+.navbar {
+    margin-top: -16px;
+    height: 35px;
+    background-color: white;
+}
+
+ul li {
+    list-style: none;
+    margin-top: 7px;
+    margin-left: 10px;
+    float: left;
+}
+
+.profile {
+    width: 250px;
+    height: 360px;
+    border-radius: 2%;
+    background-color: white;
+    align-items: center;
+    float: left;
+    padding: 10px;
+    margin-top: 50px;
+    margin-left: 50px;
+    display: block;
+}
+
+.status {
+    display: inline-block;
+    padding: 15px;
+}
+
+.status::before {
+    content: url('./quote-left.png');
+    margin-right: 15px;
+}
+
+.status::after {
+    content: url('./quote-right.png');
+    margin-left: 15px;
+}
+
+.location {
+    display: inline-block;
+    padding-right: 10px;
+}
+
+.location::before {
+    content: url('./location.png');
+    margin-right: 10px;
+}
+
+.avatar {
+    width: 150px;
+    border-radius: 50%;
+    border: 5px solid #bde0e5;
+}
+
+.profileInfo {
+    text-align: center;
+}
+
+.gallery {
+    width: 250px;
+    height: 360px;
+    padding: 10px;
+    margin-top: 50px;
+    margin-left: 50px;
+}
+
+.photo {
+    width: 70px;
+    height: 70px;
+    padding: 5px;
+    border-radius: 10%;
+}
+
+.posts {
+    width: 500px;
+    margin-top: -400px;
+    margin-left: 380px;
+}
+
+.post {
+    width: 100%;
+    min-height: 300px;
+    background-color: white;
+    border-radius: 2%;
+    margin-bottom: 15px;
+}
+
+.like {
+    float: right;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: normal;
+    margin-bottom: -2px;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: normal;
+    padding: 10px;
+    border-radius: 2% 2% 0% 0%;
+    border-bottom: 1px solid #f3f2f2;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
