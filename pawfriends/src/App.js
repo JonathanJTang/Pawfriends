@@ -69,6 +69,16 @@ class App extends React.Component {
   };
 
   render() {
+    const allPosts = this.state.posts.map((post, index) => (
+      <div key={index}>
+        <h3>{post.postName}</h3>
+        <p>
+          Posted on {post.datetime} by {post.username}
+        </p>
+        <img src={post.link}></img>
+      </div>
+    ));
+
     return (
       <div className="App">
         <h1>PawFreinds Home</h1>
@@ -146,7 +156,7 @@ class App extends React.Component {
                   <Link className="testLink" to={"/AdminDashboard"}>
                     <input type="button" value="AdminDashboard"></input>
                   </Link>
-                  <Home appState={this.state}></Home>
+                  {allPosts}
                 </div>
               )}
             />
