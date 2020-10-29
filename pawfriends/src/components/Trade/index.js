@@ -1,4 +1,5 @@
 import React from 'react';
+import "./styles.css";
 
 /* Trade component */
 class Trade extends React.Component {

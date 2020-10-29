@@ -1,4 +1,5 @@
 import React from 'react';
+import "./styles.css";
 
 /* Caretakers component */
 class Caretakers extends React.Component {

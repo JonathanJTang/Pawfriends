@@ -1,4 +1,5 @@
 import React from 'react';
+import "./styles.css";
 
 /* Admin dashboard component */
 class AdminDashboard extends React.Component {

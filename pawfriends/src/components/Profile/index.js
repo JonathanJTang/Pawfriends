@@ -1,4 +1,5 @@
 import React from 'react';
+import "./styles.css";
 
 /* Profile component */
 class Profile extends React.Component {
