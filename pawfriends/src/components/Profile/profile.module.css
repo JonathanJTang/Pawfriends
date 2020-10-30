@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-
 body {
     background-image: url('./profile-bg.png');
     background-repeat: repeat;
@@ -28,13 +27,30 @@ body {
     margin-top: -16px;
     height: 35px;
     background-color: white;
+    font-family: 'Roboto', sans-serif;
 }
 
 ul li {
     list-style: none;
     margin-top: 7px;
-    margin-left: 10px;
+    margin-left: 15px;
     float: left;
+}
+
+.edit {
+    width: 50px;
+    float: left;
+    position: absolute;
+    top: 85px;
+    left: 330px;
+}
+
+.newPost {
+    width: 50px;
+    float: left;
+    position: absolute;
+    top: 140px;
+    left: 330px;
 }
 
 .profile {
@@ -103,7 +119,7 @@ ul li {
 .posts {
     width: 500px;
     margin-top: -400px;
-    margin-left: 380px;
+    margin-left: 390px;
 }
 
 .post {
@@ -135,4 +151,18 @@ h2 {
 a {
     text-decoration: none;
     color: black;
+}
+
+button {
+    background-color: white;
+    border: none;
+    border-radius: 2%;
+    outline: none;
+    padding: 10px;
+    transition: .5s ease;
+}
+
+button:hover {
+    background-color: #8dc5ce;
+    color: white;
 }
