@@ -21,7 +21,7 @@ function Status(props) {
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: 'Lulu', status: 'Staying cozy', edit: false };
+    this.state = { name: 'Lulu', status: 'Staying cozy', edit: false, photos: [], posts: [] };
   }
 
   handleChange(event) {
@@ -36,6 +36,36 @@ class Profile extends React.Component {
     this.setState({ edit: false });
   }
 
+  // example posts
+  componentDidMount = () => {
+    this.setState({
+      photos: [
+        photo, photo, photo, photo, photo, photo
+      ],
+
+      posts: [
+        {
+          title: "November's almost here",
+          date: "Oct 30, 2020",
+          image: photo,
+          content: "Time passes so quickly! Before we knew it, it was already the last day of October.",
+        },
+        {
+          title: "Perfect day for a walk",
+          date: "Oct 29, 2020",
+          image: photo,
+          content: "The weather was so perfect today, so we went for a little stroll around the block!",
+        },
+        {
+          title: "Hello!",
+          date: "Oct 27, 2020",
+          image: photo,
+          content: "It's my first time posting here. So nice to meet everyone! :)",
+        },
+      ],
+    });
+  };
+
   render() {
     let status;
     let editButton;
@@ -46,6 +76,20 @@ class Profile extends React.Component {
       status = <p className={styles.status}>{this.state.status}</p>
       editButton = <button className={styles.edit} onClick={this.edit}><img src={edit} /></button>
     }
+
+    const photos = this.state.photos.map((photo, index) => (
+      <img src={photo} key={index} className={styles.photo} />
+    ));
+
+    const posts = this.state.posts.map((post, index) => (
+      <div key={index} className={styles.post}>
+        <h2>{post.title}</h2>
+        <img src={post.image} className={styles.postImg} />
+        <p className={styles.postContent}>{post.content}</p>
+        <p className={styles.postDate}>{post.date}</p>
+        <img src={heart} className={styles.like} />
+      </div>
+    ));
 
     return (
       <div>
@@ -64,47 +108,17 @@ class Profile extends React.Component {
 
         <div className={styles.profile}>
           <img src={avatar} alt='avatar' className={styles.avatar} />
-
           <p className={styles.name}>{this.state.name}</p>
-
           {status}
-
           <p className={styles.location}>Toronto, Canada</p>
         </div>
 
         <div className={styles.gallery}>
           <h1>Photos</h1>
-          <img src={photo} className={styles.photo} />
-          <img src={photo} className={styles.photo} />
-          <img src={photo} className={styles.photo} />
-          <img src={photo} className={styles.photo} />
-          <img src={photo} className={styles.photo} />
-          <img src={photo} className={styles.photo} />
+          {photos}
         </div>
 
-        <div className={styles.posts}>
-          <div className={styles.post}>
-            <h2>
-              Perfect day for a walk
-              <img src={heart} className={styles.like} />
-            </h2>
-            <p>...</p>
-          </div>
-          <div className={styles.post}>
-            <h2>
-              Perfect day for a walk
-              <img src={heart} className={styles.like} />
-            </h2>
-            <p>...</p>
-          </div>
-          <div className={styles.post}>
-            <h2>
-              Perfect day for a walk
-              <img src={heart} className={styles.like} />
-            </h2>
-            <p>...</p>
-          </div>
-        </div>
+        <div className={styles.posts}>{posts}</div>
       </div>
     );
   }

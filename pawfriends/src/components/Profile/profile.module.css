@@ -66,7 +66,7 @@ ul li {
 
 .profile {
     width: 270px;
-    height: 215px;
+    height: 200px;
     border-radius: 2%;
     background-color: white;
     float: left;
@@ -79,14 +79,14 @@ ul li {
     font-size: 24px;
     font-weight: bold;
     margin-top: 90px;
+    margin-bottom: 0px;
 }
 
 .status {
-    margin-top: -15px;
+    margin-top: -3px;
 }
 
 .statusEdit {
-    margin-top: -10px;
     padding: 10px;
 }
 
@@ -102,7 +102,7 @@ ul li {
 
 .location {
     position: absolute;
-    top: 290px;
+    top: 275px;
     left: 100px;
 }
 
@@ -112,23 +112,27 @@ ul li {
 }
 
 .gallery {
-    width: 250px;
-    height: 360px;
-    padding: 10px;
-    margin-top: 50px;
+    position: absolute;
+    top: 280px;
+    margin-top: 70px;
     margin-left: 50px;
+    width: 270px;
+    height: 230px;
+    border-radius: 2%;
+    background-color: white;
 }
 
 .photo {
     width: 70px;
     height: 70px;
+    margin: -1px 3px 3px 3px;
     padding: 5px;
     border-radius: 10%;
+    border: 1px solid #f3f2f2;
 }
 
 .posts {
     width: 500px;
-    margin-top: -400px;
     margin-left: 390px;
 }
 
@@ -138,16 +142,38 @@ ul li {
     background-color: white;
     border-radius: 2%;
     margin-bottom: 15px;
+    padding-bottom: 5px;
+}
+
+.postImg {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    margin-left: 15px;
+    border-radius: 2%;
+    border: 1px solid #f3f2f2;
+}
+
+.postContent {
+    display: inline-block;
+    padding: 10px;
+}
+
+.postDate {
+    font-style: italic;
 }
 
 .like {
-    float: right;
+    display: inline;
 }
 
 h1 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: normal;
-    margin-bottom: -2px;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f3f2f2;
 }
 
 h2 {
@@ -175,4 +201,8 @@ button {
 button:hover {
     background-color: #8dc5ce;
     color: white;
+}
+
+input {
+    text-align: center;
 }
