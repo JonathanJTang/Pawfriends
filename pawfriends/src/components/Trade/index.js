@@ -1,7 +1,6 @@
 import React from 'react';
 import "./styles.css";
-import logo from './logo.png';
-import logout from './logout.png';
+
 import squeaky from './squeaky.png';
 import bundle from './bundle.png';
 import duck from './duck.png';
@@ -9,7 +8,7 @@ import heart from './heart.png';
 import avatar from './avatar.jpg';
 import shiba from './shiba.jpg';
 import ttungttang from './ttungttang.jpg';
-
+import NavBar from "./../NavBar";
 
 
 /* Trade component */
@@ -17,15 +16,7 @@ class Trade extends React.Component {
   render() {
     return (
       <div>
-        <div className = 'navbar'>
-          <img src = {logo} alt = 'logo' className = 'logo'/>
-          <ul>
-            <li><a href = '.'>Home</a></li>
-            <li><a href = './profile'>Profile</a></li>
-            <li><a href = './settings'>Settings</a></li>
-          </ul>
-          <img src = {logout} alt = 'logout' className = 'logout'/>
-        </div>
+        <NavBar />
          <div><h1> Trade toys with pawfriends! </h1></div> 
           <div className = 'tradeposts'>
 
