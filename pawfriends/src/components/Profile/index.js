@@ -1,8 +1,10 @@
 import React from 'react';
 import styles from './profile.module.css';
 
-import logo from './logo.png';
-import logout from './logout.png';
+import NavBar from "./../NavBar";
+
+// import logo from './logo.png';
+// import logout from './logout.png';
 import avatar from './avatar.jpg';
 import photo from './photo.png';
 import heart from './heart.png';
@@ -93,15 +95,7 @@ class Profile extends React.Component {
 
     return (
       <div>
-        <div className={styles.navbar}>
-          <img src={logo} alt='logo' className={styles.logo} />
-          <ul>
-            <li><a href='.'>Home</a></li>
-            <li><a href='./profile'>Profile</a></li>
-            <li><a href='./settings'>Settings</a></li>
-          </ul>
-          <img src={logout} alt='logout' className={styles.logout} />
-        </div>
+        <NavBar />
 
         {editButton}
         <button className={styles.newPost}><img src={post} /></button>

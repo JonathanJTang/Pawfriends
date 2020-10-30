@@ -1,3 +1,4 @@
+/* Selectors commented out below are shared by all pages, moved to App.css or to NavBar
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 body {
@@ -27,42 +28,16 @@ body {
     margin-top: -16px;
     height: 35px;
     background-color: white;
-    font-family: 'Roboto', sans-serif;
-}
+} */
 
+/* Removed global styling of ul li elements, since they might be used
+   differently elsewhere (replaced it with class navbarTextButton in NavBar)
 ul li {
-    list-style: none;
-    margin-top: 7px;
-    margin-left: 15px;
-    float: left;
-}
-
-.edit {
-    width: 50px;
-    height: 50px;
-    float: left;
-    position: absolute;
-    top: 135px;
-    left: 330px;
-}
-
-.newPost {
-    width: 50px;
-    height: 50px;
-    float: left;
-    position: absolute;
-    top: 185px;
-    left: 330px;
-}
-
-.avatar {
-    width: 150px;
-    border-radius: 50%;
-    border: 5px solid #bde0e5;
-    position: absolute;
-    top: 60px;
-    left: 110px;
-}
+  list-style: none;
+  margin-top: 7px;
+  margin-left: 10px;
+  float: left;
+} */
 
 .profile {
     width: 270px;
@@ -167,6 +142,7 @@ ul li {
     display: inline;
 }
 
+/* These selectors affect elements throughout the app, moved to App.css
 h1 {
     font-size: 22px;
     font-weight: normal;
@@ -187,22 +163,4 @@ h2 {
 a {
     text-decoration: none;
     color: black;
-}
-
-button {
-    background-color: white;
-    border: none;
-    border-radius: 2%;
-    outline: none;
-    padding: 10px;
-    transition: .5s ease;
-}
-
-button:hover {
-    background-color: #8dc5ce;
-    color: white;
-}
-
-input {
-    text-align: center;
-}
+} */
