@@ -1,8 +1,10 @@
 import React from 'react';
 import './styles.css';
 
-import logo from './logo.png';
-import logout from './logout.png';
+import NavBar from "./../NavBar";
+
+// import logo from './logo.png';
+// import logout from './logout.png';
 import avatar from './avatar.jpg';
 import photo from './photo.png';
 import heart from './heart.png';
@@ -12,15 +14,7 @@ class Profile extends React.Component {
   render() {
     return (
       <div>
-        <div className = 'navbar'>
-          <img src = {logo} alt = 'logo' className = 'logo'/>
-          <ul>
-            <li><a href = '.'>Home</a></li>
-            <li><a href = './profile'>Profile</a></li>
-            <li><a href = './settings'>Settings</a></li>
-          </ul>
-          <img src = {logout} alt = 'logout' className = 'logout'/>
-        </div>
+        <NavBar />
 
         <div className = 'profile'>
           <div></div>
