@@ -19,10 +19,9 @@ class Post extends React.Component {
         <p>
           Posted on {postData.datetime} by {postData.username}
         </p>
-        <img className="postImage" alt="post image"
-          src={postData.link}>
-        </img>
-        <p>{postData.content}</p>
+        <img className="postImage" alt="post"
+             src={postData.link} />
+        <div className="postText">{postData.content}</div>
       </div>
     );
   }

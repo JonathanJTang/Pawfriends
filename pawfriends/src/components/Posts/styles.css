@@ -20,3 +20,9 @@
   max-width: 100%;
   height: auto;
 }
+
+.postText {
+  text-align: left;
+  white-space: pre-line;
+  padding: 20px 30px;  /* 1st value top/bottom, 2nd value left/right */
+}
