@@ -20,6 +20,12 @@ class NavBar extends React.Component {
             <Link to={"/posts"}>Posts</Link>
           </li>
           <li className='navbarTextButton'>
+            <Link to={"/trade"}>Trade</Link>
+          </li>
+          <li className='navbarTextButton'>
+            <Link to={"/caretakers"}>Caretakers</Link>
+          </li>
+          <li className='navbarTextButton'>
             <Link to={"/profile"}>Profile</Link>
           </li>
           <li className='navbarTextButton'>
