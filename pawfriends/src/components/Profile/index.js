@@ -2,10 +2,10 @@ import React from 'react';
 import './styles.css';
 
 import NavBar from "./../NavBar";
+import LikeButton from "../LikeButton";
 
 import avatar from './avatar.jpg';
 import photo from './photo.png';
-import heart from './../../images/heart.png';
 import edit from './edit.png';
 import post from './post.png';
 import save from './save.png';
@@ -78,7 +78,7 @@ class Profile extends React.Component {
       <div key={index} className='profile-post'>
         <h2>
           {post.title}
-          <img src={heart} className='profile-like' />
+          <LikeButton />
         </h2>
         <img src={post.image} className='profile-post-pic' />
         <p className='profile-post-content'>{post.content}</p>
