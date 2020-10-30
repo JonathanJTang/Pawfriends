@@ -1,1 +1,65 @@
 /* Styles for the AdminDashboard React component */
+
+.adminNavbar {
+  height: 35px;
+  background-color: gray;
+}
+
+.logo {
+  margin-left: 10px;
+  float: left;
+  padding-top: 4px;
+  transition: opacity .5s ease;
+}
+
+.logo:hover {
+  opacity: 50%;
+}
+
+.logout {
+  margin-right: 10px;
+  float: right;
+  padding-top: 4px;
+}
+
+.statsTableContainer {
+  margin-top: 50px;
+  margin-left: 50px;
+  margin-right: auto;
+  background-color: white;
+  border-radius: 5%;
+  width: 400px;
+}
+
+.statsTable {
+  padding: 10px;
+  border-spacing: 10px;
+  margin: auto;
+}
+
+.statsTableRow {
+  padding-bottom: 10px;
+  border-bottom: 10px;
+}
+
+.statsTableLeftCell {
+  text-align: left;
+  font-weight: bold;
+  padding-right: 20px;
+  padding-bottom: 10px;
+}
+
+.statsTableRightCell {
+  text-align: left;
+  padding-bottom: 10px;
+}
+
+/* .statsTableLeftCell:last-child {
+  text-align: left;
+  font-weight: bold;
+  padding-right: 20px;
+}
+
+.statsTableRightCell:last-child {
+  text-align: left;
+} */
