@@ -6,29 +6,47 @@ import logout from './logout.png';
 import avatar from './avatar.jpg';
 import photo from './photo.png';
 import heart from './heart.png';
-import edit from './edit.png'
-import post from './post.png'
+import edit from './edit.png';
+import post from './post.png';
+import save from './save.png';
+
+function Status(props) {
+  if (props.edit) {
+    return <input className={styles.status}></input>
+  }
+  return <p className={styles.status}>{this.state.status}</p>
+}
 
 /* Profile component */
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { status: 'Staying cozy' }
+    this.state = { name: 'Lulu', status: 'Staying cozy', edit: false };
   }
 
-  changeStatus = () => {
-    this.setState({ status: 'Changed status' });
+  handleChange(event) {
+    this.setState({ status: event.target.value });
   }
 
-  // edit = () => {
+  edit = () => {
+    this.setState({ edit: true });
+  }
 
-  // }
-
-  // save = () => {
-  //   this.changeStatus(this.target.value);
-  // }
+  save = () => {
+    this.setState({ edit: false });
+  }
 
   render() {
+    let status;
+    let editButton;
+    if (this.state.edit) {
+      status = <input className={styles.statusEdit} defaultValue={this.state.status} onChange={this.handleChange.bind(this)}></input>
+      editButton = <button className={styles.edit} onClick={this.save}><img src={save} /></button>
+    } else {
+      status = <p className={styles.status}>{this.state.status}</p>
+      editButton = <button className={styles.edit} onClick={this.edit}><img src={edit} /></button>
+    }
+
     return (
       <div>
         <div className={styles.navbar}>
@@ -41,16 +59,15 @@ class Profile extends React.Component {
           <img src={logout} alt='logout' className={styles.logout} />
         </div>
 
-        <button className={styles.edit} onClick={this.changeStatus}><img src={edit} /></button>
+        {editButton}
         <button className={styles.newPost}><img src={post} /></button>
 
         <div className={styles.profile}>
-          <div></div>
-          <p className={styles.status}>{this.state.status}</p>
-
           <img src={avatar} alt='avatar' className={styles.avatar} />
 
-          <p><strong>Lulu</strong></p>
+          <p className={styles.name}>{this.state.name}</p>
+
+          {status}
 
           <p className={styles.location}>Toronto, Canada</p>
         </div>

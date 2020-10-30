@@ -39,36 +39,55 @@ ul li {
 
 .edit {
     width: 50px;
+    height: 50px;
     float: left;
     position: absolute;
-    top: 85px;
+    top: 135px;
     left: 330px;
 }
 
 .newPost {
     width: 50px;
+    height: 50px;
     float: left;
     position: absolute;
-    top: 140px;
+    top: 185px;
     left: 330px;
 }
 
+.avatar {
+    width: 150px;
+    border-radius: 50%;
+    border: 5px solid #bde0e5;
+    position: absolute;
+    top: 60px;
+    left: 110px;
+}
+
 .profile {
-    width: 250px;
-    height: 360px;
+    width: 270px;
+    height: 215px;
     border-radius: 2%;
     background-color: white;
-    align-items: center;
     float: left;
-    padding: 10px;
-    margin-top: 50px;
+    margin-top: 100px;
     margin-left: 50px;
     display: block;
 }
 
+.name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 90px;
+}
+
 .status {
-    display: inline-block;
-    padding: 15px;
+    margin-top: -15px;
+}
+
+.statusEdit {
+    margin-top: -10px;
+    padding: 10px;
 }
 
 .status::before {
@@ -82,23 +101,14 @@ ul li {
 }
 
 .location {
-    display: inline-block;
-    padding-right: 10px;
+    position: absolute;
+    top: 290px;
+    left: 100px;
 }
 
 .location::before {
     content: url('./location.png');
     margin-right: 10px;
-}
-
-.avatar {
-    width: 150px;
-    border-radius: 50%;
-    border: 5px solid #bde0e5;
-}
-
-.profileInfo {
-    text-align: center;
 }
 
 .gallery {
