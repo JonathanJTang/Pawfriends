@@ -1,1 +1,27 @@
 /* Styles for the Posts React component */
+
+.postsList {
+  width: 500px;
+  min-height: 100%;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.post {
+  width: 100%;
+  min-height: 300px;
+  background-color: white;
+  border-radius: 2%;
+  margin-bottom: 15px;
+}
+
+.postImage {
+  max-width: 100%;
+  height: auto;
+}
+
+.heartButton {
+  cursor: pointer;
+  float: right;
+}
