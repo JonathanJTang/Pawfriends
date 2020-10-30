@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-
 /* Replace changing <body> to changing .App
 body {
   background-image: url('./images/profile-bg.png');
@@ -32,4 +31,8 @@ h2 {
 a {
   text-decoration: none;
   color: black;
+}
+
+input {
+  text-align: center;
 }

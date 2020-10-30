@@ -1,44 +1,3 @@
-/* Selectors commented out below are shared by all pages, moved to App.css or to NavBar
-@import url('https://fonts.googleapis.com/css2?family=Karla:ital@0;1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-body {
-    background-image: url('./profile-bg.png');
-    background-repeat: repeat;
-    font-family: 'Karla', sans-serif;
-}
-
-.logo {
-    margin-left: 10px;
-    float: left;
-    padding-top: 4px;
-    transition: opacity .5s ease;
-}
-
-.logo:hover {
-    opacity: 50%;
-}
-
-.logout {
-    margin-right: 10px;
-    float: right;
-    padding-top: 4px;
-}
-
-.navbar {
-    margin-top: -16px;
-    height: 35px;
-    background-color: white;
-} */
-
-/* Removed global styling of ul li elements, since they might be used
-   differently elsewhere (replaced it with class navbarTextButton in NavBar)
-ul li {
-  list-style: none;
-  margin-top: 7px;
-  margin-left: 10px;
-  float: left;
-} */
-
 .profile {
     width: 270px;
     height: 200px;
@@ -84,6 +43,47 @@ ul li {
 .location::before {
     content: url('./location.png');
     margin-right: 10px;
+}
+
+.edit, .newPost {
+    background-color: white;
+    border: none;
+    border-radius: 2%;
+    outline: none;
+    padding: 10px;
+    transition: .5s ease;
+}
+
+.edit:hover, .newPost:hover {
+    background-color: #8dc5ce;
+    color: white;
+}
+
+.edit {
+    width: 50px;
+    height: 50px;
+    float: left;
+    position: absolute;
+    top: 135px;
+    left: 330px;
+}
+
+.newPost {
+    width: 50px;
+    height: 50px;
+    float: left;
+    position: absolute;
+    top: 185px;
+    left: 330px;
+}
+
+.avatar {
+    width: 150px;
+    border-radius: 50%;
+    border: 5px solid #bde0e5;
+    position: absolute;
+    top: 60px;
+    left: 110px;
 }
 
 .gallery {
@@ -141,26 +141,3 @@ ul li {
 .like {
     display: inline;
 }
-
-/* These selectors affect elements throughout the app, moved to App.css
-h1 {
-    font-size: 22px;
-    font-weight: normal;
-    margin-top: 10px;
-    margin-bottom: 8px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f3f2f2;
-}
-
-h2 {
-    font-size: 20px;
-    font-weight: normal;
-    padding: 10px;
-    border-radius: 2% 2% 0% 0%;
-    border-bottom: 1px solid #f3f2f2;
-}
-
-a {
-    text-decoration: none;
-    color: black;
-} */
