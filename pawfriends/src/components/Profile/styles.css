@@ -9,43 +9,43 @@
     display: block;
 }
 
-.name {
+.profile-name {
     font-size: 24px;
     font-weight: bold;
     margin-top: 90px;
     margin-bottom: 0px;
 }
 
-.status {
+.profile-status {
     margin-top: -3px;
 }
 
-.statusEdit {
-    padding: 10px;
-}
-
-.status::before {
-    content: url('./quote-left.png');
+.profile-status::before {
+    content: url('./../../images/quote-left.png');
     margin-right: 15px;
 }
 
-.status::after {
-    content: url('./quote-right.png');
+.profile-status::after {
+    content: url('./../../images/quote-right.png');
     margin-left: 15px;
 }
 
-.location {
+.profile-status-edit {
+    padding: 10px;
+}
+
+.profile-location {
     position: absolute;
     top: 275px;
     left: 100px;
 }
 
-.location::before {
+.profile-location::before {
     content: url('./location.png');
     margin-right: 10px;
 }
 
-.edit, .newPost {
+.profile-edit-button, .profile-post-button {
     background-color: white;
     border: none;
     border-radius: 2%;
@@ -54,12 +54,12 @@
     transition: .5s ease;
 }
 
-.edit:hover, .newPost:hover {
+.profile-edit-button:hover, .profile-post-button:hover {
     background-color: #8dc5ce;
     color: white;
 }
 
-.edit {
+.profile-edit-button {
     width: 50px;
     height: 50px;
     float: left;
@@ -68,7 +68,7 @@
     left: 330px;
 }
 
-.newPost {
+.profile-post-button {
     width: 50px;
     height: 50px;
     float: left;
@@ -77,7 +77,7 @@
     left: 330px;
 }
 
-.avatar {
+.profile-avatar {
     width: 150px;
     border-radius: 50%;
     border: 5px solid #bde0e5;
@@ -86,7 +86,7 @@
     left: 110px;
 }
 
-.gallery {
+.profile-gallery {
     position: absolute;
     top: 280px;
     margin-top: 70px;
@@ -97,7 +97,7 @@
     background-color: white;
 }
 
-.photo {
+.profile-photo {
     width: 70px;
     height: 70px;
     margin: -1px 3px 3px 3px;
@@ -106,12 +106,12 @@
     border: 1px solid #f3f2f2;
 }
 
-.posts {
+.profile-posts {
     width: 500px;
     margin-left: 390px;
 }
 
-.post {
+.profile-post {
     width: 100%;
     min-height: 300px;
     background-color: white;
@@ -120,7 +120,7 @@
     padding-bottom: 5px;
 }
 
-.postImg {
+.profile-post-pic {
     display: inline-block;
     width: 150px;
     height: 150px;
@@ -129,15 +129,24 @@
     border: 1px solid #f3f2f2;
 }
 
-.postContent {
+.profile-post-content {
     display: inline-block;
     padding: 10px;
 }
 
-.postDate {
+.profile-post-date {
     font-style: italic;
 }
 
-.like {
-    display: inline;
+.profile-like {
+    float: right;
+}
+
+.profile-photo-header {
+    font-size: 22px;
+    font-weight: normal;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f3f2f2;
 }

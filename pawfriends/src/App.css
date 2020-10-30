@@ -1,16 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-/* Replace changing <body> to changing .App
+/* moved these to body to fix bug where background does not fill entire page */
 body {
   background-image: url('./images/profile-bg.png');
   background-repeat: repeat;
-  font-family: 'Karla', sans-serif;
-} */
+}
 
 .App {
   text-align: center;
-  background-image: url('./images/profile-bg.png');
-  background-repeat: repeat;
   font-family: 'Karla', sans-serif;
 }
 

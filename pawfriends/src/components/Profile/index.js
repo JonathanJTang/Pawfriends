@@ -5,17 +5,10 @@ import NavBar from "./../NavBar";
 
 import avatar from './avatar.jpg';
 import photo from './photo.png';
-import heart from './heart.png';
+import heart from './../../images/heart.png';
 import edit from './edit.png';
 import post from './post.png';
 import save from './save.png';
-
-function Status(props) {
-  if (props.edit) {
-    return <input className='status'></input>
-  }
-  return <p className='status'>{this.state.status}</p>
-}
 
 /* Profile component */
 class Profile extends React.Component {
@@ -70,26 +63,26 @@ class Profile extends React.Component {
     let status;
     let editButton;
     if (this.state.edit) {
-      status = <input className='statusEdit' defaultValue={this.state.status} onChange={this.handleChange.bind(this)}></input>
-      editButton = <button className='edit' onClick={this.save}><img src={save} /></button>
+      status = <input className='profile-status-edit' defaultValue={this.state.status} onChange={this.handleChange.bind(this)}></input>
+      editButton = <button className='profile-edit-button' onClick={this.save}><img src={save} /></button>
     } else {
-      status = <p className='status'>{this.state.status}</p>
-      editButton = <button className='edit' onClick={this.edit}><img src={edit} /></button>
+      status = <p className='profile-status'>{this.state.status}</p>
+      editButton = <button className='profile-edit-button' onClick={this.edit}><img src={edit} /></button>
     }
 
     const photos = this.state.photos.map((photo, index) => (
-      <img src={photo} key={index} className='photo' />
+      <img src={photo} key={index} className='profile-photo' />
     ));
 
     const posts = this.state.posts.map((post, index) => (
-      <div key={index} className='post'>
+      <div key={index} className='profile-post'>
         <h2>
           {post.title}
-          <img src={heart} className='like' />
+          <img src={heart} className='profile-like' />
         </h2>
-        <img src={post.image} className='postImg' />
-        <p className='postContent'>{post.content}</p>
-        <p className='postDate'>{post.date}</p>
+        <img src={post.image} className='profile-post-pic' />
+        <p className='profile-post-content'>{post.content}</p>
+        <p className='profile-post-date'>{post.date}</p>
       </div>
     ));
 
@@ -98,21 +91,21 @@ class Profile extends React.Component {
         <NavBar />
 
         {editButton}
-        <button className='newPost'><img src={post} /></button>
+        <button className='profile-post-button'><img src={post} /></button>
 
         <div className='profile'>
-          <img src={avatar} alt='avatar' className='avatar' />
-          <p className='name'>{this.state.name}</p>
+          <img src={avatar} alt='profile-avatar' className='profile-avatar' />
+          <p className='profile-name'>{this.state.name}</p>
           {status}
-          <p className='location'>Toronto, Canada</p>
+          <p className='profile-location'>Toronto, Canada</p>
         </div>
 
-        <div className='gallery'>
-          <h1>Photos</h1>
+        <div className='profile-gallery'>
+          <h1 className='profile-photo-header'>Photos</h1>
           {photos}
         </div>
 
-        <div className='posts'>{posts}</div>
+        <div className='profile-posts'>{posts}</div>
       </div>
     );
   }

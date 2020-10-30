@@ -1,1 +1,43 @@
-/* Styles for the Settings React component */
+/* .main {
+    height: 1000px;
+} */
+
+.settings-form {
+    background-color: white;
+    border-radius: 2%;
+    display: inline-block;
+    margin-top: 50px;
+    padding-top: 50px;
+    width: 400px;
+    height: 200px;
+}
+
+.settings-input {
+    border: 2px solid #f3f2f2;
+    border-radius: 5%;
+    display: block;
+    margin: auto;
+    padding: 10px;
+    transition: .5s ease;
+    width: 250px;
+}
+
+.settings-input:hover, .settings-input:focus {
+    border: 2px solid #bde0e5;
+    outline: none;
+}
+
+.settings-submit {
+    width: 100px;
+    background-color: white;
+    border: 1px solid #f3f2f2;
+    border-radius: 2%;
+    outline: none;
+    padding: 5px;
+    transition: .5s ease;
+}
+
+.settings-submit:hover {
+    background-color: #8dc5ce;
+    color: white;
+}
