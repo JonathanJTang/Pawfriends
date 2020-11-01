@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles.css";
+import NavBar from "../NavBar";
 
 /* Registration component */
 class Registration extends React.Component {
@@ -38,7 +39,8 @@ class Registration extends React.Component {
   render() {
     return (
       <div>
-        <h1>Register a Paw Freinds account</h1>
+        <NavBar />
+        <h1>Register a PawFreinds account</h1>
         <label>
           User Name:
           <input

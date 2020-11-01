@@ -13,15 +13,17 @@ import Caretakers from "./components/Caretakers";
 import Settings from "./components/Settings";
 import Profile from "./components/Profile";
 import AdminDashboard from "./components/AdminDashboard";
+import NavBar from "./components/NavBar";
 
 class App extends React.Component {
   // Global state passed to all components of the app
   constructor(props) {
     super(props);
-    this.state = { users: [], posts: [], curUserId: 0 };
+    this.state = { users: [], posts: [], careTakers: [], curUserId: 0 };
   }
 
   componentDidMount = () => {
+    document.title = "PawFriends";
     this.setState({
       posts: [
         {
@@ -43,6 +45,20 @@ class App extends React.Component {
           link:
             "https://media1.fdncms.com/inlander/imager/u/original/6575897/screen_shot_2017-11-10_at_11.24.41_am.png",
           content: "This is my Dog\nLeave a comment!",
+        },
+      ],
+      careTakers: [
+        {
+          userId: 2,
+          yearsOfExp: 2,
+          pet: "Dog",
+          careTakerName: "John Smith",
+        },
+        {
+          userId: 2,
+          yearsOfExp: 2,
+          pet: "Cat",
+          careTakerName: "John Smith",
         },
       ],
       users: [
@@ -69,16 +85,6 @@ class App extends React.Component {
   };
 
   render() {
-    const allPosts = this.state.posts.map((post, index) => (
-      <div key={index}>
-        <h3>{post.postName}</h3>
-        <p>
-          Posted on {post.datetime} by {post.username}
-        </p>
-        <img src={post.link}></img>
-      </div>
-    ));
-
     return (
       <div className="App">
         {/* Sorry hiding it because it's showing up on other pages too :( */}
@@ -129,35 +135,7 @@ class App extends React.Component {
               path="/"
               render={() => (
                 <div>
-                  <header>Temporary Redirection page for development</header>
-                  <Link className="testLink" to={"/Login"}>
-                    <input type="button" value="Login"></input>
-                  </Link>
-                  <Link className="testLink" to={"/Registration"}>
-                    <input type="button" value="Registration"></input>
-                  </Link>
-                  <Link className="testLink" to={"/"}>
-                    <input type="button" value="Home"></input>
-                  </Link>
-                  <Link className="testLink" to={"/Posts"}>
-                    <input type="button" value="Posts"></input>
-                  </Link>
-                  <Link className="testLink" to={"/Trade"}>
-                    <input type="button" value="Trade"></input>
-                  </Link>
-                  <Link className="testLink" to={"/Caretakers"}>
-                    <input type="button" value="Caretakers"></input>
-                  </Link>
-                  <Link className="testLink" to={"/Settings"}>
-                    <input type="button" value="Settings"></input>
-                  </Link>
-                  <Link className="testLink" to={"/Profile"}>
-                    <input type="button" value="Profile"></input>
-                  </Link>
-                  <Link className="testLink" to={"/AdminDashboard"}>
-                    <input type="button" value="AdminDashboard"></input>
-                  </Link>
-                  {allPosts}
+                  <Home appState={this.state} />
                 </div>
               )}
             />

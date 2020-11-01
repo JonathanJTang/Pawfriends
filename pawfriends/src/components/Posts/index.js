@@ -5,8 +5,8 @@ import "./styles.css";
 import NavBar from "./../NavBar";
 import LikeButton from "../LikeButton";
 
-
 class Post extends React.Component {
+  //add comment button
   render() {
     const { postData } = this.props;
 
@@ -19,8 +19,7 @@ class Post extends React.Component {
         <p>
           Posted on {postData.datetime} by {postData.username}
         </p>
-        <img className="postImage" alt="post"
-             src={postData.link} />
+        <img className="postImage" alt="post" src={postData.link} />
         <div className="postText">{postData.content}</div>
       </div>
     );

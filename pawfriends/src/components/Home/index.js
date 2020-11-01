@@ -1,23 +1,47 @@
 import React from "react";
 import "./styles.css";
+import NavBar from "../NavBar";
 
 /* Home component */
 class Home extends React.Component {
   render() {
-    let appStateAllPosts = this.props.appState.posts;
-    const allPosts = appStateAllPosts.map((post, index) => (
+    let appState = this.props.appState;
+    const allPosts = appState.posts.map((post, index) => (
       <div key={index}>
         <h3>{post.postName}</h3>
         <p>
           Posted on {post.datetime} by {post.username}
         </p>
-        <img src={post.link}></img>
+        <img className="postPhoto" src={post.link}></img>
       </div>
     ));
+    const allCaretakers = appState.careTakers.map((caretaker, index) => (
+      <div key={index}>
+        <h3>{caretaker.careTakerName}</h3>
+        <p>
+          will take care of {caretaker.pet} and has {caretaker.yearsOfExp} of
+          experience
+        </p>
+      </div>
+    ));
+
     return (
       <div>
-        <h1>All Posts</h1>
-        {allPosts}
+        <NavBar />
+        <div className="row">
+          <div className="column">
+            <h1>Potential CareTakers</h1>
+            {allCaretakers}
+          </div>
+          <div className="column">
+            <h1>All Posts</h1>
+            {allPosts}
+          </div>
+          <div className="column">
+            <h1>Trade Toys</h1>
+            {allPosts}
+          </div>
+        </div>
       </div>
     );
   }
