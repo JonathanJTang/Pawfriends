@@ -13,32 +13,32 @@ class NavBar extends React.Component {
       <div className="navbar">
         <img src={logo} alt="logo" className="logo" />
         <ul>
-          <li className="navbarTextButton">
-            <Link to={"/"}>Home</Link>
+          <li>
+            <Link to={"/"} className="navbarTextButton">Home</Link>
           </li>
-          <li className="navbarTextButton">
-            <Link to={"/posts"}>Posts</Link>
+          <li>
+            <Link to={"/posts"} className="navbarTextButton">Posts</Link>
           </li>
-          <li className="navbarTextButton">
-            <Link to={"/trade"}>Trade</Link>
+          <li>
+            <Link to={"/trade"} className="navbarTextButton">Trade</Link>
           </li>
-          <li className="navbarTextButton">
-            <Link to={"/caretakers"}>Caretakers</Link>
+          <li>
+            <Link to={"/caretakers"} className="navbarTextButton">Caretakers</Link>
           </li>
-          <li className="navbarTextButton">
-            <Link to={"/profile"}>Profile</Link>
+          <li>
+            <Link to={"/profile"} className="navbarTextButton">Profile</Link>
           </li>
-          <li className="navbarTextButton">
-            <Link to={"/settings"}>Settings</Link>
+          <li>
+            <Link to={"/settings"} className="navbarTextButton">Settings</Link>
           </li>
-          <li className="navbarTextButton">
-            <Link to={"/login"}>Login</Link>
+          <li>
+            <Link to={"/login"} className="navbarTextButton">Login</Link>
           </li>
-          <li className="navbarTextButton">
-            <Link to={"/registration"}>Registration</Link>
+          <li>
+            <Link to={"/registration"} className="navbarTextButton">Registration</Link>
           </li>
         </ul>
-        <img src={logout} alt="logout" className="logout" />
+        {/* <img src={logout} alt="logout" className="logout" /> */}
       </div>
     );
   }
