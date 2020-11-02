@@ -1,7 +1,9 @@
 /* Styles for the Home React component */
 .column {
+  margin-top: 10px;
   float: left;
-  width: 33.33%;
+  width: 30%;
+  margin-left: 3%;
 }
 
 /* Clear floats after the columns */

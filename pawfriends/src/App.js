@@ -19,7 +19,13 @@ class App extends React.Component {
   // Global state passed to all components of the app
   constructor(props) {
     super(props);
-    this.state = { users: [], posts: [], careTakers: [], curUserId: 0 };
+    this.state = {
+      users: [],
+      posts: [],
+      careTakers: [],
+      tradeToys: [],
+      curUserId: 0,
+    };
   }
 
   componentDidMount = () => {
@@ -61,9 +67,17 @@ class App extends React.Component {
           careTakerName: "John Smith",
         },
       ],
+      tradeToys: [
+        {
+          toyId: 1,
+          ownerId: 3,
+          toyImageLink:
+            "https://ae01.alicdn.com/kf/Hf5ef8a4f9d7a49e6b7fd0df59eb967a92.jpg",
+        },
+      ],
       users: [
         {
-          username: "Ryan",
+          name: "Ryan",
           type: "admin",
           id: 1,
           password: "123",
