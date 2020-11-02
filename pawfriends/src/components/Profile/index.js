@@ -6,106 +6,108 @@ import LikeButton from "../LikeButton";
 
 import avatar from './avatar.jpg';
 import photo from './photo.png';
-import edit from './edit.png';
-import post from './post.png';
-import save from './save.png';
+import comment from './comment.png';
 
-/* Profile component */
+
+class Post extends React.Component {
+  render() {
+    const { postData } = this.props;
+
+    return (
+      <div className='profile-post'>
+        <div className='profile-post-header'>
+          <div className='profile-post-title'>{postData.postName}</div>
+        </div>
+        <div className='profile-post-pic-wrapper'>
+          <a href={postData.link}><img src={postData.link} className='profile-post-pic' /></a>
+        </div>
+        <p className='profile-post-content'>{postData.content}</p>
+        <div className='profile-post-stats'>
+          <div className='profile-post-date'>{postData.datetime}</div>
+          <div className='profile-social'>
+            3 <img src={comment} />
+            47<LikeButton />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: 'Lulu', status: 'Staying cozy', edit: false, photos: [], posts: [] };
+    this.state = { name: 'Lulu', status: 'Staying cozy', location: 'Toronto, Canada', edit: false, toggle: false, photos: [], posts: [] };
   }
 
   handleChange(event) {
     this.setState({ status: event.target.value });
   }
 
-  edit = () => {
-    this.setState({ edit: true });
+  handleEdit = () => {
+    this.state.edit ? this.setState({ edit: false }) : this.setState({ edit: true });
   }
 
-  save = () => {
-    this.setState({ edit: false });
+  handleClick = () => {
+    this.state.toggle ? this.setState({ toggle: false }) : this.setState({ toggle: true });
   }
 
-  // example posts
   componentDidMount = () => {
     this.setState({
       photos: [
-        photo, photo, photo, photo, photo, photo
-      ],
-
-      posts: [
-        {
-          title: "November's almost here",
-          date: "Oct 30, 2020",
-          image: photo,
-          content: "Time passes so quickly! Before we knew it, it was already the last day of October.",
-        },
-        {
-          title: "Perfect day for a walk",
-          date: "Oct 29, 2020",
-          image: photo,
-          content: "The weather was so perfect today, so we went for a little stroll around the block!",
-        },
-        {
-          title: "Hello!",
-          date: "Oct 27, 2020",
-          image: photo,
-          content: "It's my first time posting here. So nice to meet everyone! :)",
-        },
+        photo, photo, photo, photo, photo, photo, photo, photo
       ],
     });
   };
 
   render() {
     let status;
-    let editButton;
     if (this.state.edit) {
-      status = <input className='profile-status-edit' defaultValue={this.state.status} onChange={this.handleChange.bind(this)}></input>
-      editButton = <button className='profile-edit-button' onClick={this.save}><img src={save} /></button>
+      status = <input className='profile-status-input' defaultValue={this.state.status} onChange={this.handleChange.bind(this)}></input>
     } else {
       status = <p className='profile-status'>{this.state.status}</p>
-      editButton = <button className='profile-edit-button' onClick={this.edit}><img src={edit} /></button>
     }
+
+    const info = <p className='profile-location'>{this.state.location}</p>;
 
     const photos = this.state.photos.map((photo, index) => (
       <img src={photo} key={index} className='profile-photo' />
     ));
 
-    const posts = this.state.posts.map((post, index) => (
-      <div key={index} className='profile-post'>
-        <h2>
-          {post.title}
-          <LikeButton />
-        </h2>
-        <img src={post.image} className='profile-post-pic' />
-        <p className='profile-post-content'>{post.content}</p>
-        <p className='profile-post-date'>{post.date}</p>
-      </div>
-    ));
+    let tabContent;
+    this.state.toggle ? tabContent = info : tabContent = photos;
 
     return (
       <div>
         <NavBar />
-
-        {editButton}
-        <button className='profile-post-button'><img src={post} /></button>
-
-        <div className='profile'>
+        <div className='profile-name-wrapper'>
+          <div className='profile-name'>{this.state.name}'s Profile</div>
+        </div>
+        <div className='profile-wrapper'>
+          <div className='profile-gallery'>
+            <div className='profile-tab-wrapper'>
+              <button className={this.state.toggle ? 'profile-tab-photo' : 'profile-tab-photo profile-tab-toggle'} onClick={this.handleClick}></button>
+              <button className={this.state.toggle ? 'profile-tab-info profile-tab-toggle' : 'profile-tab-info'} onClick={this.handleClick}></button>
+            </div>
+            {tabContent}
+          </div>
           <img src={avatar} alt='profile-avatar' className='profile-avatar' />
-          <p className='profile-name'>{this.state.name}</p>
-          {status}
-          <p className='profile-location'>Toronto, Canada</p>
+          <div className='profile'>
+            {status}
+          </div>
+
+          <div className='profile-btn-wrapper'>
+            <button className={this.state.edit ? 'profile-btn-save' : 'profile-btn-edit'} onClick={this.handleEdit}></button>
+            <button className='profile-btn-post'></button>
+          </div>
         </div>
 
-        <div className='profile-gallery'>
-          <h1 className='profile-photo-header'>Photos</h1>
-          {photos}
+        <div className='profile-post-wrapper'>
+          {this.props.appState.posts.map((post, index) => (
+            <Post key={index} postData={post} />
+          ))}
         </div>
-
-        <div className='profile-posts'>{posts}</div>
       </div>
     );
   }

@@ -1,23 +1,45 @@
-.profile {
-    width: 270px;
-    height: 200px;
-    border-radius: 2%;
-    background-color: white;
-    float: left;
-    margin-top: 100px;
-    margin-left: 50px;
-    display: block;
+.profile-wrapper {
+    display: flex;
+    position: relative;
+    margin: auto;
+    width: 700px;
+}
+
+.profile-name-wrapper {
+    display: inline-block;
+    position: relative;
+    margin: auto;
+    margin-top: 20px;
+    width: 700px;
 }
 
 .profile-name {
+    float: left;
     font-size: 24px;
     font-weight: bold;
-    margin-top: 90px;
-    margin-bottom: 0px;
+}
+
+.profile {
+    align-self: flex-end;
+    flex: 1;
+    margin-left: 20px;
+    width: 270px;
+    height: 100px;
+    border-radius: 0.2em;
+    background-color: white;
+    text-align: center;
+}
+
+.profile-avatar {
+    position: absolute;
+    left: 430px;
+    width: 150px;
+    border: 5px solid #bde0e5;
+    border-radius: 5em;
 }
 
 .profile-status {
-    margin-top: -3px;
+    margin-top: 35px;
 }
 
 .profile-status::before {
@@ -30,14 +52,76 @@
     margin-left: 15px;
 }
 
-.profile-status-edit {
+.profile-status-input {
+    position: absolute;
     padding: 10px;
+    top: 170px;
+    left: 415px;
 }
 
-.profile-location {
-    position: absolute;
-    top: 275px;
-    left: 100px;
+.profile-btn-wrapper {
+    align-self: flex-end;
+    flex: 0.1;
+    margin-left: 20px;
+    height: 100px;
+    border-radius: 0.2em;
+    background-color: white;
+}
+
+.profile-btn-edit, .profile-btn-save, .profile-btn-post, .profile-tab-info, .profile-tab-photo {
+    padding: 10px;
+    outline: none;
+    border: none;
+    border-radius: 0.2em;
+    background-color: white;
+    transition: .5s ease;
+    cursor: pointer;
+}
+
+.profile-btn-edit:hover, .profile-btn-save:hover, .profile-btn-post:hover, .profile-tab-info:hover, .profile-tab-photo:hover {
+    background-color: #bde0e5;
+}
+
+.profile-btn-edit, .profile-btn-save, .profile-btn-post {
+    display: block;
+    width: 50px;
+    height: 50px;
+}
+
+.profile-btn-edit::after {
+    content: url('./edit.png');
+}
+
+.profile-btn-save::after {
+    content: url('./save.png');
+}
+
+.profile-btn-post::after {
+    content: url('./post.png');
+}
+
+.profile-tab-wrapper {
+    border-bottom: 1px solid #f3f2f2;
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.profile-tab-info, .profile-tab-photo {
+    display: inline-block;
+    flex: 1;
+    font-size: 18px;
+}
+
+.profile-tab-toggle {
+    background-color: #bde0e5;
+}
+
+.profile-tab-info::after {
+    content: url('./info.png');
+}
+
+.profile-tab-photo:after {
+    content: url('./pictures.png');
 }
 
 .profile-location::before {
@@ -45,108 +129,85 @@
     margin-right: 10px;
 }
 
-.profile-edit-button, .profile-post-button {
-    background-color: white;
-    border: none;
-    border-radius: 2%;
-    outline: none;
-    padding: 10px;
-    transition: .5s ease;
-}
-
-.profile-edit-button:hover, .profile-post-button:hover {
-    background-color: #8dc5ce;
-    color: white;
-}
-
-.profile-edit-button {
-    width: 50px;
-    height: 50px;
-    float: left;
-    position: absolute;
-    top: 135px;
-    left: 330px;
-}
-
-.profile-post-button {
-    width: 50px;
-    height: 50px;
-    float: left;
-    position: absolute;
-    top: 185px;
-    left: 330px;
-}
-
-.profile-avatar {
-    width: 150px;
-    border-radius: 50%;
-    border: 5px solid #bde0e5;
-    position: absolute;
-    top: 60px;
-    left: 110px;
-}
-
 .profile-gallery {
-    position: absolute;
-    top: 280px;
-    margin-top: 70px;
-    margin-left: 50px;
+    flex: 1.5;
     width: 270px;
     height: 230px;
-    border-radius: 2%;
+    border-radius: 0.2em;
     background-color: white;
 }
 
 .profile-photo {
+    margin: 4px 5px 5px 10px;
     width: 70px;
     height: 70px;
-    margin: -1px 3px 3px 3px;
-    padding: 5px;
-    border-radius: 10%;
     border: 1px solid #f3f2f2;
+    border-radius: 0.5em;
 }
 
-.profile-posts {
-    width: 500px;
-    margin-left: 390px;
+.profile-post-wrapper {
+    margin: auto;
+    margin-top: 20px;
+    width: 700px;
 }
 
 .profile-post {
-    width: 100%;
-    min-height: 300px;
-    background-color: white;
-    border-radius: 2%;
     margin-bottom: 15px;
     padding-bottom: 5px;
+    width: 100%;
+    min-height: 300px;
+    border-radius: 0.2em;
+    background-color: white;
+}
+
+.profile-post-header {
+    padding: 10px 0px 10px 0px;
+    border-radius: 2% 2% 0% 0%;
+    border-bottom: 1px solid #f3f2f2;
+}
+
+.profile-post-title {
+    margin: auto;
+    font-size: 20px;
+    font-weight: normal;
+    display: inline;
+}
+
+.profile-post-pic-wrapper {
+    margin: auto;
+    margin-top: 15px;
+    max-width: 400px;
+    max-height: 500px;
+    border: 1px solid #f3f2f2;
+    border-radius: 0.5em;
+    overflow: hidden;
 }
 
 .profile-post-pic {
-    display: inline-block;
-    width: 150px;
-    height: 150px;
-    margin-left: 15px;
-    border-radius: 2%;
-    border: 1px solid #f3f2f2;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 .profile-post-content {
-    display: inline-block;
+    display: block;
     padding: 10px;
 }
 
 .profile-post-date {
+    float: left;
+    margin-left: 5px;
     font-style: italic;
 }
 
-.profile-like {
-    float: right;
+.profile-post-stats {
+    padding: 5px;
+    width: 100%;
+    height: 20px;
+    border-top: 1px solid #f3f2f2;
 }
 
-.profile-photo-header {
-    font-size: 22px;
-    font-weight: normal;
-    margin-top: 10px;
-    margin-bottom: 8px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f3f2f2;
+.profile-social {
+    float: right;
+    margin: auto;
+    margin-right: 10px;
 }
