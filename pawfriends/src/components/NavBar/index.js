@@ -1,10 +1,10 @@
 import React from "react";
 import "./styles.css";
 
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import Dropdown from '../Dropdown';
 
-import logo from "./../../images/logo.png";
-import logout from "./../../images/logout.png";
+import logo from "../../images/logo.png";
 
 /* NavBar component (used in most pages) */
 class NavBar extends React.Component {
@@ -14,31 +14,25 @@ class NavBar extends React.Component {
         <img src={logo} alt="logo" className="logo" />
         <ul>
           <li>
-            <Link to={"/"} className="navbarTextButton">Home</Link>
+            <NavLink exact to='/' className='inactive'>Home</NavLink>
           </li>
           <li>
-            <Link to={"/posts"} className="navbarTextButton">Posts</Link>
+            <NavLink to='/posts' className='inactive'>Posts</NavLink>
           </li>
           <li>
-            <Link to={"/trade"} className="navbarTextButton">Trade</Link>
+            <NavLink to='trade' className='inactive'>Trade</NavLink>
           </li>
           <li>
-            <Link to={"/caretakers"} className="navbarTextButton">Caretakers</Link>
+            <NavLink to='caretakers' className='inactive'>Services</NavLink>
           </li>
           <li>
-            <Link to={"/profile"} className="navbarTextButton">Profile</Link>
+            <NavLink to='login' className='inactive'>Login</NavLink>
           </li>
           <li>
-            <Link to={"/settings"} className="navbarTextButton">Settings</Link>
-          </li>
-          <li>
-            <Link to={"/login"} className="navbarTextButton">Login</Link>
-          </li>
-          <li>
-            <Link to={"/registration"} className="navbarTextButton">Registration</Link>
+            <NavLink to='registration' className='inactive'>Register</NavLink>
           </li>
         </ul>
-        {/* <img src={logout} alt="logout" className="logout" /> */}
+        <Dropdown />
       </div>
     );
   }

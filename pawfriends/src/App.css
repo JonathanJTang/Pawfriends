@@ -1,6 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital@0;1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-/* moved these to body to fix bug where background does not fill entire page */
 body {
   background-image: url('./images/profile-bg.png');
   background-repeat: repeat;
@@ -14,7 +12,6 @@ body {
 h1 {
   font-size: 24px;
   font-weight: normal;
-  margin-bottom: -2px;
 }
 
 h2 {
@@ -32,4 +29,8 @@ a {
 
 input {
   text-align: center;
+}
+
+ul {
+  margin: 0;
 }
