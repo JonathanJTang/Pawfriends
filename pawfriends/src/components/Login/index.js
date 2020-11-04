@@ -27,13 +27,9 @@ class Login extends React.Component {
     });
   };
 
-  handleSubmit = (event) => {
-    //TODO
-    this.setState({ submitted: true });
-    const { user } = this.state;
-    if (user.firstName && user.lastName && user.username && user.password) {
-      //register them
-    }
+  handleLoginLogin = (username, pw) => {
+    const { handleLogin } = this.props;
+    handleLogin(username, pw);
   };
 
   render() {
@@ -64,10 +60,13 @@ class Login extends React.Component {
           type="submit"
           value="Submit"
           onClick={() => {
-            this.handleSubmit();
+            this.handleLoginLogin(
+              this.state.user.username,
+              this.state.user.password
+            );
           }}
         >
-          Submit
+          Log in
         </button>
       </div>
     );

@@ -24,9 +24,47 @@ class App extends React.Component {
       posts: [],
       careTakers: [],
       tradeToys: [],
-      curUserId: 0,
+      curUserId: -1,
     };
   }
+
+  handleLogin = (username, password) => {
+    let thisUser = this.state.users.find(
+      (user) => user.username == username && user.password == password
+    );
+    if (thisUser) {
+      if (
+        (thisUser.type == "user" &&
+          thisUser.username == "user" &&
+          thisUser.password == "user") ||
+        (thisUser.type == "admin" &&
+          thisUser.username == "admin" &&
+          thisUser.password == "admin")
+      ) {
+        console.log("user or admin per assignment");
+      } else {
+        console.log("every other user");
+      }
+      this.setState({ curUserId: thisUser.id });
+    } else {
+      console.log("doesnt exists");
+      this.setState({ curUserId: -1 });
+    }
+  };
+
+  handleRegistration = (un, pw) => {
+    let userArr = this.state.users;
+    if (pw != "") {
+      let newUser = {
+        username: un,
+        type: "user",
+        id: userArr.length + 1,
+        password: pw,
+      };
+      userArr.push(newUser);
+      this.setState({ users: userArr });
+    }
+  };
 
   componentDidMount = () => {
     document.title = "PawFriends";
@@ -77,21 +115,33 @@ class App extends React.Component {
       ],
       users: [
         {
-          name: "Ryan",
-          type: "admin",
+          username: "user",
+          type: "user",
           id: 1,
-          password: "123",
+          password: "user",
         },
         {
-          name: "John Smith",
-          type: "user",
+          username: "admin",
+          type: "admin",
           id: 2,
+          password: "admin",
+        },
+        {
+          username: "Ryan",
+          type: "admin",
+          id: 3,
           password: "123",
         },
         {
-          name: "Jane Doe",
+          username: "John Smith",
           type: "user",
-          id: 3,
+          id: 4,
+          password: "123",
+        },
+        {
+          username: "Jane Doe",
+          type: "user",
+          id: 5,
           password: "123",
         },
       ],
@@ -108,12 +158,20 @@ class App extends React.Component {
             <Route
               exact
               path="/Login"
-              render={() => <Login appState={this.state} />}
+              render={() => (
+                <Login appState={this.state} handleLogin={this.handleLogin} />
+              )}
             />
             <Route
               exact
               path="/Registration"
-              render={() => <Registration appState={this.state} />}
+              render={() => (
+                <Registration
+                  appState={this.state}
+                  handleLogin={this.handleLogin}
+                  handleRegistration={this.handleRegistration}
+                />
+              )}
             />
             <Route
               exact

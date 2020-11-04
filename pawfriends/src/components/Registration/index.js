@@ -27,16 +27,8 @@ class Registration extends React.Component {
     });
   };
 
-  handleSubmit = (event) => {
-    //TODO
-    this.setState({ submitted: true });
-    const { user } = this.state;
-    if (user.firstName && user.lastName && user.username && user.password) {
-      //register them
-    }
-  };
-
   render() {
+    const { handleRegistration } = this.props;
     return (
       <div>
         <NavBar />
@@ -64,7 +56,10 @@ class Registration extends React.Component {
           type="submit"
           value="Submit"
           onClick={() => {
-            this.handleSubmit();
+            handleRegistration(
+              this.state.user.username,
+              this.state.user.password
+            );
           }}
         >
           Submit
