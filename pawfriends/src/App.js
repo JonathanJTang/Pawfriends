@@ -168,7 +168,6 @@ class App extends React.Component {
               render={() => (
                 <Registration
                   appState={this.state}
-                  handleLogin={this.handleLogin}
                   handleRegistration={this.handleRegistration}
                 />
               )}
