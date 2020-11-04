@@ -1,5 +1,5 @@
 .dropdown {
-  position: fixed;
+  position: absolute;
   top: 5px;
   right: 15px; 
   width: 40px;
@@ -14,7 +14,7 @@
 }
 
 .dropdown-list {
-  position: fixed;
+  position: absolute;
   top: 55px;
   right: 5px;
   width: 100px;
