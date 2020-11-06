@@ -13,36 +13,12 @@ class NavBar extends React.Component {
       <div className="navbar">
         <img src={logo} alt="logo" className="logo" />
         <ul>
-          <li>
-            <NavLink exact to="/" className="inactive">
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/posts" className="inactive">
-              Posts
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="trade" className="inactive">
-              Trade
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="caretakers" className="inactive">
-              Services
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="login" className="inactive">
-              Login
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="registration" className="inactive">
-              Register
-            </NavLink>
-          </li>
+          <NavLink exact to='/' className='inactive'><li>Home</li></NavLink>
+          <NavLink to='/posts' className='inactive'><li>Posts</li></NavLink>
+          <NavLink to='trade' className='inactive'><li>Trade</li></NavLink>
+          <NavLink to='caretakers' className='inactive'><li>Services</li></NavLink>
+          <NavLink to='login' className='inactive'><li>Login</li></NavLink>
+          <NavLink to='registration' className='inactive'><li>Register</li></NavLink>
         </ul>
         <Dropdown />
       </div>

@@ -5,6 +5,10 @@
     background-color: white;
 }
 
+.navbar ul {
+    display: flex;
+}
+
 .navbar ul li {
     display: inline-block;
     margin: 13px 20px 0px 20px;
@@ -17,10 +21,13 @@
 .inactive {
     opacity: 0.6;
     transition: .2s ease;
+    border-bottom: 3px solid white;
 }
 
 .inactive:hover, .active {
+    display: flex;
     opacity: 1;
+    border-bottom-color:  #bde0e5;
 }
 
 .logo {
