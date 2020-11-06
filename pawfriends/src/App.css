@@ -2,7 +2,7 @@
 body {
   background-image: url('./images/profile-bg.png');
   background-repeat: repeat;
-  overflow-y: scroll
+  overflow-y: scroll;
 }
 
 .App {
@@ -34,4 +34,9 @@ input {
 
 ul {
   margin: 0;
+  padding: 0;
+}
+
+ul li {
+  list-style: none;
 }

@@ -1,12 +1,12 @@
 /* Styles for the Caretakers React component */
 
-
+/* moved to App.css :)
 ul li {
     list-style: none;
     margin-top: 7px;
     margin-left: 10px;
     float: top;
-}
+} */
 
 
 .poster{
@@ -47,7 +47,7 @@ ul li {
     float: right;
 }
 
-h1 {
+/* h1 {
     font-size: 24px;
     font-weight: normal;
     margin-bottom: -2px;
@@ -66,4 +66,4 @@ h2 {
 a {
     text-decoration: none;
     color: black;
-}
+} */
