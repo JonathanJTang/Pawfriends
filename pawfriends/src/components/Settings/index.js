@@ -31,7 +31,7 @@ class ProfileSettings extends React.Component {
           </label>
           <label>
             <p>Name</p>
-            <input type='text' value={this.state.name} />
+            <input type='text' defaultValue={this.state.name} />
           </label>
           <label>
             <p>Gender</p>
@@ -43,11 +43,11 @@ class ProfileSettings extends React.Component {
           </label>
           <label>
             <p>Location</p>
-            <input type='text' value={this.state.location} />
+            <input type='text' defaultValue={this.state.location} />
           </label>
           <label>
             <p>Birthday</p>
-            <input type='date' value={this.state.birthday} />
+            <input type='date' defaultValue={this.state.birthday} />
           </label>
           <label>
             <p>Cats or Dogs? (or both!)</p>
@@ -79,7 +79,7 @@ class AccountSettings extends React.Component {
           </label>
           <label>
             <p>Password</p>
-            <input type='password' value={this.state.pass} />
+            <input type='password' defaultValue={this.state.pass} />
           </label>
           <input type='submit' value='Save Changes' />
         </form>
@@ -100,7 +100,7 @@ class SiteSettings extends React.Component {
         <form>
           <label>
             <p>Dark mode</p>
-            <input type='checkbox' />
+            <input type='checkbox' defaultChecked={this.state.darkmode} />
           </label>
           <input type='submit' value='Save Changes' />
         </form>
