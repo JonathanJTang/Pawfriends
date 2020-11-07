@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.login h1::before, .login h1::after, .login form::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  width: 15px;
+  height: 15px;
+  border-radius: 5em;
+}
+
+.login h1::before {
+  right: 10px;
+  background-color: #e5bdbd;
+}
+
+.login h1::after {
+  right: 35px;
+  background-color: #e5dfbd;
+}
+
+.login form::before {
+  right: 60px;
+  background-color: #cfe5bd;
+}
+
+.login form::after {
+  content: url('./pup.png');
+  position: absolute;
+  top: 380px;
+  right: -100px;
+}
+
+.login form {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  padding: 100px;
+  max-width: 500px;
+  border-radius: 0.2em;
+  background-color: white;
+}
+
+.login h1 {
+  font-family: Sacramento, cursive;
+  font-size: 42px;
+}
+
+.login label {
+  margin-bottom: 15px;
+}
+
+.login input {
+  margin-bottom: 15px;
+  padding: 10px 0px 10px 0px;
+  width: 100%;
+  border: 1px solid #f3f2f2;
+  border-radius: 0.2em;
+  transition: .2s ease;
+}
+
+.login input:focus {
+  border-color: #bde0e5;
+  outline: none;
+}
+
+.login input[type=submit] {
+  letter-spacing: 0.2em;
+  color: white;
+  background-color: #bde0e5;
+  cursor: pointer;
+}
+
+.login input[type=submit]:hover {
+  background-color: #c1bde5;
+}
+
+.login p {
+  position: absolute;
+  left: 40px;
+  bottom: 15px;
+  letter-spacing: 0.2em;
+}
+
+.login-error {
+  border-color: #e5bdbd !important;
+}
+
+.btn-reg {
+  position: absolute;
+  left: 300px;
+  bottom: 25px;
+  padding: 5px 15px 5px 15px;
+  border-radius: 0.2em;
+  color: white;
+  background-color: #c1bde5;
+  transition: .2s ease;
+  cursor: pointer;
+}
+
+.btn-reg:hover {
+  background-color: #bde0e5;
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 
-import { Link, Route, Switch, BrowserRouter } from "react-router-dom";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
 
 // Temporary: import various components so we can work on them
 import Login from "./components/Login";
@@ -13,7 +13,9 @@ import Caretakers from "./components/Caretakers";
 import Settings from "./components/Settings";
 import Profile from "./components/Profile";
 import AdminDashboard from "./components/AdminDashboard";
-import NavBar from "./components/NavBar";
+import Index from './components/Index';
+
+import NavBar from './components/NavBar';
 
 class App extends React.Component {
   // Global state passed to all components of the app
@@ -151,17 +153,17 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        {/* Sorry hiding it because it's showing up on other pages too :( */}
-        {/* <h1>PawFriends Home</h1> */}
         <BrowserRouter>
+          {/* in phase 2, write function to switch modify navbar depending on user type (not logged in, user, admin) */}
+          <NavBar />
           <Switch>
-            <Route
+            {/* <Route
               exact
               path="/Login"
               render={() => (
                 <Login appState={this.state} handleLogin={this.handleLogin} />
               )}
-            />
+            /> */}
             <Route
               exact
               path="/Registration"
@@ -203,13 +205,15 @@ class App extends React.Component {
               render={() => <AdminDashboard appState={this.state} />}
             />
             <Route
-              path="/"
+              exact
+              path="/Home"
               render={() => (
                 <div>
                   <Home appState={this.state} />
                 </div>
               )}
             />
+            < Route path='/' component={Index} />
           </Switch>
         </BrowserRouter>
       </div>

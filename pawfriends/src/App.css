@@ -8,6 +8,8 @@ body {
 .App {
   text-align: center;
   font-family: 'Karla', sans-serif;
+  height: 80vh;
+  margin-top: 100px;
 }
 
 h1 {
