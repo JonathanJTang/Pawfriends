@@ -1,8 +1,18 @@
 .navbar {
+    position: fixed;
+    top: 0;
     display: flex;
     justify-content: center;
+    width: 100%;
     height: 50px;
     background-color: white;
+}
+
+.navbar::after {
+    content: url('../../images/logo.png');
+    position: absolute;
+    top: 10px;
+    left: 20px;
 }
 
 .navbar ul {
@@ -27,11 +37,5 @@
 .inactive:hover, .active {
     display: flex;
     opacity: 1;
-    border-bottom-color:  #bde0e5;
-}
-
-.logo {
-    position: absolute;
-    top: 5px;
-    left: 5px;
+    border-bottom-color: #bde0e5;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-// import NavBar from '../NavBar';
+import NavBarAdmin from '../NavBarAdmin';
 import "./styles.css";
 
 import logo from "./../../images/logo.png";
@@ -12,11 +12,7 @@ class AdminDashboard extends React.Component {
 
     return (
       <div className="main">
-        <div className="adminNavbar">
-          <img src={logo} alt='logo' className='logo' />
-          <div className="navbarTextButton">Admin Dashboard</div>
-          <img src={logout} alt='logout' className='logout' />
-        </div>
+        <NavBarAdmin />
         <div className="statsTableContainer">
           <h2>Site Statistics</h2>
           <table className="statsTable">

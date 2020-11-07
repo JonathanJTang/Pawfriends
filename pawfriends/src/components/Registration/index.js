@@ -1,6 +1,6 @@
 import React from "react";
 import "./styles.css";
-import NavBar from "../NavBar";
+import NavBarGuest from "../NavBarGuest";
 
 /* Registration component */
 class Registration extends React.Component {
@@ -31,7 +31,7 @@ class Registration extends React.Component {
     const { handleRegistration } = this.props;
     return (
       <div>
-        <NavBar />
+        <NavBarGuest />
         <h1>Register a PawFreinds account</h1>
         <label>
           User Name:
