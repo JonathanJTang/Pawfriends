@@ -75,8 +75,8 @@ class App extends React.Component {
         {
           postName: "Me and my Dog",
           id: 1,
-          username: "John Smith",
-          usertype: "pet owner", //admin/pet owner
+          username: "user",
+          userId: 1,
           datetime: "14:26 May 30, 2020",
           link:
             "https://i.pinimg.com/564x/9b/e8/ba/9be8ba888cb66d6bb2f879b4ea31261e.jpg",
@@ -85,8 +85,8 @@ class App extends React.Component {
         {
           postName: "My cat is so cute!",
           id: 2,
-          username: "Jane Doe",
-          usertype: "pet owner", //admin/pet owner
+          username: "user2",
+          userId: 4,
           datetime: "14:26 July 30, 2020",
           link:
             "https://media1.fdncms.com/inlander/imager/u/original/6575897/screen_shot_2017-11-10_at_11.24.41_am.png",
@@ -135,16 +135,10 @@ class App extends React.Component {
           password: "123",
         },
         {
-          username: "John Smith",
+          username: "user2",
           type: "user",
           id: 4,
-          password: "123",
-        },
-        {
-          username: "Jane Doe",
-          type: "user",
-          id: 5,
-          password: "123",
+          password: "user2",
         },
       ],
     });
@@ -213,7 +207,7 @@ class App extends React.Component {
                 </div>
               )}
             />
-            < Route path='/' component={Index} />
+            < Route path='/' render={(routeProps) => <Index {...routeProps} appState={this.state} />} />
           </Switch>
         </BrowserRouter>
       </div>
