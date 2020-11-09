@@ -11,7 +11,8 @@ import Posts from "./components/Posts";
 import Trade from "./components/Trade";
 import Caretakers from "./components/Caretakers";
 import Settings from "./components/Settings";
-import Profile from "./components/Profile";
+import Profile1 from "./components/Profile1";
+import Profile2 from "./components/Profile2";
 import AdminDashboard from "./components/AdminDashboard";
 import Index from './components/Index';
 
@@ -190,8 +191,13 @@ class App extends React.Component {
             />
             <Route
               exact
-              path="/Profile"
-              render={() => <Profile appState={this.state} />}
+              path="/Profile/1"
+              render={() => <Profile1 appState={this.state} />}
+            />
+            <Route
+              exact
+              path="/Profile/2"
+              render={() => <Profile2 appState={this.state} />}
             />
             <Route
               exact
