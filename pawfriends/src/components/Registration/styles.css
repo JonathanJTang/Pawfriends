@@ -1,1 +1,8 @@
-/* Styles for the Registration React component */
+.login label {
+    text-align: left;
+    letter-spacing: 0.2em;
+}
+
+.btn-log {
+    left: 30px !important;
+}

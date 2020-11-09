@@ -42,3 +42,7 @@ ul {
 ul li {
   list-style: none;
 }
+
+select {
+  text-align-last: center;
+}

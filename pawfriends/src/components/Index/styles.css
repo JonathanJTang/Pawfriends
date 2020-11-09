@@ -33,7 +33,8 @@
 .login form::after {
   content: url('./pup.png');
   position: absolute;
-  top: 380px;
+  /* top: 380px; */
+  bottom: -120px;
   right: -100px;
 }
 
@@ -58,7 +59,7 @@
   margin-bottom: 15px;
 }
 
-.login input {
+.login input, .login select {
   margin-bottom: 15px;
   padding: 10px 0px 10px 0px;
   width: 100%;
@@ -67,7 +68,7 @@
   transition: .2s ease;
 }
 
-.login input:focus {
+.login input:focus, .login select:focus {
   border-color: #bde0e5;
   outline: none;
 }
