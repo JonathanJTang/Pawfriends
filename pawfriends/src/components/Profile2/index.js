@@ -91,6 +91,7 @@ class Profile extends React.Component {
     return (
       <div className='main'>
         <div className='profile'>
+          <button>Remove friend</button>
           <div className='profile-nav'>
             <button name='info' onClick={this.show}>Info</button>
             <button name='pets' onClick={this.show}>Pets</button>
