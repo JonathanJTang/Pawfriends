@@ -1,14 +1,12 @@
 import React from 'react';
 import './styles.css';
 
-import NavBar from "./../NavBar";
-
-import avatar from '../Profile/avatar.jpg';
+import avatar from '../../images/user1.png';
 
 class ProfileSettings extends React.Component {
   constructor() {
     super();
-    this.state = { name: 'John Smith', gender: '1', location: 'Toronto, Ontario', birthday: '1998-07-22', cat: false, dog: true };
+    this.state = { name: 'John Smith', gender: '1', location: 'Toronto, Canada', birthday: '1998-07-22', cat: false, dog: true };
   }
 
   setCat = e => {
@@ -23,42 +21,40 @@ class ProfileSettings extends React.Component {
 
   render() {
     return (
-      <div className='set-form'>
-        <form>
-          <label>
-            <p></p>
-            <img src={avatar} />
-          </label>
-          <label>
-            <p>Name</p>
-            <input type='text' defaultValue={this.state.name} />
-          </label>
-          <label>
-            <p>Gender</p>
-            <select defaultValue={this.state.gender}>
-              <option value='1'>Male</option>
-              <option value='2'>Female</option>
-              <option value='3'>Secret! :)</option>
-            </select>
-          </label>
-          <label>
-            <p>Location</p>
-            <input type='text' defaultValue={this.state.location} />
-          </label>
-          <label>
-            <p>Birthday</p>
-            <input type='date' defaultValue={this.state.birthday} />
-          </label>
-          <label>
-            <p>Cats or Dogs? (or both!)</p>
-            <div>
-              <button onClick={this.setCat} className={this.state.cat ? 'btn-cat set-toggle' : 'btn-cat'}></button>
-              <button onClick={this.setDog} className={this.state.dog ? 'btn-dog set-toggle' : 'btn-dog'}></button>
-            </div>
-          </label>
-          <input type='submit' value='Save Changes' />
-        </form>
-      </div>
+      <form className='set-form'>
+        <label>
+          <p></p>
+          <img src={avatar} />
+        </label>
+        <label>
+          <p>Name</p>
+          <input type='text' defaultValue={this.state.name} />
+        </label>
+        <label>
+          <p>Gender</p>
+          <select defaultValue={this.state.gender}>
+            <option value='1'>Male</option>
+            <option value='2'>Female</option>
+            <option value='3'>Secret! :)</option>
+          </select>
+        </label>
+        <label>
+          <p>Location</p>
+          <input type='text' defaultValue={this.state.location} />
+        </label>
+        <label>
+          <p>Birthday</p>
+          <input type='date' defaultValue={this.state.birthday} />
+        </label>
+        <label>
+          <p>Cats or Dogs? (or both!)</p>
+          <div>
+            <button onClick={this.setCat} className={this.state.cat ? 'btn-cat set-toggle' : 'btn-cat'}></button>
+            <button onClick={this.setDog} className={this.state.dog ? 'btn-dog set-toggle' : 'btn-dog'}></button>
+          </div>
+        </label>
+        <input type='submit' value='Save Changes' />
+      </form>
     );
   }
 }
@@ -71,19 +67,17 @@ class AccountSettings extends React.Component {
 
   render() {
     return (
-      <div className='set-form'>
-        <form>
-          <label>
-            <p>Username</p>
-            <input type='text' value={this.state.username} disabled />
-          </label>
-          <label>
-            <p>Password</p>
-            <input type='password' defaultValue={this.state.pass} />
-          </label>
-          <input type='submit' value='Save Changes' />
-        </form>
-      </div>
+      <form className='set-form'>
+        <label>
+          <p>Username</p>
+          <input type='text' value={this.state.username} disabled />
+        </label>
+        <label>
+          <p>Password</p>
+          <input type='password' defaultValue={this.state.pass} />
+        </label>
+        <input type='submit' value='Save Changes' />
+      </form>
     );
   }
 }
@@ -96,15 +90,13 @@ class SiteSettings extends React.Component {
 
   render() {
     return (
-      <div className='set-form'>
-        <form>
-          <label>
-            <p>Dark mode</p>
-            <input type='checkbox' defaultChecked={this.state.darkmode} />
-          </label>
-          <input type='submit' value='Save Changes' />
-        </form>
-      </div>
+      <form className='set-form'>
+        <label>
+          <p>Dark mode</p>
+          <input type='checkbox' defaultChecked={this.state.darkmode} />
+        </label>
+        <input type='submit' value='Save Changes' />
+      </form>
     );
   }
 }
@@ -139,19 +131,13 @@ class Settings extends React.Component {
     }
 
     return (
-      <div>
-        <NavBar />
-        <h1>Settings</h1>
-        <div className='set'>
-          <div className='set-nav'>
-            <ul>
-              <li onClick={this.setProfile} className={this.state.setting == 1 ? 'set-toggle' : ''}>User Profile</li>
-              <li onClick={this.setAccount} className={this.state.setting == 2 ? 'set-toggle' : ''}>Account</li>
-              <li onClick={this.setSite} className={this.state.setting == 3 ? 'set-toggle' : ''}>Site Settings</li>
-            </ul>
-          </div>
-          {form}
-        </div>
+      <div className='set'>
+        <ul className='set-nav'>
+          <li onClick={this.setProfile} className={this.state.setting == 1 ? 'set-toggle' : ''}>User Profile</li>
+          <li onClick={this.setAccount} className={this.state.setting == 2 ? 'set-toggle' : ''}>Account</li>
+          <li onClick={this.setSite} className={this.state.setting == 3 ? 'set-toggle' : ''}>Site Settings</li>
+        </ul>
+        {form}
       </div>
     );
   }

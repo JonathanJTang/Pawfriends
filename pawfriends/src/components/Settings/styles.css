@@ -8,18 +8,19 @@
     flex: 0.3;
     margin-left: 50px;
     height: 180px;
-    border-radius: 0.2em;
+    border-radius: 2.25em;
     background-color: white;
+    overflow: hidden;
 }
 
-.set-nav ul li {
+.set-nav li {
     padding: 20px;
     border-bottom: 1px solid #f3f2f2;
     transition: 0.2s ease;
     cursor: pointer;
 }
 
-.set-nav ul li:hover, .set-toggle {
+.set-nav li:hover, .set-toggle {
     background-color: #fafafa;
     opacity: 1 !important;
 }
@@ -30,7 +31,7 @@
     flex-direction: column;
     margin: 0px 50px 0px 50px;
     padding: 50px 50px 30px 50px;
-    border-radius: 0.2em;
+    border-radius: 2.25em;
     background-color: white;
 }
 
@@ -63,37 +64,18 @@
     flex: 1;
     padding: 10px 0px 10px 0px;
     width: 100%;
-    border: 1px solid #f3f2f2;
-    border-radius: 0.2em;
-    transition: .2s ease;
-}
-
-.set-form input:focus, .set-form select:focus {
-    border-color: #bde0e5;
-    outline: none;
 }
 
 .set-form input[type=submit] {
     margin-top: 20px;
-    letter-spacing: 0.2em;
-    color: white;
-    background-color: #bde0e5;
-    cursor: pointer;
-}
-
-.set-form input[type=submit]:hover {
-    background-color: #c1bde5;
 }
 
 .set-form button {
     display: inline-block;
     margin: 0px 20px 0px 20px;
     border: none;
-    outline: none;
     background-color: transparent;
     opacity: 0.5;
-    transition: .2s ease;
-    cursor: pointer;
 }
 
 .set-form button:hover {

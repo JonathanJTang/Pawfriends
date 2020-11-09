@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital@0;1&display=swap');
 body {
-  background-image: url('./images/profile-bg.png');
+  background-image: url('./images/bg.png');
   background-repeat: repeat;
   overflow-y: scroll;
 }
@@ -30,8 +30,37 @@ a {
   color: black;
 }
 
-input {
+input, select {
+  border: 1px solid #f3f2f2;
+  border-radius: 0.2em;
   text-align: center;
+  transition: .2s ease;
+}
+
+input[type=submit] {
+  letter-spacing: 0.2em;
+  color: white;
+  background-color: #bde0e5;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #c1bde5;
+}
+
+input:focus, select:focus {
+  border-color: #bde0e5;
+  outline: none;
+}
+
+select {
+  text-align-last: center;
+}
+
+button {
+  outline: none;
+  transition: .2s ease;
+  cursor: pointer;
 }
 
 ul {
@@ -41,8 +70,4 @@ ul {
 
 ul li {
   list-style: none;
-}
-
-select {
-  text-align-last: center;
 }
