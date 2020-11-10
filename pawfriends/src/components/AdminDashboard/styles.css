@@ -1,34 +1,32 @@
 /* Styles for the AdminDashboard React component */
 
-.adminNavbar {
-  height: 35px;
-  background-color: gray;
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.logo {
-  margin-left: 10px;
-  float: left;
-  padding-top: 4px;
-  transition: opacity .5s ease;
+.stats button {
+  margin: 2px;
+  padding: 10px 20px 10px 25px;
+  width: 120px;
+  border: 1px solid #bde0e5;
+  border-radius: 2em;
+  background-color: white;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
 }
 
-.logo:hover {
-  opacity: 50%;
-}
-
-.logout {
-  margin-right: 10px;
-  float: right;
-  padding-top: 4px;
+.stats button:hover {
+  border-color: #c1bde5;
 }
 
 .statsTableContainer {
-  margin-top: 50px;
-  margin-left: 50px;
-  margin-right: auto;
-  background-color: white;
-  border-radius: 5%;
+  margin: auto;
   width: 400px;
+  background-color: white;
+  border-radius: 2.25em;
 }
 
 .statsTable {
@@ -52,6 +50,30 @@
 .statsTableRightCell {
   text-align: left;
   padding-bottom: 10px;
+}
+
+.site-users {
+  position: relative;
+  display: flex;
+  margin: auto;
+  background-color: white;
+  padding: 20px;
+  width: 500px;
+  border-radius: 2.25em;
+}
+
+.site-users div {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  gap: 15px;
+}
+
+.site-users button:first-child {
+  position: absolute;
+  right: 0;
+  bottom: -70px;
+  width: 150px;
 }
 
 /* .statsTableLeftCell:last-child {

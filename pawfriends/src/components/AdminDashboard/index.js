@@ -1,17 +1,15 @@
 import React from 'react';
 import NavBarAdmin from '../NavBarAdmin';
+import { Link } from "react-router-dom";
 import "./styles.css";
-
-import logo from "./../../images/logo.png";
-import logout from "./../../images/logout.png";
 
 /* Admin dashboard component */
 class AdminDashboard extends React.Component {
   render() {
-    const {appState} = this.props;
+    const { appState } = this.props;
 
     return (
-      <div className="main">
+      <div className="stats">
         <NavBarAdmin />
         <div className="statsTableContainer">
           <h2>Site Statistics</h2>
@@ -36,6 +34,32 @@ class AdminDashboard extends React.Component {
                 {appState.posts.length}</td>
             </tr>
           </table>
+        </div>
+        <h2>Manage regular users</h2>
+        <div className="site-users">
+          <Link to="/">
+            <button>Exit dashboard</button>
+          </Link>
+          <div>
+            <p>User Id</p>
+            <p>1</p>
+            <p>2</p>
+          </div>
+          <div>
+            <p>Username</p>
+            <p>user</p>
+            <p>user2</p>
+          </div>
+          <div>
+            <p>Actions</p>
+            <button>User info</button>
+            <button>User info</button>
+          </div>
+          <div>
+            <p>..</p>
+            <button>Delete user</button>
+            <button>Delete user</button>
+          </div>
         </div>
       </div>
     );
