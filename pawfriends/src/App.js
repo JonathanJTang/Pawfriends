@@ -50,7 +50,7 @@ class App extends React.Component {
       }
       this.setState({ curUserId: thisUser.id });
     } else {
-      console.log("doesnt exists");
+      console.log("doesn't exist");
       this.setState({ curUserId: -1 });
     }
   };
@@ -74,72 +74,71 @@ class App extends React.Component {
     this.setState({
       posts: [
         {
-          postName: "Me and my Dog",
+          postName: "Having a great day",
           id: 1,
-          username: "user",
           userId: 1,
           datetime: "14:26 May 30, 2020",
-          link:
-            "https://i.pinimg.com/564x/9b/e8/ba/9be8ba888cb66d6bb2f879b4ea31261e.jpg",
-          content: "This is my Dog\nLeave a comment!",
+          content: "Hope everyone's doing well!",
         },
         {
-          postName: "My cat is so cute!",
+          postName: "I love my cat",
           id: 2,
-          username: "user2",
-          userId: 4,
+          userId: 2,
           datetime: "14:26 July 30, 2020",
-          link:
-            "https://media1.fdncms.com/inlander/imager/u/original/6575897/screen_shot_2017-11-10_at_11.24.41_am.png",
-          content: "This is my Dog\nLeave a comment!",
+          content: "Her expression is so my mood right now",
         },
       ],
-      careTakers: [
+      services: [
         {
-          userId: 2,
-          yearsOfExp: 2,
-          pet: "Dog",
-          careTakerName: "John Smith",
+          userId: 1,
+          desc: "Looking for someone to dogsit? I am the right one!"
         },
         {
           userId: 2,
-          yearsOfExp: 2,
-          pet: "Cat",
-          careTakerName: "John Smith",
+          desc: "Tofu, a 2 year old shiba, is looking for his girlfriend!"
+        },
+        {
+          userId: 1,
+          desc: "I can take care of your pet any time next week!"
         },
       ],
       tradeToys: [
         {
           toyId: 1,
-          ownerId: 3,
-          toyImageLink:
-            "https://ae01.alicdn.com/kf/Hf5ef8a4f9d7a49e6b7fd0df59eb967a92.jpg",
+          userId: 2,
+          desc: "Selling an almost brand new duck plush!",
+        },
+        {
+          toyId: 2,
+          userId: 1,
+          desc: "A rarely used, almost brand new squeaky ball. Would be great to meet up anywhere near Yonge and Eg",
+        },
+        {
+          toyId: 3,
+          userId: 2,
+          desc: "Squicky balls in bundle",
         },
       ],
       users: [
+        {
+          username: "admin",
+          type: "admin",
+          id: 0,
+          password: "admin",
+        },
         {
           username: "user",
           type: "user",
           id: 1,
           password: "user",
-        },
-        {
-          username: "admin",
-          type: "admin",
-          id: 2,
-          password: "admin",
-        },
-        {
-          username: "Ryan",
-          type: "admin",
-          id: 3,
-          password: "123",
+          name: "John Smith",
         },
         {
           username: "user2",
           type: "user",
-          id: 4,
+          id: 2,
           password: "user2",
+          name: "Jane Doe",
         },
       ],
     });

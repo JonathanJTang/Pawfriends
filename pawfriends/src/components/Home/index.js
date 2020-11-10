@@ -1,61 +1,103 @@
 import React from "react";
 import "./styles.css";
-import NavBar from "../NavBar";
 import { Link } from "react-router-dom";
+
+import av1 from "../../images/user1.png";
+import av2 from "../../images/user2.png";
+import img1 from "../../images/post1.jpg";
+import img2 from "../../images/post2.jpg";
+import trade1 from "../Trade/duck.png";
+import trade2 from "../Trade/squeaky.png";
+import trade3 from "../Trade/bundle.png";
 
 /* Home component */
 class Home extends React.Component {
   render() {
-    let appState = this.props.appState;
-    let users = this.props.appState.users;
-    const allPosts = appState.posts.map((post, index) => (
-      <div key={index}>
-        <h3>{post.postName}</h3>
-        <p>
-          Posted on {post.datetime} by {post.username}
-        </p>
-        <img className="postPhoto" src={post.link}></img>
-      </div>
-    ));
-    const allCaretakers = appState.careTakers.map((caretaker, index) => (
-      <div key={index}>
-        <h3>{caretaker.careTakerName}</h3>
-        <p>
-          will take care of {caretaker.pet} and has {caretaker.yearsOfExp} of
-          experience
-        </p>
-      </div>
-    ));
-    const allTradeToys = appState.tradeToys.map((tradeToy, index) => (
-      <div key={index}>
-        <h3>{users.find((user) => user.id == tradeToy.ownerId).name}</h3>
-        <p>Toy {tradeToy.toyId}</p>
-        <img className="postPhoto" src={tradeToy.toyImageLink}></img>
-      </div>
-    ));
+    const img = {
+      avatars: {
+        1: av1,
+        2: av2,
+      },
+      posts: {
+        1: img1,
+        2: img2,
+      },
+      trades: {
+        1: trade1,
+        2: trade2,
+        3: trade3,
+      },
+    }
+
+    const appState = this.props.appState;
+    const users = this.props.appState.users;
+
+    let allPosts, allServices, allTradeToys;
+
+    if (appState.posts) {
+      allPosts = appState.posts.map((post, index) => (
+        <div key={index} className="post">
+          <div className="header">
+            <Link to={"/profile/" + post.userId}>
+              <img src={img.avatars[post.userId]} />
+            </Link>
+            <div>
+              <Link to={"/profile/" + post.userId}>
+                <p>@{users[post.userId].name}</p>
+              </Link>
+              <h3>{post.postName}</h3>
+              <p>Posted {post.datetime}</p>
+            </div>
+          </div>
+          <img src={img.posts[post.userId]}></img>
+        </div>
+      ));
+    }
+
+    if (appState.services) {
+      allServices = appState.services.map((service, index) => (
+        <div key={index} className="service">
+          <h3>{service.desc}</h3>
+          <Link to={"/profile/" + service.userId}>
+            <p>@{users[service.userId].name}</p>
+          </Link>
+        </div>
+      ));
+    }
+
+    if (appState.tradeToys) {
+      allTradeToys = appState.tradeToys.map((tradeToy, index) => (
+        <div key={index} className="trade">
+          <img className="postPhoto" src={img.trades[tradeToy.toyId]}></img>
+          <div>
+            <h3>{tradeToy.desc}</h3>
+            <Link to={"/profile/" + tradeToy.userId}>
+              <p>@{users.find((user) => user.id == tradeToy.userId).name}</p>
+            </Link>
+          </div>
+        </div>
+      ));
+    }
 
     return (
-      <div>
-        <NavBar />
-        <div className="row">
-          <div className="column">
-            <Link to={"/caretakers"}>
-              <h1>Caretakers</h1>
-            </Link>
-            {allCaretakers}
-          </div>
-          <div className="column">
-            <Link to={"/caretakers"}>
-              <h1>All Posts</h1>
-            </Link>
-            {allPosts}
-          </div>
-          <div className="column">
-            <Link to={"/caretakers"}>
-              <h1>Trade Toys</h1>
-            </Link>
-            {allTradeToys}
-          </div>
+      <div className="home">
+        <div>
+          <Link to={"/caretakers"}>
+            <h1>Services</h1>
+          </Link>
+          {allServices}
+        </div>
+        <div>
+          <Link to={"/posts"}>
+            <h1>New posts</h1>
+          </Link>
+          {allPosts}
+        </div>
+        <div>
+          <Link to={"/trade"}>
+            <h1>Trade pet supplies</h1>
+          </Link>
+          {allTradeToys}
         </div>
       </div>
     );
