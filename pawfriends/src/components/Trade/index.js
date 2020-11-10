@@ -1,65 +1,60 @@
-import React from 'react';
-import "./styles.css";
+import React from "react";
 
-import squeaky from './squeaky.png';
-import bundle from './bundle.png';
-import duck from './duck.png';
-import heart from './heart.png';
-import avatar from './avatar.jpg';
-import shiba from './shiba.jpg';
-import ttungttang from './ttungttang.jpg';
-import NavBar from "./../NavBar";
+import { Link } from "react-router-dom";
 
+import av1 from "../../images/user1.png";
+import av2 from "../../images/user2.png";
+import img1 from "../Trade/duck.png";
+import img2 from "../Trade/squeaky.png";
+import img3 from "../Trade/bundle.png";
 
-/* Trade component */
+class Item extends React.Component {
+  render() {
+    const { trade, user } = this.props;
+
+    const img = {
+      avatars: {
+        1: av1,
+        2: av2,
+      },
+      items: {
+        1: img1,
+        2: img2,
+        3: img3,
+      },
+    }
+
+    return (
+      <div className="trade">
+        <img alt="post" src={img.items[trade.toyId]} />
+        <div className="header">
+          <Link to={"/profile/" + user.id}>
+            <img src={img.avatars[user.id]} />
+          </Link>
+          <div className="postText">
+            <Link to={"/profile/" + user.id}>
+              <p>@{user.name}</p>
+            </Link>
+            {trade.desc}
+          </div>
+        </div>
+        <button>Trade with user</button>
+      </div >
+    );
+  }
+}
+
+/* Posts component */
 class Trade extends React.Component {
   render() {
     return (
-      <div>
-        <NavBar />
-         <div><h1> Trade toys with pawfriends! </h1></div> 
-          <div className = 'tradeposts'>
-
-             <div className = 'tradepost'>
-            
-            <h2>
-              Selling an almost brand new duck plush!
-              <img src = {avatar} alt = 'avatar' className = 'poster' />
-              <img src = {heart} alt = 'firstheart' className = 'like' /> 
-            </h2>
-            <div>
-            <p>5 dollars only! A gently used, almost brand new duck plush. 
-            Location is Toronto, open to meet at any subway stations</p>
-            <img src = {duck} alt = 'duck' className = 'postpic' />
-            </div>
-          </div>
-
-          <div className = 'tradepost'>
-            <h2>
-              A large squeaky ball
-              <img src = {shiba} alt = 'shiba' className = 'poster' />
-              <img src = {heart} className = 'like' />
-            </h2>
-            <div>
-            <p>10 only! A rarely used, almost brand new squeaky ball.
-            Would be great to meet up anywhere near Yonge and Eg</p>
-            <img src = {squeaky} className = 'postpic' />
-            </div>
-          </div>
-
-          <div className = 'tradepost'>
-            <h2>
-              squicky balls in bundle
-              <img src = {ttungttang} alt = 'ttungttang' className = 'poster' />
-              <img src = {heart} className = 'like' />
-            </h2>
-            <div>
-            <p>my cat got a new toy, so I am trying to sell these balls! $5 is a steal for a bundle of cute squeaky balls</p>
-          <img src = {bundle} className = 'postpic' />
-          </div>
-          </div>
-
-        </div>	
+      <div className="posts">
+        <button>Create trade</button>
+        <div className="postsList">
+          {this.props.appState.tradeToys.map((trade, index) => (
+            <Item key={index} trade={trade} user={this.props.appState.users[trade.userId]} />
+          ))}
+        </div>
       </div>
     );
   }
