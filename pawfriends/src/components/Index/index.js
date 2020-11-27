@@ -30,6 +30,7 @@ class Index extends React.Component {
     );
     if (user !== undefined && this.state.input["pass"] === user.password) {
       // Username and password matches one of the registered users
+      this.props.appState.curUserId = user.id;
       if (user.type === "user") {
         return 1;
       }

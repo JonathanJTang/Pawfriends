@@ -79,6 +79,8 @@ class App extends React.Component {
           userId: 1,
           datetime: "14:26 May 30, 2020",
           content: "Hope everyone's doing well!",
+          image: 1,
+          comments: [],
         },
         {
           postName: "I love my cat",
@@ -86,6 +88,8 @@ class App extends React.Component {
           userId: 2,
           datetime: "14:26 July 30, 2020",
           content: "Her expression is so my mood right now",
+          image: 2,
+          comments: [],
         },
       ],
       services: [
