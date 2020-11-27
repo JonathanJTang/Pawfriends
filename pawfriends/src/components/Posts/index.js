@@ -2,63 +2,113 @@ import React from "react";
 import "./styles.css";
 
 // import { uid } from "react-uid";
-import { Link } from "react-router-dom";
-import NavBar from "./../NavBar";
-import LikeButton from "../LikeButton";
+import NavBar from "../NavBar";
+import Post from "../Post";
 
-import av1 from "../../images/user1.png";
-import av2 from "../../images/user2.png";
-import img1 from "../../images/post1.jpg";
-import img2 from "../../images/post2.jpg";
+class CreatePost extends React.Component {
+  resizeTextarea = (initialRows, event) => {
+    const textarea = event.target;
+    // Count rows by counting '\n' characters, but have at least initialRows
+    const num_rows = Math.max(
+      initialRows,
+      1 + (textarea.value.match(/\n/g) || []).length
+    );
+    textarea.rows = num_rows;
+  };
 
-class Post extends React.Component {
-  //add comment button
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const { appState } = this.props;
+    const titleText = e.currentTarget.children.namedItem("createPostTitle")
+      .value;
+    const bodyText = e.currentTarget.children.namedItem("createPostBody").value;
+    const prevPostLength = appState.posts.length;
+    appState.posts.unshift({
+      postName: titleText,
+      id: prevPostLength + 1,
+      userId: appState.curUserId,
+      datetime: new Date().toUTCString(),
+      content: bodyText,
+      comments: [],
+    });
+    this.props.parentStateUpdater(appState.posts);
+    this.props.createPostHandler();
+  };
+
   render() {
-    const { postData, user } = this.props;
-
-    const img = {
-      avatars: {
-        1: av1,
-        2: av2,
-      },
-      posts: {
-        1: img1,
-        2: img2,
-      },
-    }
-
     return (
-      <div className="post">
-        <div className="header">
-          <Link to={"/profile/" + user.id}>
-            <img src={img.avatars[user.id]} />
-          </Link>
-          <LikeButton />
-          <div>
-              <Link to={"/profile/" +user.id}>
-                <p>@{user.name}</p>
-              </Link>
-              <h3>{postData.postName}</h3>
-              <p>Posted {postData.datetime}</p>
-            </div>
-        </div>
-        <img alt="post" src={img.posts[postData.userId]} />
-        <div className="postText">{postData.content}</div>
-      </div>
+      <form className="createPost" onSubmit={this.handleSubmit}>
+        <input
+          className="createPostTitle createPostTextarea"
+          type="text"
+          name="createPostTitle"
+          placeholder="Post title:"
+          required
+        />
+        <textarea
+          className="createPostBody createPostTextarea"
+          type="text"
+          name="createPostBody"
+          placeholder="Write a message:"
+          onInput={this.resizeTextarea.bind(this, 2)}
+          required
+        />
+        <input
+          type="submit"
+          value="Create Post"
+          className="createPostSubmitButton"
+        />
+      </form>
     );
   }
 }
 
 /* Posts component */
 class Posts extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { showCreatePostBox: false, posts: this.props.appState.posts };
+  }
+
+  componentDidMount() {
+    /* Fetch list of posts from server (the list is currently in appState) */
+  }
+
+  newPostHandler = () => {
+    this.setState({ showCreatePostBox: true });
+  };
+
+  createPostHandler = () => {
+    this.setState({ showCreatePostBox: false });
+  };
+
+  updateState = (updatedPosts) => {
+    this.setState({ posts: updatedPosts });
+    console.log(updatedPosts);
+  };
+
   render() {
+    console.log(this.state.posts);
     return (
       <div className="posts">
         <NavBar />
-        <button>Create post</button>
+        {this.state.showCreatePostBox ? (
+          <CreatePost
+            appState={this.props.appState}
+            parentStateUpdater={this.updateState}
+            createPostHandler={this.createPostHandler}
+          />
+        ) : (
+          <button onClick={this.newPostHandler}>Create post</button>
+        )}
         <div className="postsList">
-          {this.props.appState.posts.map((post, index) => (
-            <Post key={index} postData={post} user={this.props.appState.users[post.userId]} />
+          {this.state.posts.map((post, index) => (
+            <Post
+              key={post.id}
+              postData={post}
+              user={this.props.appState.users[post.userId]}
+              appState={this.props.appState}
+            />
           ))}
         </div>
       </div>
