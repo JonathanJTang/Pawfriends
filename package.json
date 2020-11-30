@@ -1,0 +1,25 @@
+{
+    "name": "pawfriends_server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "setup": "npm install && cd pawfriends && npm install && cd ..",
+        "build-run": "cd pawfriends && npm run build && cd .. && node server.js",
+        "start": "node server.js",
+        "heroku-postbuild": "cd pawfriends && npm install && npm run build",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Jonathan Tang, Ryan Chang, Sophia Ryoo, Sophie Shu",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "express-session": "^1.17.0",
+        "mongodb": "^3.5.9",
+        "mongoose": "^5.9.26",
+        "validator": "^13.1.1"
+    }
+}
