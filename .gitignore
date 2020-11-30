@@ -28,7 +28,10 @@ node_modules/
 .env
 .env.test
 
+# Mongo database folder
+mongo-data/
+
 # misc
 .DS_Store
-.vscode/*
+.vscode/
 .idea/*
