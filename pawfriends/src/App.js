@@ -11,8 +11,7 @@ import Posts from "./components/Posts";
 import Trade from "./components/Trade";
 import Caretakers from "./components/Caretakers";
 import Settings from "./components/Settings";
-import Profile1 from "./components/Profile1";
-import Profile2 from "./components/Profile2";
+import Profile from "./components/Profile";
 import AdminDashboard from "./components/AdminDashboard";
 import Index from './components/Index';
 
@@ -27,7 +26,7 @@ class App extends React.Component {
       posts: [],
       careTakers: [],
       tradeToys: [],
-      curUserId: -1,
+      curUserId: 1,
     };
   }
 
@@ -125,24 +124,60 @@ class App extends React.Component {
       ],
       users: [
         {
-          username: "admin",
-          type: "admin",
           id: 0,
+          type: "admin",
+          username: "admin",
           password: "admin",
         },
         {
-          username: "user",
-          type: "user",
           id: 1,
+          type: "user",
+          username: "user",
           password: "user",
           name: "John Smith",
+          gender: "male",
+          status: 'Competitive coffee drinker',
+          birthday: "1998-07-22",
+          location: "Toronto, Canada",
+          favpet: "dog",
+          pets: [
+            {
+              name: "Mimi",
+              likes: "Naps, looking at birds",
+              dislikes: "Rain",
+            },
+            {
+              name: "Lupin",
+              likes: "Flowers, walks, rain",
+              dislikes: "Thunder",
+            },
+          ],
+          // stores the ids of this user's friends
+          friends: [
+            2,
+          ]
         },
         {
-          username: "user2",
-          type: "user",
           id: 2,
+          type: "user",
+          username: "user2",
           password: "user2",
           name: "Jane Doe",
+          gender: "female",
+          status: 'Staying comfy',
+          birthday: "1999-03-09",
+          location: "Ottawa, Canada",
+          favpet: "cat",
+          pets: [
+            {
+              name: "Cinnamon",
+              likes: "Treats, music",
+              dislikes: "Strangers",
+            },
+          ],
+          friends: [
+            1,
+          ]
         },
       ],
     });
@@ -194,13 +229,8 @@ class App extends React.Component {
             />
             <Route
               exact
-              path="/Profile/1"
-              render={() => <Profile1 appState={this.state} />}
-            />
-            <Route
-              exact
-              path="/Profile/2"
-              render={() => <Profile2 appState={this.state} />}
+              path="/profile/:id"
+              render={(props) => <Profile {...props} appState={this.state} />}
             />
             <Route
               exact
