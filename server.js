@@ -1,11 +1,12 @@
 /** Server for Pawfriends. Portions of code modified from the CSC309 course
- * react-express-authentication repository. */
+ * react-express-authentication and cloudinary-mongoose-react repositories. */
 "use strict";
 
 const express = require("express");
 // starting the express server
 const app = express();
 const path = require("path");
+const jsonApiRouter = express.Router();
 
 // mongoose and mongo connection
 const { mongoose } = require("./db/mongoose");
@@ -13,6 +14,7 @@ mongoose.set("useFindAndModify", false); // for some deprecation issues
 
 // import the mongoose models
 const { User } = require("./models/user");
+const { Post } = require("./models/post");
 
 // to validate object IDs
 // const { ObjectID } = require("mongodb");
@@ -21,22 +23,26 @@ const { User } = require("./models/user");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
+// multipart middleware: allows you to access uploaded file from req.file
+const multipart = require("connect-multiparty");
+const multipartMiddleware = multipart();
+
+// cloudinary: configure using credentials found on your Cloudinary Dashboard
+const cloudinary = require("cloudinary");
+cloudinary.config({
+  cloud_name: "dypmf5kee",
+  api_key: "666517587772385",
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 // express-session for managing user sessions
 const session = require("express-session");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // CORS setting (for development)
 const cors = require("cors");
+const { rejects } = require("assert");
 app.use(cors());
-
-function isMongoError(error) {
-  // checks for first error returned by promise rejection if Mongo database suddently disconnects
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    error.name === "MongoNetworkError"
-  );
-}
 
 /* Middleware */
 // Middleware for mongo connection error for routes that need it
@@ -84,7 +90,109 @@ app.use(
   })
 );
 
-/* API routes */
+/* API routes
+ * Note: these are defined on the jsonApiRouter express router, which is loaded
+ * on the "/api" url prefix already */
+const isMongoError = (error) => {
+  // checks for first error returned by promise rejection if Mongo database suddently disconnects
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    error.name === "MongoNetworkError"
+  );
+};
+
+// Send the appropriate error in the response if something fails in a route body
+const handleError = (error, res) => {
+  if (isMongoError(error)) {
+    res.status(500).send("Internal server error");
+  } else {
+    console.log(error);
+    res.status(400).send("Bad Request");
+  }
+};
+jsonApiRouter.use(mongoChecker);
+// jsonApiRouter.use(authenticate);  // TODO: enable when authenticate is done
+
+// Image helper functions
+const uploadImage = (imagePath) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.upload(
+      imagePath, // req.files contains uploaded files
+      function (error, result) {
+        console.log(error, result);
+        if (error) {
+          reject(null); // TODO: finish & test
+        } else {
+          resolve({
+            image_id: result.public_id,
+            image_url: result.url,
+          });
+        }
+      }
+    );
+  });
+};
+
+// Create a new post
+jsonApiRouter.post(
+  "/users/:username/posts",
+  multipartMiddleware,
+  async (req, res) => {
+    const username = req.params.username;
+    try {
+      // Authentication passed, meaning user is valid
+      const user = await User.findOne({ username: username });
+
+      // Validate user input (title and content must be nonempty strings)
+      if (
+        typeof req.body.title !== "string" ||
+        typeof req.body.content !== "string" ||
+        req.body.title === "" ||
+        req.body.content === ""
+      ) {
+        res.status(400).send("Bad Request");
+        return;
+      }
+
+      const post = new Post({
+        owner: user._id,
+        postTime: new Date(), // use current server time
+        title: req.body.title,
+        content: req.body.content,
+        images: [], // TODO: implement image upload functionality
+        comments: [],
+      });
+      console.log(req.files);
+      if (req.files && req.files.image !== undefined) {
+        // Use uploader.upload API to upload image to cloudinary server.
+        console.log("imagePath: ", req.files.image.path);
+        const imageInfo = await uploadImage(req.files.image.path);
+        post.images.push(imageInfo);
+      }
+      const newPost = await post.save();
+      res.send(newPost); // TODO: needed?
+    } catch (error) {
+      // TODO: return 500 Internal server error if error was from uploadImage
+      handleError(error, res);
+    }
+  }
+);
+
+// get all posts from the current user
+jsonApiRouter.get("/users/:username/posts", async (req, res) => {
+  const username = req.params.username;
+  try {
+    // Authentication passed, meaning user is valid
+    const userPosts = await Post.find({ owner: username._id });
+    console.log(userPosts);
+    res.send(userPosts);
+  } catch (error) {
+    handleError(error, res);
+  }
+});
+
+app.use("/api", jsonApiRouter);
 
 /* Webpage routes */
 // These must be exact routes (not case-sensitive?)
