@@ -1,7 +1,9 @@
-# team48
+# team48 - Pawfriends
 
-## Library/Framework used: React, Node
-## Reference: steps for development environment setup
+<img src="https://i.imgur.com/Oi55XNV.png" alt="" width="90%"/>
+
+## Deployed webpage link: https://pawfriend.herokuapp.com/
+## Steps for local development environment setup
 0. Have `npm` installed
 1. Open a terminal shell and navigate to the root directory of this repo
 2. Run `npm run setup` to install all dependencies
@@ -9,8 +11,10 @@
 4. Run `npm run build-run` to build the React app and start the Node server (to run the React development server, navigate to the `pawfriends` subdirectory and run `npm run start`)
 5. Open the generated link in a browser (default local development link: http://localhost:5000/)
 
-## Features of Pawfriends
+# Features of Pawfriends
 The features of our web appliction includes creating posts for your pet, viewing the toys post from other people and creating a trade post, and viewing a list of people for matchmaking pets and pet daycare and making a post for daycare/matchmaking. The main page shows the aggregate of features for the website.
+
+#  User Journeys
 
 ## User Journey of Pawfriends - I. Main page
 0. After npm run start, you would be able to see a login page.
@@ -32,3 +36,13 @@ The features of our web appliction includes creating posts for your pet, viewing
 0. Enter `admin` for ID and `admin` for password.
 1. You will be able to see the general statistics of our website such as the number of regular users, admin users, and posts.
 2. You can manage regular site users by viewing their profile info or deleting a user's account.
+
+# Overview of the routes
+
+* `POST /users/:username/posts` : Creates a post for user with **username**
+* `GET /users/:username/posts` : Gets array of posts from the user with **username**
+* `POST /users/:username/posts` Delete the post with **postId** from user with **username**
+* `GET /services` Gets array of all services in the DB
+* `GET /trades` Gets array of all trades in the DB
+
+### Library/Framework used: React, Node, Express, Mongodb, Mongoose
