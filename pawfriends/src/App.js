@@ -94,15 +94,24 @@ class App extends React.Component {
       services: [
         {
           userId: 1,
-          desc: "Looking for someone to dogsit? I am the right one!"
+          email: "john.smith@gmail.com",
+          phone: "111-111-11111",
+          desc: "Looking for someone to dogsit? I am the right one!",
+          tags: ['dog', 'caretaking'],
         },
         {
           userId: 2,
-          desc: "Tofu, a 2 year old shiba, is looking for his girlfriend!"
+          email: "jane.doe@gmail.com",
+          phone: "222-222-2222",
+          desc: "Tofu, a 2 year old shiba, is looking for his girlfriend!",
+          tags: ['dog', 'dating'],
         },
         {
           userId: 1,
-          desc: "I can take care of your pet any time next week!"
+          email: "john.smith@gmail.com",
+          phone: "111-111-11111",
+          desc: "I can take care of your pet any time next week!",
+          tags: ['dog', 'cat', 'caretaking'],
         },
       ],
       tradeToys: [

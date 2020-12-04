@@ -18,14 +18,11 @@
 }
 
 .commentTextarea.editComment {
-  width: 75%;
   border-color: #bde0e5;
   outline: none;
 }
 
 .commentSubmitButton {
-  width: 24.5%;
-  margin: auto;
-  min-height: 30px;
+  flex: 0.1;
   font-family: "Karla", sans-serif;
 }
