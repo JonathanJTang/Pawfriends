@@ -15,9 +15,11 @@ mongoose.set("useFindAndModify", false); // for some deprecation issues
 // import the mongoose models
 const { User } = require("./models/user");
 const { Post } = require("./models/post");
+const { Service } = require("./models/service");
+const { Trade } = require("./models/trade");
 
 // to validate object IDs
-// const { ObjectID } = require("mongodb");
+const { ObjectID } = require("mongodb");
 
 // body-parser: middleware for parsing HTTP JSON body into a usable object
 const bodyParser = require("body-parser");
@@ -41,7 +43,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // CORS setting (for development)
 const cors = require("cors");
-const { rejects } = require("assert");
 app.use(cors());
 
 /* Middleware */
@@ -187,6 +188,69 @@ jsonApiRouter.get("/users/:username/posts", async (req, res) => {
     const userPosts = await Post.find({ owner: username._id });
     console.log(userPosts);
     res.send(userPosts);
+  } catch (error) {
+    handleError(error, res);
+  }
+});
+
+const deleteImage = (imageInfo) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(imageInfo.image_id, function (error, result) {
+      console.log(error, result);
+      if (error) {
+        reject(null); // TODO: finish & test
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+// Delete a post
+jsonApiRouter.delete("/users/:username/posts/:postId", async (req, res) => {
+  const username = req.params.username;
+  const postId = req.params.postId;
+  try {
+    if (!ObjectID.isValid(postId)) {
+      res.status(404).send();
+      return;
+    }
+    // Authentication passed, meaning user is valid
+    // const user = await User.findOne({ username: username });
+
+    const post = await Post.findByIdAndDelete(postId);
+    if (post === null) {
+      res.status(404).send();
+      return;
+    }
+    post.images.forEach((imageInfo) => {
+      // Use uploader.destroy API to delete image from cloudinary server.
+      deleteImage(imageInfo);
+    });
+    res.send();
+  } catch (error) {
+    // TODO: return 500 Internal server error if error was from deleteImage?
+    handleError(error, res);
+  }
+});
+
+// get all service postings
+jsonApiRouter.get("/services", async (req, res) => {
+  try {
+    // could use .limit to limit the number of items to return
+    const allServices = await Service.find().sort({ postTime: "ascending" });
+    res.send(allServices);
+  } catch (error) {
+    handleError(error, res);
+  }
+});
+
+// get all trade postings
+jsonApiRouter.get("/trades", async (req, res) => {
+  try {
+    // could use .limit to limit the number of items to return
+    const allTrades = await Trade.find().sort({ postTime: "ascending" });
+    res.send(allTrades);
   } catch (error) {
     handleError(error, res);
   }
