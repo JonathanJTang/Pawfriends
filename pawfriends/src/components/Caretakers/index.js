@@ -11,6 +11,8 @@ class Service extends React.Component {
     }
   }
 
+
+
   handleClick = () => {
     this.state.toggle ? this.setState({ toggle: false }) : this.setState({ toggle: true });
   }
@@ -22,13 +24,14 @@ class Service extends React.Component {
 
   render() {
     const { service, user } = this.props;
-
+ 
     return (
       <div className="trade">
         <div className="header">
           <Link to={`/profile/${user.id}`}>
             <img src={require(`../../images/user${user.id}.png`).default} />
           </Link>
+
           <div className="postText">
             <Link to={`/profile/${user.id}`}>
               <p>@{user.name}</p>
@@ -52,19 +55,28 @@ class Service extends React.Component {
             <button onClick={this.handleClick}>Close</button>
           </div>
           :
-          <button onClick={this.handleClick}>Contact user</button>
+          <div>
+          <view>
+          <view style = {{flex: 1}}>
+          <button onClick={this.handleClick}>Contact user</button></view>
+          <view style = {{flex: 1, marginLeft: '20px'}}>
+          <button onClick = {this.handleClick}>Delete post</button></view>
+          </view>
+          </div>
         }
       </div>
     );
   }
 }
 
+
+
 /* Services component */
 class Caretakers extends React.Component {
   constructor(props) {
     super(props);
     const curUserId = this.props.appState.curUserId;
-
+    
     this.state = {
       toggle: false,
       filter: "all",
@@ -78,6 +90,7 @@ class Caretakers extends React.Component {
       }
     }
   }
+
 
   handleClick = () => {
     this.setState({ toggle: true });
@@ -124,6 +137,9 @@ class Caretakers extends React.Component {
     textarea.rows = num_rows;
   };
 
+
+
+
   render() {
     // replace with server call to get all services
     let filtered = this.props.appState.services;
@@ -140,6 +156,7 @@ class Caretakers extends React.Component {
 
     return (
       <div className="posts">
+      <p> Offer or receive services such as pet sitting and matchmaking!</p>
         {this.state.toggle ?
           <form className="createPost" onSubmit={this.handleSubmit}>
             <input name='email' className="createPostTextarea" placeholder="Email:" onChange={this.handleChange} />

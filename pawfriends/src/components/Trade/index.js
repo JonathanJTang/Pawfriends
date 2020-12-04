@@ -25,6 +25,7 @@ class Item extends React.Component {
     }
 
     return (
+
       <div className="trade">
         <img alt="post" src={img.items[trade.toyId]} />
         <div className="header">
@@ -38,7 +39,12 @@ class Item extends React.Component {
             {trade.desc}
           </div>
         </div>
-        <button>Trade with user</button>
+        <view>
+        <view style = {{flex: 1}}>
+        <button>Trade with user</button></view>
+        <view style = {{flex: 1,marginLeft: '20px'}}>
+        <button>Delete your trade</button></view>
+        </view>
       </div >
     );
   }
@@ -49,7 +55,9 @@ class Trade extends React.Component {
   render() {
     return (
       <div className="posts">
+      <p>Trade pet supplies!</p>
         <button>Create trade</button>
+
         <div className="postsList">
           {this.props.appState.tradeToys.map((trade, index) => (
             <Item key={index} trade={trade} user={this.props.appState.users[trade.userId]} />
