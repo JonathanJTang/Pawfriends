@@ -161,6 +161,7 @@ jsonApiRouter.post(
         postTime: new Date(), // use current server time
         title: req.body.title,
         content: req.body.content,
+        likes: 0,
         images: [], // TODO: implement image upload functionality
         comments: [],
       });
@@ -185,7 +186,10 @@ jsonApiRouter.get("/users/:username/posts", async (req, res) => {
   const username = req.params.username;
   try {
     // Authentication passed, meaning user is valid
-    const userPosts = await Post.find({ owner: username._id });
+    const user = await User.findOne({ username: username });
+    const userPosts = await Post.find({ owner: user._id }).sort({
+      postTime: "descending",
+    });
     console.log(userPosts);
     res.send(userPosts);
   } catch (error) {
@@ -238,7 +242,7 @@ jsonApiRouter.delete("/users/:username/posts/:postId", async (req, res) => {
 jsonApiRouter.get("/services", async (req, res) => {
   try {
     // could use .limit to limit the number of items to return
-    const allServices = await Service.find().sort({ postTime: "ascending" });
+    const allServices = await Service.find().sort({ postTime: "descending" });
     res.send(allServices);
   } catch (error) {
     handleError(error, res);
@@ -249,7 +253,7 @@ jsonApiRouter.get("/services", async (req, res) => {
 jsonApiRouter.get("/trades", async (req, res) => {
   try {
     // could use .limit to limit the number of items to return
-    const allTrades = await Trade.find().sort({ postTime: "ascending" });
+    const allTrades = await Trade.find().sort({ postTime: "descending" });
     res.send(allTrades);
   } catch (error) {
     handleError(error, res);

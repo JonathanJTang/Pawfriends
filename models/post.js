@@ -15,6 +15,15 @@ const PostSchema = new mongoose.Schema({
   postTime: { type: Date, required: true },
   title: { type: String, required: true },
   content: { type: String, required: true },
+  likes: {
+    type: Number,
+    required: true,
+    min: 0,
+    validate: {
+      validator: Number.isInteger,
+      message: "{VALUE} is not an integer value",
+    },
+  },
   images: [ImageSchema],
   comments: [CommentSchema],
 });
