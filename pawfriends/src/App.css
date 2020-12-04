@@ -62,9 +62,22 @@ select {
 }
 
 button {
+  padding: 10px 20px 10px 25px;
+  width: 120px;
   outline: none;
+  border: none;
+  border-radius: 0.2em;
+  color: white;
+  background-color: #bde0e5;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
   transition: .2s ease;
   cursor: pointer;
+}
+
+button:hover {
+  background-color: #c1bde5;
 }
 
 ul {

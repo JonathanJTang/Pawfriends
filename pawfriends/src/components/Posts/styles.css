@@ -20,13 +20,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-radius: 0.2em;
 }
 
 .createPostTextarea {
   padding: 10px;
   width: 95%;
   border: 1px solid #bde0e5;
-  border-radius: 0em 0em 0.2em 0.2em;
+  border-radius: 0.2em;
   /* transition: .2s ease; */
   resize: none;
   font-family: "Karla", sans-serif;
@@ -39,18 +42,9 @@
   display: none;
 }
 
-.createPostTitle {
-  margin-top: 15px;
-  margin-bottom: 10px;
-}
-
-.createPostBody {
-  margin-bottom: 10px;
-}
-
 .createPostSubmitButton {
   width: 30%;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   min-height: 30px;
   font-family: "Karla", sans-serif;
 }
