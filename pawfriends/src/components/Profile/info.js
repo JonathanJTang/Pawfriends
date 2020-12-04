@@ -1,20 +1,16 @@
 import React from "react";
+import "./info.css";
 
 class Info extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      edit: false,
+      flip: false,
     };
   }
 
-  handleChange = e => {
-    // server call
-    this.props.appState.users[this.props.match.params.id].status = e.target.value;
-  }
-
-  handleEdit = () => {
-    this.state.edit ? this.setState({ edit: false }) : this.setState({ edit: true });
+  handleFlip = () => {
+    this.state.flip ? this.setState({ flip: false }) : this.setState({ flip: true });
   }
 
   render() {
@@ -26,28 +22,29 @@ class Info extends React.Component {
     return (
       <>
         { user != null &&
-          <div className='profile-info'>
-            <div>
-              <img src={require(`../../images/user${user.id}.png`).default} />
-              <img src={require(`../../images/${user.favpet}.png`).default} className='favpet' />
-              <img src={require(`../../images/${user.gender}.png`).default} className='gender' />
-              <h1 className='name'>{user.name}</h1>
-              {this.state.edit ?
-                <input defaultValue={user.status} onChange={this.handleChange}></input>
-                :
-                <p>{user.status}</p>
-              }
-            </div>
-            <div>
-              <p className='location'>{user.location}</p>
-              <p className='birthday'>{user.birthday}</p>
-            </div>
-            {curUserId == profileId && (
-              this.state.edit ?
-                <button onClick={this.handleEdit}>Save status</button>
-                :
-                <button onClick={this.handleEdit}>Edit status</button>
-            )}
+          <div className='card'>
+            {/* face of card: profile pic, name, status */}
+            {!this.state.flip &&
+              <div>
+                <img src={require(`../../images/user${user.id}.png`).default} className='avatar' />
+
+                <img src={require(`../../images/${user.favpet}.png`).default} className='favpet' />
+                <img src={require(`../../images/${user.gender}.png`).default} className='gender' />
+
+                <h1>{user.name}</h1>
+                <textarea className='status' maxlength='26'>{user.status}</textarea>
+              </div>
+            }
+
+            {/* back of card: user's information */}
+            {this.state.flip &&
+              <div className='cardinfo'>
+                <p className='location'>{user.location}</p>
+                <p className='birthday'>{user.birthday}</p>
+              </div>
+            }
+
+            <button onClick={this.handleFlip} className='flip'>Flip</button>
           </div>
         }
       </>

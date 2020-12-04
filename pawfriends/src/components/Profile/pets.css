@@ -1,0 +1,157 @@
+.profile-pet {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-pet h1 {
+  margin: auto;
+}
+
+.profile-pet>div {
+  position: relative;
+  display: flex;
+  width: 700px;
+  height: 220px;
+  padding: 25px 15px 15px 15px;
+  border-radius: 0.5em;
+  text-align: left;
+  background-color: white;
+  justify-content: flex-end;
+}
+
+.profile-pet>button {
+  align-self: flex-end;
+  background-color: #9c9fb4;
+}
+
+.profile-pet>button:hover {
+  background-color: #6a6d85;
+}
+
+.profile-pet form {
+  background-color: white;
+  margin: auto;
+  width: 50%;
+  border-radius: 0.5em;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-pet form img, .petimg {
+  width: 120px;
+  height: 120px;
+  margin: 15px;
+  padding: 3px;
+  border: 2px solid #9c9fb4;
+  border-radius: 5em;
+}
+
+.petinfo {
+  display: flex;
+  margin-top: 5px;
+  gap: 10px;
+  height: 30px;
+}
+
+.petinfo img {
+  width: 24px;
+  height: 24px;
+}
+
+.likes, .dislikes {
+  padding: 5px;
+  width: 50%;
+}
+
+.likes:disabled, .dislikes:disabled {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.profile-pet>div::before, .profile-pet>div::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  width: 15px;
+  height: 15px;
+  border-radius: 5em;
+}
+
+.profile-pet>div::before {
+  right: 10px;
+  background-color: #e5bdbd;
+}
+
+.profile-pet>div::after {
+  right: 35px;
+  background-color: #e5dfbd;
+}
+
+.pet div {
+  display: flex;
+  flex-direction: column;
+  flex: 0.77;
+}
+
+.pet div:first-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #6a6d85;
+  border-radius: 0.5em 0em 0em 0.5em;
+}
+
+.petname {
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  margin: auto;
+  width: 150px;
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.petdesc, .petinfo textarea {
+  font-size: 14px;
+  letter-spacing: 0.1em;
+}
+
+.petdesc {
+  height: 100%;
+  padding: 10px;
+  color: white;
+  background-color: #9ca9bb;
+  border-radius: 0.5em;
+}
+
+.petdesc:enabled {
+  background-color: #6a6d85;
+}
+
+.petimg {
+  border-color: white;
+}
+
+.pet button {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 65px;
+  left: 240px;
+  background-color: transparent;
+  border: none;
+}
+
+.pet button:hover {
+  background-color: transparent;
+}
+
+.pet button::before {
+  content: url('../../images/edit.png');
+}

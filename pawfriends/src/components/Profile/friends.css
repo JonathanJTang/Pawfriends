@@ -1,0 +1,21 @@
+.profile-friends {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 80px;
+}
+
+.profile-friends>* {
+  padding: 15px;
+  background-color: #6a6d85;
+  border-radius: 0.5em;
+  color: white;
+}
+
+.profile-friends img {
+  padding: 3px;
+  width: 100px;
+  height: 100px;
+  border: 2px solid white;
+  border-radius: 5em;
+}

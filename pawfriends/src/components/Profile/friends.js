@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import "./friends.css";
 
 class Friends extends React.Component {
   render() {

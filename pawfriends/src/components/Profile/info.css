@@ -1,0 +1,86 @@
+.card {
+  position: relative;
+  padding: 30px 0px 30px 0px;
+  width: 300px;
+  height: 350px;
+  border-radius: 2.25em;
+  color: white;
+  background-color: #6a6d85;
+}
+
+.card h1 {
+  background-color: #9c9fb4;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.avatar {
+  margin: 20px;
+  width: 150px;
+  height: 150px;
+  padding: 5px;
+  border: 2px solid white;
+  border-radius: 6em;
+}
+
+.flip {
+  position: absolute;
+  left: 90px;
+  bottom: -15px;
+}
+
+.status {
+  color: white;
+  font-size: 16px;
+  width: 90%;
+  margin-top: 10px;
+  padding: 20px 0 0 0;
+  text-align: center;
+  background-color: transparent;
+  border: none;
+}
+
+.status:hover, .status:focus {
+  color: #6a6d85;
+  background-color: white;
+  transition: 0.3s;
+}
+
+.savestatus {
+  position: absolute;
+  right: -130px;
+  bottom: 30px;
+}
+
+.cardinfo {
+  margin: auto;
+  margin-left: 60px;
+}
+
+.favpet, .gender {
+  position: absolute;
+  top: 20px;
+  opacity: 0.5;
+}
+
+.favpet {
+  right: 50px;
+}
+
+.gender {
+  right: 15px;
+}
+
+.location, .birthday {
+  text-align: left;
+}
+
+.birthday::before {
+  content: url('../../images/cake.png');
+  margin-right: 20px;
+}
+
+.location::before {
+  content: url('../../images/location.png');
+  margin-right: 20px;
+}
