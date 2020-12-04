@@ -17,8 +17,20 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 6,
+    minlength: 4, // to allow course required passwords
   },
+  actualName: {
+    type: String,
+    required: true,
+  },
+  // TODO: could make the fields below required?
+  gender: {
+    type: String,
+    enum: ["male", "female", "secret"],
+  },
+  location: { type: String },
+  birthday: { type: String },
+  settings: { type: Map, of: String },
 });
 
 // Mongoose middleware
