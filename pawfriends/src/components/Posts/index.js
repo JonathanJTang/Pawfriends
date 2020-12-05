@@ -87,7 +87,6 @@ class Posts extends React.Component {
   render() {
     return (
       <div className="posts">
-        <p>Share cute moments or fond memories with your pet! </p>
         <NavBar />
 
         {this.state.showCreatePostBox ? (
