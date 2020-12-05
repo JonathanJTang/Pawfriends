@@ -2,10 +2,6 @@ import React from "react";
 import "./styles.css";
 
 import { Link } from "react-router-dom";
-import img1 from "../../images/post1.jpg";
-import img2 from "../../images/post2.jpg";
-import av1 from "../../images/user1.png";
-import av2 from "../../images/user2.png";
 import LikeButton from "../LikeButton";
 import CreateCommentBar from "../CreateCommentBar";
 
@@ -36,55 +32,43 @@ class Post extends React.Component {
 
   render() {
     const { user } = this.props;
+    const { postData } = this.state;
 
-    const img = {
-      avatars: {
-        1: av1,
-        2: av2,
-      },
-      posts: {
-        1: img1,
-        2: img2,
-      },
-    };
+    // Only display image if the post has one
+    let image = null;
+    if (postData.images.length > 0) {
+      image = <img alt="post" src={postData.images[0].image_url} />;
+    }
 
     return (
       <div className="post">
         <div className="header">
-          <Link to={"/profile/" + user.id}>
-            <img src={img.avatars[user.id]} />
+          <Link to={"/profile/" + user.username}>
+            <img src={user.avatar.image_url} alt="profile avatar" />
           </Link>
           <LikeButton />
           <div>
-            <Link to={"/profile/" + user.id}>
-              <p>@{user.name}</p>
+            <Link to={"/profile/" + user.username}>
+              <p>@{user.actualName}</p>
             </Link>
-            <h3>{this.state.postData.postName}</h3>
-            <p>Posted {this.state.postData.datetime}</p>
+            <h3>{postData.title}</h3>
+            <p>Posted {postData.datetime}</p>
           </div>
         </div>
-        {this.state.postData.hasOwnProperty("image") ? (
-          <img alt="post" src={img.posts[this.state.postData.image]} />
-        ) : null}
-        <div className="postText">{this.state.postData.content}</div>
+        {image}
+        <div className="postText">{postData.content}</div>
         <div>
-          {this.state.postData.comments.map((comment, index) => (
+          {postData.comments.map((comment, index) => (
             <Comment
               key={index}
               commentData={comment}
-              commentAuthor={
-                // the comment author would come from the server
-                this.props.appState.users.find((user) => {
-                  return user.id === comment.userId;
-                }).name
-              }
+              commentAuthor={comment.owner.actualName}
             />
           ))}
         </div>
         <CreateCommentBar
-          postData={this.state.postData}
+          postData={postData}
           parentStateUpdater={this.stateUpdate}
-          curUserId={this.props.appState.curUserId}
         />
       </div>
     );

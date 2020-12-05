@@ -10,8 +10,22 @@ import trade1 from "../Trade/duck.png";
 import trade2 from "../Trade/squeaky.png";
 import trade3 from "../Trade/bundle.png";
 
+import Post from "../Post";
+import { getAllUsersPosts } from "../../actions/apiRequests";
+
 /* Home component */
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { posts: [] };
+  }
+
+  async componentDidMount() {
+    // Fetch list of posts from server
+    const postsList = await getAllUsersPosts();
+    this.setState({ posts: postsList });
+  }
+
   render() {
     const img = {
       avatars: {
@@ -27,30 +41,16 @@ class Home extends React.Component {
         2: trade2,
         3: trade3,
       },
-    }
+    };
 
     const appState = this.props.appState;
     const users = this.props.appState.users;
 
     let allPosts, allServices, allTradeToys;
 
-    if (appState.posts) {
-      allPosts = appState.posts.map((post, index) => (
-        <div key={index} className="post">
-          <div className="header">
-            <Link to={"/profile/" + post.userId}>
-              <img src={img.avatars[post.userId]} />
-            </Link>
-            <div>
-              <Link to={"/profile/" + post.userId}>
-                <p>@{users[post.userId].name}</p>
-              </Link>
-              <h3>{post.postName}</h3>
-              <p>Posted {post.datetime}</p>
-            </div>
-          </div>
-          <img src={img.posts[post.userId]}></img>
-        </div>
+    if (this.state.posts) {
+      allPosts = this.state.posts.map((post, index) => (
+        <Post key={post._id} postData={post} user={post.owner} />
       ));
     }
 

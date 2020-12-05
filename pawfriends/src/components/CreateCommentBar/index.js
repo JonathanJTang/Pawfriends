@@ -1,6 +1,8 @@
 import React from "react";
 import "./styles.css";
 
+import { createComment } from "../../actions/apiRequests";
+
 class CreateCommentTextarea extends React.Component {
   render() {
     return (
@@ -34,21 +36,25 @@ class CreateCommentBar extends React.Component {
     }
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     const textarea = e.currentTarget.children.namedItem("commentText");
     const commentText = textarea.value;
     if (commentText) {
-      /* Send this comment to the server */
-      this.props.postData.comments.push({
-        content: commentText,
-        userId: this.props.curUserId,
-      });
-      this.setState({ status: "default" });
-      this.props.parentStateUpdater(this.props.postData);
-      // Reset the create comment textarea
-      textarea.value = "";
-      textarea.rows = 1;
+      const comment = await createComment(
+        { content: commentText },
+        this.props.postData._id
+      );
+      if (comment !== undefined) {
+        // Server call succeeded
+        this.props.postData.comments.push(comment);
+        this.props.parentStateUpdater(this.props.postData);
+
+        this.setState({ status: "default" });
+        // Reset the create comment textarea
+        textarea.value = "";
+        textarea.rows = 1;
+      }
     }
   };
 

@@ -5,6 +5,16 @@
 const mongoose = require("mongoose");
 // const validator = require('validator')
 const bcrypt = require("bcryptjs");
+const { ObjectId } = require("mongodb");
+
+const { ImageSchema } = require("./image");
+
+const PetSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  likes: { type: String, required: true },
+  dislikes: { type: String, required: true },
+  description: String,
+});
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -23,13 +33,17 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // TODO: could make the fields below required?
+  // TODO: do we make some of the fields below required?
   gender: {
     type: String,
     enum: ["male", "female", "secret"],
   },
   location: { type: String },
   birthday: { type: String },
+  profilePicture: ImageSchema,
+  status: String,
+  pets: [PetSchema],
+  friends: [ObjectId],
   settings: { type: Map, of: String },
 });
 

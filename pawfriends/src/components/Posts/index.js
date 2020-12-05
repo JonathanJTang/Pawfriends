@@ -5,6 +5,8 @@ import "./styles.css";
 import NavBar from "../NavBar";
 import Post from "../Post";
 
+import { getAllUsersPosts, createPost } from "../../actions/apiRequests";
+
 class CreatePost extends React.Component {
   resizeTextarea = (initialRows, event) => {
     const textarea = event.target;
@@ -16,23 +18,18 @@ class CreatePost extends React.Component {
     textarea.rows = num_rows;
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
-    const { appState } = this.props;
     const titleText = e.currentTarget.children.namedItem("createPostTitle")
       .value;
     const bodyText = e.currentTarget.children.namedItem("createPostBody").value;
-    const prevPostLength = appState.posts.length;
-    appState.posts.unshift({
-      postName: titleText,
-      id: prevPostLength + 1,
-      userId: appState.curUserId,
-      datetime: new Date().toUTCString(),
-      content: bodyText,
-      comments: [],
-    });
-    this.props.parentStateUpdater(appState.posts);
-    this.props.createPostHandler();
+
+    const post = await createPost({ title: titleText, content: bodyText });
+    if (post !== undefined) {
+      // Server call succeeded
+      this.props.postsList.unshift(post);
+      this.props.parentStateUpdater(this.props.postsList);
+    }
   };
 
   render() {
@@ -67,53 +64,46 @@ class CreatePost extends React.Component {
 class Posts extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showCreatePostBox: false, posts: this.props.appState.posts };
+    this.state = { showCreatePostBox: false, posts: [] };
   }
 
-  componentDidMount() {
-    /* Fetch list of posts from server (the list is currently in appState) */
+  async componentDidMount() {
+    // Fetch list of posts from server
+    const postsList = await getAllUsersPosts();
+    if (postsList !== undefined) {
+      // Server call succeeded
+      this.setState({ posts: postsList });
+    }
   }
 
   newPostHandler = () => {
     this.setState({ showCreatePostBox: true });
   };
 
-  createPostHandler = () => {
-    this.setState({ showCreatePostBox: false });
-  };
-
-  updateState = (updatedPosts) => {
-    this.setState({ posts: updatedPosts });
-    console.log(updatedPosts);
+  createPostHandler = (updatedPosts) => {
+    this.setState({ showCreatePostBox: false, posts: updatedPosts });
   };
 
   render() {
-    console.log(this.state.posts);
     return (
       <div className="posts">
-      <p>Share cute moments or fond memories with your pet! </p>
+        <p>Share cute moments or fond memories with your pet! </p>
         <NavBar />
 
         {this.state.showCreatePostBox ? (
           <CreatePost
-            appState={this.props.appState}
-            parentStateUpdater={this.updateState}
-            createPostHandler={this.createPostHandler}
+            postsList={this.state.posts}
+            parentStateUpdater={this.createPostHandler}
           />
         ) : (
-        <div>
-        
-          <button onClick={this.newPostHandler}>Create post</button>
-        </div>)}
+          <div>
+            <button onClick={this.newPostHandler}>Create post</button>
+          </div>
+        )}
 
         <div className="postsList">
           {this.state.posts.map((post, index) => (
-            <Post
-              key={post.id}
-              postData={post}
-              user={this.props.appState.users[post.userId]}
-              appState={this.props.appState}
-            />
+            <Post key={post._id} postData={post} user={post.owner} />
           ))}
         </div>
       </div>

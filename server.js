@@ -45,6 +45,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const cors = require("cors");
 app.use(cors());
 
+// Global object
+const globals = {};
+globals.defaultAvatar = {
+  image_id: "pawfriends/defaultAvatar_sflv0g.png",
+  image_url:
+    "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png",
+};
+
 /* Middleware */
 // Middleware for mongo connection error for routes that need it
 const mongoChecker = (req, res, next) => {
@@ -115,11 +123,53 @@ const handleError = (error, res) => {
 jsonApiRouter.use(mongoChecker);
 // jsonApiRouter.use(authenticate);  // TODO: enable when authenticate is done
 
+/* Modifies the 'owner' key of the response object into a format with all the
+ * information needed by the frontend. */
+const addOwnerToResponse = (response, owner) => {
+  response.owner = {
+    _id: owner._id,
+    username: owner.username,
+    actualName: owner.actualName,
+    avatar: owner.profilePicture,
+  };
+  if (response.owner.avatar === undefined) {
+    response.owner.avatar = globals.defaultAvatar; // set to be the default avatar
+  }
+};
+
+/* Modifies the response object into a format with all the information needed by
+ * the frontend. */
+const modifyPostReponse = async (response, postOwner, curUser) => {
+  addOwnerToResponse(response, postOwner);
+
+  response.numLikes = response.likedUsers.length;
+  // Check whether the current user liked this post
+  response.userLiked = false;
+  if (
+    response.likedUsers.some(
+      (userId) => curUser._id.toString() === userId.toString()
+    )
+  ) {
+    response.userLiked = true;
+  }
+
+  // Populate comments array
+  for (const comment of response.comments) {
+    const commentOwnerId = comment.owner;
+    const commentOwner = await User.findById(commentOwnerId);
+    addOwnerToResponse(comment, commentOwner);
+  }
+
+  // Delete fields that are now unnecessary for the client
+  delete response["likedUsers"];
+};
+
 // Image helper functions
 const uploadImage = (imagePath) => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload(
       imagePath, // req.files contains uploaded files
+      { folder: "Pawfriends" },
       function (error, result) {
         console.log(error, result);
         if (error) {
@@ -136,66 +186,145 @@ const uploadImage = (imagePath) => {
 };
 
 // Create a new post
+jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
+  // const username = req.session.username;
+  const username = "user"; // TODO: remove after authentication is implemented
+  try {
+    // Validate user input (title and content must be nonempty strings)
+    if (
+      typeof req.body.title !== "string" ||
+      typeof req.body.content !== "string" ||
+      req.body.title === "" ||
+      req.body.content === ""
+    ) {
+      res.status(400).send("Bad Request");
+      return;
+    }
+
+    // Authentication passed, meaning user is valid
+    const user = await User.findOne({ username: username });
+
+    // Create a new post
+    const post = new Post({
+      owner: user._id,
+      postTime: new Date(), // use current server time
+      title: req.body.title,
+      content: req.body.content,
+      likedUsers: [],
+      images: [], // TODO: implement image upload functionality
+      comments: [],
+    });
+    console.log("req.files: ", req.files);
+    if (req.files && req.files.image !== undefined) {
+      // There's an uploaded image, upload it to the Cloudinary server.
+      console.log("imagePath: ", req.files.image.path);
+      const imageInfo = await uploadImage(req.files.image.path);
+      post.images.push(imageInfo);
+    }
+    const newPost = await post.save();
+    // Build the JSON object to respond with
+    const jsonReponse = newPost.toObject();
+    delete jsonReponse["__v"];
+    await modifyPostReponse(jsonReponse, user, user);
+    res.send(jsonReponse);
+  } catch (error) {
+    // TODO: return 500 Internal server error if error was from uploadImage
+    handleError(error, res);
+  }
+});
+
+// Add a comment onto a post
 jsonApiRouter.post(
-  "/users/:username/posts",
+  "/posts/:postId/comment",
   multipartMiddleware,
   async (req, res) => {
-    const username = req.params.username;
+    // const username = req.session.username;
+    const username = "user"; // TODO: remove after authentication is implemented
+    const postId = req.params.postId;
     try {
-      // Authentication passed, meaning user is valid
-      const user = await User.findOne({ username: username });
-
-      // Validate user input (title and content must be nonempty strings)
-      if (
-        typeof req.body.title !== "string" ||
-        typeof req.body.content !== "string" ||
-        req.body.title === "" ||
-        req.body.content === ""
-      ) {
+      // Check that postId is valid
+      if (!ObjectID.isValid(postId)) {
+        res.status(404).send();
+        return;
+      }
+      const post = await Post.findById(postId);
+      if (post === null) {
+        res.status(404).send();
+        return;
+      }
+      // Validate user input (content must be an nonempty string)
+      if (typeof req.body.content !== "string" || req.body.content === "") {
         res.status(400).send("Bad Request");
         return;
       }
 
-      const post = new Post({
+      const user = await User.findOne({ username: username });
+
+      // Create the new comment in the post
+      const newLength = post.comments.push({
         owner: user._id,
-        postTime: new Date(), // use current server time
-        title: req.body.title,
         content: req.body.content,
-        likes: 0,
-        images: [], // TODO: implement image upload functionality
-        comments: [],
       });
-      console.log(req.files);
-      if (req.files && req.files.image !== undefined) {
-        // Use uploader.upload API to upload image to cloudinary server.
-        console.log("imagePath: ", req.files.image.path);
-        const imageInfo = await uploadImage(req.files.image.path);
-        post.images.push(imageInfo);
-      }
-      const newPost = await post.save();
-      res.send(newPost); // TODO: needed?
+      await post.save();
+      // Build the JSON object to respond with
+      const jsonResponse = {
+        content: post.comments[newLength - 1].content,
+      };
+      addOwnerToResponse(jsonResponse, user);
+      res.send(jsonResponse);
     } catch (error) {
-      // TODO: return 500 Internal server error if error was from uploadImage
       handleError(error, res);
     }
   }
 );
 
-// get all posts from the current user
-jsonApiRouter.get("/users/:username/posts", async (req, res) => {
-  const username = req.params.username;
+// get all posts (limit to the current user + the current user's friends?)
+jsonApiRouter.get("/posts", async (req, res) => {
+  // const username = req.session.username;
+  const username = "user"; // TODO: remove after authentication is implemented
   try {
     // Authentication passed, meaning user is valid
-    const user = await User.findOne({ username: username });
-    const userPosts = await Post.find({ owner: user._id }).sort({
-      postTime: "descending",
-    });
-    console.log(userPosts);
+    const curUser = await User.findOne({ username: username });
+
+    // could use .limit() before .lean() to limit the number of items to return
+    const userPosts = await Post.find()
+      .sort({
+        postTime: "descending",
+      })
+      .select("-__v") // remove fields unnecessary for the client
+      .lean();
+    // Modify array to send to the client
+    // userPosts.forEach(async (post) => {});
+    for (const post of userPosts) {
+      const ownerId = post.owner;
+      const postOwner = await User.findById(ownerId);
+      await modifyPostReponse(post, postOwner, curUser);
+    }
     res.send(userPosts);
   } catch (error) {
     handleError(error, res);
   }
 });
+
+// get all posts from the selected user
+// TODO: Jonathan -- this route needs to be updated with the same logic
+// in the GET /posts handler
+
+// jsonApiRouter.get("/users/:username/posts", async (req, res) => {
+//   const username = req.params.username;
+//   try {
+//     // Authentication passed, meaning user is valid
+//     const user = await User.findOne({ username: username });
+//     // could use .limit to limit the number of items to return
+//     const userPosts = await Post.find({ owner: user._id }).sort({
+//       postTime: "descending",
+//     });
+//     console.log(userPosts);
+//     res.send(userPosts);
+//   } catch (error) {
+//     handleError(error, res);
+//   }
+// });
 
 const deleteImage = (imageInfo) => {
   return new Promise((resolve, reject) => {
@@ -211,22 +340,30 @@ const deleteImage = (imageInfo) => {
 };
 
 // Delete a post
-jsonApiRouter.delete("/users/:username/posts/:postId", async (req, res) => {
-  const username = req.params.username;
+jsonApiRouter.delete("posts/:postId", async (req, res) => {
+  // const username = req.session.username;
+  const username = "user"; // TODO: remove after authentication
   const postId = req.params.postId;
   try {
     if (!ObjectID.isValid(postId)) {
       res.status(404).send();
       return;
     }
-    // Authentication passed, meaning user is valid
-    // const user = await User.findOne({ username: username });
-
     const post = await Post.findByIdAndDelete(postId);
     if (post === null) {
       res.status(404).send();
       return;
     }
+
+    // Authentication passed, meaning user is valid
+    const user = await User.findOne({ username: username });
+
+    // Only the post owner can delete the post
+    if (post.owner.toString() !== user._id.toString) {
+      res.status(403).send();
+      return;
+    }
+
     post.images.forEach((imageInfo) => {
       // Use uploader.destroy API to delete image from cloudinary server.
       deleteImage(imageInfo);

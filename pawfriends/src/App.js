@@ -13,9 +13,9 @@ import Caretakers from "./components/Caretakers";
 import Settings from "./components/Settings";
 import Profile from "./components/Profile";
 import AdminDashboard from "./components/AdminDashboard";
-import Index from './components/Index';
+import Index from "./components/Index";
 
-import NavBar from './components/NavBar';
+import NavBar from "./components/NavBar";
 
 class App extends React.Component {
   // Global state passed to all components of the app
@@ -73,18 +73,36 @@ class App extends React.Component {
     this.setState({
       posts: [
         {
-          postName: "Having a great day",
-          id: 1,
-          userId: 1,
+          title: "Having a great day",
+          _id: 1,
+          owner: {
+            id: 1,
+            username: "user",
+            actualName: "John Smith",
+            avatar: {
+              image_id: "pawfriends/defaultAvatar_sflv0g.png",
+              image_url:
+                "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png",
+            },
+          },
           datetime: "14:26 May 30, 2020",
           content: "Hope everyone's doing well!",
           image: 1,
           comments: [],
         },
         {
-          postName: "I love my cat",
-          id: 2,
-          userId: 2,
+          title: "I love my cat",
+          _id: 2,
+          owner: {
+            id: 2,
+            username: "user2",
+            actualName: "Jane Doe",
+            avatar: {
+              image_id: "pawfriends/defaultAvatar_sflv0g.png",
+              image_url:
+                "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png",
+            },
+          },
           datetime: "14:26 July 30, 2020",
           content: "Her expression is so my mood right now",
           image: 2,
@@ -97,21 +115,21 @@ class App extends React.Component {
           email: "john.smith@gmail.com",
           phone: "111-111-11111",
           desc: "Looking for someone to dogsit? I am the right one!",
-          tags: ['dog', 'caretaking'],
+          tags: ["dog", "caretaking"],
         },
         {
           userId: 2,
           email: "jane.doe@gmail.com",
           phone: "222-222-2222",
           desc: "Tofu, a 2 year old shiba, is looking for his girlfriend!",
-          tags: ['dog', 'dating'],
+          tags: ["dog", "dating"],
         },
         {
           userId: 1,
           email: "john.smith@gmail.com",
           phone: "111-111-11111",
           desc: "I can take care of your pet any time next week!",
-          tags: ['dog', 'cat', 'caretaking'],
+          tags: ["dog", "cat", "caretaking"],
         },
       ],
       tradeToys: [
@@ -123,7 +141,8 @@ class App extends React.Component {
         {
           toyId: 2,
           userId: 1,
-          desc: "A rarely used, almost brand new squeaky ball. Would be great to meet up anywhere near Yonge and Eg",
+          desc:
+            "A rarely used, almost brand new squeaky ball. Would be great to meet up anywhere near Yonge and Eg",
         },
         {
           toyId: 3,
@@ -145,7 +164,7 @@ class App extends React.Component {
           password: "user",
           name: "John Smith",
           gender: "male",
-          status: 'Competitive coffee drinker',
+          status: "Competitive coffee drinker",
           birthday: "1998-07-22",
           location: "Toronto, Canada",
           favpet: "dog",
@@ -162,9 +181,7 @@ class App extends React.Component {
             },
           ],
           // stores the ids of this user's friends
-          friends: [
-            2,
-          ]
+          friends: [2],
         },
         {
           id: 2,
@@ -173,7 +190,7 @@ class App extends React.Component {
           password: "user2",
           name: "Jane Doe",
           gender: "female",
-          status: 'Staying comfy',
+          status: "Staying comfy",
           birthday: "1999-03-09",
           location: "Ottawa, Canada",
           favpet: "cat",
@@ -184,9 +201,7 @@ class App extends React.Component {
               dislikes: "Strangers",
             },
           ],
-          friends: [
-            1,
-          ]
+          friends: [1],
         },
       ],
     });
@@ -219,7 +234,7 @@ class App extends React.Component {
             <Route
               exact
               path="/Posts"
-              render={() => <Posts appState={this.state} />}
+              render={() => <Posts />}
             />
             <Route
               exact
@@ -255,7 +270,12 @@ class App extends React.Component {
                 </div>
               )}
             />
-            < Route path='/' render={(routeProps) => <Index {...routeProps} appState={this.state} />} />
+            <Route
+              path="/"
+              render={(routeProps) => (
+                <Index {...routeProps} appState={this.state} />
+              )}
+            />
           </Switch>
         </BrowserRouter>
       </div>
