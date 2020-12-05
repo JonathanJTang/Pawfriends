@@ -3,6 +3,7 @@ import "./styles.css";
 
 import { Link } from "react-router-dom";
 import NavBarGuest from "../NavBarGuest";
+import {loginUser} from "../../actions/apiRequests"
 
 class Index extends React.Component {
   constructor(props) {
@@ -15,13 +16,26 @@ class Index extends React.Component {
     this.setState({ input: this.state.input });
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
-    if (this.validate() == 1) {
+
+    // if (this.validate() == 1) {
+    //   this.props.history.push("/home");
+    // } else if (this.validate() == 2) {
+    //   this.props.history.push("/admindashboard");
+    // }
+    let user = await loginUser({
+      username: this.state.input["name"],
+      password: this.state.input["pass"]
+    })
+    if (user!== undefined) {
       this.props.history.push("/home");
-    } else if (this.validate() == 2) {
-      this.props.history.push("/admindashboard");
+      alert("succesful login")
+    } else {
+      alert("bad login")
     }
+    
+    
   };
 
   validate = () => {

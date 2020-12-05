@@ -36,7 +36,7 @@ const UserSchema = new mongoose.Schema({
   // TODO: do we make some of the fields below required?
   gender: {
     type: String,
-    enum: ["male", "female", "secret"],
+    enum: ["Male", "Female", "Secret"],
   },
   location: { type: String },
   birthday: { type: String },

@@ -2,9 +2,10 @@ import React from "react";
 import "./App.css";
 
 import { Route, Switch, BrowserRouter } from "react-router-dom";
+import {loginUser} from "./actions/apiRequests"
+
 
 // Temporary: import various components so we can work on them
-import Login from "./components/Login";
 import Registration from "./components/Registration";
 import Home from "./components/Home";
 import Posts from "./components/Posts";
@@ -30,28 +31,30 @@ class App extends React.Component {
     };
   }
 
-  handleLogin = (username, password) => {
-    let thisUser = this.state.users.find(
-      (user) => user.username == username && user.password == password
-    );
-    if (thisUser) {
-      if (
-        (thisUser.type == "user" &&
-          thisUser.username == "user" &&
-          thisUser.password == "user") ||
-        (thisUser.type == "admin" &&
-          thisUser.username == "admin" &&
-          thisUser.password == "admin")
-      ) {
-        console.log("user or admin per assignment");
-      } else {
-        console.log("every other user");
-      }
-      this.setState({ curUserId: thisUser.id });
-    } else {
-      console.log("doesn't exist");
-      this.setState({ curUserId: -1 });
-    }
+  handleLogin = async (un, pw) => {
+    // let thisUser = this.state.users.find(
+    //   (user) => user.un == un && user.pw == pw
+    // );
+    // if (thisUser) {
+    //   if (
+    //     (thisUser.type == "user" &&
+    //       thisUser.un == "user" &&
+    //       thisUser.pw == "user") ||
+    //     (thisUser.type == "admin" &&
+    //       thisUser.un == "admin" &&
+    //       thisUser.pw == "admin")
+    //   ) {
+    //     console.log("user or admin per assignment");
+    //   } else {
+    //     console.log("every other user");
+    //   }
+    //   this.setState({ curUserId: thisUser.id });
+    // } else {
+    //   console.log("doesn't exist");
+    //   this.setState({ curUserId: -1 });
+    // }
+    
+    
   };
 
   handleRegistration = (un, pw) => {
@@ -64,6 +67,8 @@ class App extends React.Component {
         password: pw,
       };
       userArr.push(newUser);
+      
+      
       this.setState({ users: userArr });
     }
   };
@@ -273,7 +278,7 @@ class App extends React.Component {
             <Route
               path="/"
               render={(routeProps) => (
-                <Index {...routeProps} appState={this.state} />
+                <Index {...routeProps} appState={this.state} handleLogin={this.handleRegistration} />
               )}
             />
           </Switch>

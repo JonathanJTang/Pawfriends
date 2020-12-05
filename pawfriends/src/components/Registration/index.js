@@ -3,6 +3,7 @@ import "./styles.css";
 import "../Index/styles.css";
 import { Link } from 'react-router-dom';
 import NavBarGuest from "../NavBarGuest";
+import { getAllUsersPosts, createPost, createUser } from "../../actions/apiRequests";
 
 /* Registration component */
 class Registration extends React.Component {
@@ -13,6 +14,9 @@ class Registration extends React.Component {
       user: {
         username: "",
         password: "",
+        actualName: "",
+        birthday: "",
+        gender:"",
       },
       submitted: false,
     };
@@ -29,8 +33,23 @@ class Registration extends React.Component {
     });
   };
 
+  handleRegistration = async (e) => {
+    e.preventDefault();
+    
+    let user = await createUser({
+      "username": this.state.user.username,
+      "password": this.state.user.password,
+      "actualName": this.state.user.actualName,
+      "birthday": this.state.user.birthday,
+      "gender": this.state.user.gender
+    })
+    if (user !== undefined) {
+      alert("successfully made user"+ this.state.user.username)
+    }
+    
+  };
+
   render() {
-    const { handleRegistration } = this.props;
     return (
       <div className='login'>
         <NavBarGuest />
@@ -52,23 +71,31 @@ class Registration extends React.Component {
             onChange={this.handleChange}
           />
           <label>Name</label>
-          <input type='text' />
+          <input
+            type='text'
+            name="actualName"
+            
+            onChange={this.handleChange}
+          />
           <label>Birthday</label>
-          <input type='date' />
+          <input
+            type='date'
+            name="birthday"
+            onChange={this.handleChange}
+          />
           <label>Gender</label>
-          <select>
+          <select
+            name="gender"
+            onChange={this.handleChange}
+          >
+            <option disabled selected value> -- select an option -- </option>
             <option>Male</option>
             <option>Female</option>
             <option>Secret!</option>
           </select>
           <input type='submit'
             value="Register"
-            onClick={() => {
-              handleRegistration(
-                this.state.user.username,
-                this.state.user.password
-              );
-            }}
+            onClick={this.handleRegistration}
           />
           <Link to='/' className='btn-reg btn-log'>Back to login</Link>
         </form>

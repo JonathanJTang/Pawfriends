@@ -68,3 +68,36 @@ export const modifyLikePost = (likePost, postId) => {
   // ie whether the user likes the post and the total number of likes
   return commentPromise;
 };
+
+// <--- USER API --->
+export const createUser = (userInfo) => {
+  
+  const request = new Request(baseUrl + `/api/users`, {
+    method: "post",
+    body: JSON.stringify(userInfo),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const createUserPromise = fetchRequest(request);
+  return createUserPromise;
+};
+
+export const loginUser = (userInfo) => {
+  
+  const request = new Request(baseUrl + `/users/login`, {
+    method: "post",
+    body: JSON.stringify(userInfo),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const loginUserPromise = fetchRequest(request);
+  return loginUserPromise;
+};
+
+//TODO: logout not done - ryan
