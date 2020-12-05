@@ -34,6 +34,14 @@ class Post extends React.Component {
     const { user } = this.props;
     const { postData } = this.state;
 
+    const datetimeElements = new Date(postData.postTime)
+      .toString()
+      .split(" ")
+      .slice(1, 5);
+    const datetimeStr =
+      `${datetimeElements[0]} ${datetimeElements[1]}, ${datetimeElements[2]}` +
+      `  ${datetimeElements[3].slice(0, 5)}`;
+
     // Only display image if the post has one
     let image = null;
     if (postData.images.length > 0) {
@@ -44,16 +52,23 @@ class Post extends React.Component {
       <div className="post">
         <div className="header">
           <Link to={"/profile/" + user.username}>
-            <img src={user.avatar.image_url} alt="profile avatar" />
+            <img
+              className="avatar-img"
+              src={user.avatar.image_url}
+              alt="profile avatar"
+            />
           </Link>
-          <LikeButton />
-          <div>
+          <div className="header-info">
             <Link to={"/profile/" + user.username}>
               <p>@{user.actualName}</p>
             </Link>
             <h3>{postData.title}</h3>
-            <p>Posted {postData.datetime}</p>
+            <p>Posted {datetimeStr}</p>
           </div>
+          <LikeButton
+            postData={postData}
+            parentStateUpdater={this.stateUpdate}
+          />
         </div>
         {image}
         <div className="postText">{postData.content}</div>

@@ -19,39 +19,10 @@
   gap: 10px;
 }
 
-.service, .post, .trade {
+.service, .trade {
   background-color: white;
   border-radius: 0.5em;
   overflow: hidden;
-}
-
-.post>img {
-  display: block;
-  width: 100%;
-}
-
-.header {
-  position: relative;
-  display: flex;
-  padding: 10px;
-  gap: 20px;
-}
-
-.header div {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-
-.header img:first-child {
-  width: 80px;
-  height: 80px;
-  border: 1px solid #eeeeee;
-  border-radius: 5em;
-}
-
-.header p, .header h3 {
-  margin: 0;
 }
 
 .home p, .header p {

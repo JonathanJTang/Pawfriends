@@ -185,7 +185,7 @@ const uploadImage = (imagePath) => {
   });
 };
 
-// Create a new post
+/* Create a new post */
 jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
   // const username = req.session.username;
   const username = "user"; // TODO: remove after authentication is implemented
@@ -233,50 +233,93 @@ jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
   }
 });
 
-// Add a comment onto a post
-jsonApiRouter.post(
-  "/posts/:postId/comment",
-  multipartMiddleware,
-  async (req, res) => {
-    // const username = req.session.username;
-    const username = "user"; // TODO: remove after authentication is implemented
-    const postId = req.params.postId;
-    try {
-      // Check that postId is valid
-      if (!ObjectID.isValid(postId)) {
-        res.status(404).send();
-        return;
-      }
-      const post = await Post.findById(postId);
-      if (post === null) {
-        res.status(404).send();
-        return;
-      }
-      // Validate user input (content must be an nonempty string)
-      if (typeof req.body.content !== "string" || req.body.content === "") {
-        res.status(400).send("Bad Request");
-        return;
-      }
-
-      const user = await User.findOne({ username: username });
-
-      // Create the new comment in the post
-      const newLength = post.comments.push({
-        owner: user._id,
-        content: req.body.content,
-      });
-      await post.save();
-      // Build the JSON object to respond with
-      const jsonResponse = {
-        content: post.comments[newLength - 1].content,
-      };
-      addOwnerToResponse(jsonResponse, user);
-      res.send(jsonResponse);
-    } catch (error) {
-      handleError(error, res);
+/* Add a comment onto a post */
+jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
+  // const username = req.session.username;
+  const username = "user"; // TODO: remove after authentication is implemented
+  const postId = req.params.postId;
+  try {
+    // Check that postId is valid
+    if (!ObjectID.isValid(postId)) {
+      res.status(404).send();
+      return;
     }
+    const post = await Post.findById(postId);
+    if (post === null) {
+      res.status(404).send();
+      return;
+    }
+    // Validate user input (content must be an nonempty string)
+    if (typeof req.body.content !== "string" || req.body.content === "") {
+      res.status(400).send("Bad Request");
+      return;
+    }
+
+    const user = await User.findOne({ username: username });
+
+    // Create the new comment in the post
+    const newLength = post.comments.push({
+      owner: user._id,
+      content: req.body.content,
+    });
+    await post.save();
+    // Build the JSON object to respond with
+    const jsonResponse = {
+      content: post.comments[newLength - 1].content,
+    };
+    addOwnerToResponse(jsonResponse, user);
+    res.send(jsonResponse);
+  } catch (error) {
+    handleError(error, res);
   }
-);
+});
+
+// Like or unlike a post
+jsonApiRouter.put("/posts/:postId/like", async (req, res) => {
+  // const username = req.session.username;
+  const username = "user"; // TODO: remove after authentication is implemented
+  const postId = req.params.postId;
+  try {
+    // Check that postId is valid
+    if (!ObjectID.isValid(postId)) {
+      res.status(404).send();
+      return;
+    }
+    const post = await Post.findById(postId);
+    if (post === null) {
+      res.status(404).send();
+      return;
+    }
+    // Validate user input (content must be an nonempty string)
+    if (typeof req.body.like !== "boolean") {
+      res.status(400).send("Bad Request");
+      return;
+    }
+
+    const user = await User.findOne({ username: username });
+
+    const userIndex = post.likedUsers.findIndex(
+      (userId) => userId.toString() === user._id.toString()
+    );
+    // Only 2 of the 4 cases require editing the database
+    if (userIndex === -1 && req.body.like) {
+      // user previously did not like the post but now likes it
+      post.likedUsers.push(user._id);
+    } else if (userIndex !== -1 && !req.body.like) {
+      // user previously liked the post but now wants to remove the like
+      post.likedUsers.splice(userIndex, 1);
+    }
+    await post.save();
+    // Build the JSON object to respond with
+    const jsonResponse = {
+      numLikes: post.likedUsers.length,
+      userLiked: req.body.like,
+    };
+    res.send(jsonResponse);
+  } catch (error) {
+    handleError(error, res);
+  }
+});
 
 // get all posts (limit to the current user + the current user's friends?)
 jsonApiRouter.get("/posts", async (req, res) => {

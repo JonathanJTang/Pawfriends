@@ -52,3 +52,19 @@ export const createComment = (comment, postId) => {
   // This promise resolves to an object containing comment info
   return commentPromise;
 };
+
+export const modifyLikePost = (likePost, postId) => {
+  const request = new Request(baseUrl + `/api/posts/${postId}/like`, {
+    method: "put",
+    body: JSON.stringify({like: likePost}),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const commentPromise = fetchRequest(request);
+  // This promise resolves to an object containing a subset of post info,
+  // ie whether the user likes the post and the total number of likes
+  return commentPromise;
+};

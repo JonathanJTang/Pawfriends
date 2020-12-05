@@ -4,23 +4,44 @@ import "./styles.css";
 import heart from "./../../images/heart.png";
 import heartFull from "./../../images/heart-full.png";
 
+import { modifyLikePost } from "../../actions/apiRequests";
+
 class LikeButton extends React.Component {
   constructor(props) {
     super(props);
     this.clicked = false;
-    this.state = { image: heart };
+    console.log(this.props.postData.userLiked);
+    if (this.props.postData.userLiked !== undefined) {
+      this.clicked = this.props.postData.userLiked;
+    }
+    this.state = { image: this.clicked ? heartFull : heart };
   }
 
-  handleClick() {
+  async handleClick() {
     this.clicked = !this.clicked;
     this.setState({ image: this.clicked ? heartFull : heart });
+    const response = await modifyLikePost(
+      this.clicked,
+      this.props.postData._id
+    );
+    if (response !== undefined) {
+      // Server call succeeded, update state
+      Object.assign(this.props.postData, response);
+      this.props.parentStateUpdater(this.props.postData);
+    }
   }
 
   render() {
     return (
-      <img className="like-button" alt="like button"
-        src={this.state.image}
-        onClick={this.handleClick.bind(this)} />
+      <div className="like-button-container-div">
+        <div className="like-counter">{this.props.postData.numLikes}</div>
+        <img
+          className="like-button"
+          alt="like button"
+          src={this.state.image}
+          onClick={this.handleClick.bind(this)}
+        />
+      </div>
     );
   }
 }
