@@ -15,7 +15,7 @@ class NavBar extends React.Component {
           <NavLink to='/trade' className='inactive'><li>Trade</li></NavLink>
           <NavLink to='/caretakers' className='inactive'><li>Services</li></NavLink>
         </ul>
-        <Dropdown />
+        <Dropdown app={this.props.app}/>
       </div>
     );
   }

@@ -3,6 +3,7 @@ import "./styles.css";
 
 import { Link } from "react-router-dom";
 import user from '../../images/user1.png';
+import { logoutUser } from "../../actions/apiRequests";
 
 class Dropdown extends React.Component {
   constructor() {
@@ -28,6 +29,14 @@ class Dropdown extends React.Component {
     }
   }
 
+  handleLogout = () => {
+    let logoutpromise = logoutUser()
+    this.props.app.setState({
+      currentUser: null,
+    });
+    alert("logout")
+  };
+
   componentWillUnmount() {
     document.removeEventListener('mouseup', this.handleClick);
   }
@@ -43,7 +52,7 @@ class Dropdown extends React.Component {
               <ul className='dropdown-list' ref={this.ref2}>
                 <li onClick={this.show}><Link to='/profile/1'>Profile</Link></li>
                 <li onClick={this.show}><Link to='/settings'>Settings</Link></li>
-                <li onClick={this.show}><Link to='/'>Logout</Link></li>
+                <li onClick={this.show}><Link to='/' onClick={this.handleLogout}>Logout</Link></li>
               </ul>
             )
             : null

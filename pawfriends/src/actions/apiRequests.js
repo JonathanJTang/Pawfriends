@@ -13,6 +13,7 @@ const fetchRequest = (request) => {
       return json;
     })
     .catch((error) => {
+      console.log("failed fetching @" + Request)
       console.log(error);
     });
 };
@@ -100,4 +101,16 @@ export const loginUser = (userInfo) => {
   return loginUserPromise;
 };
 
-//TODO: logout not done - ryan
+export const logoutUser = () => {
+  
+  const request = new Request(baseUrl + `/users/logout`, {
+    method: "get",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const logoutUserPromise = fetchRequest(request);
+  return logoutUserPromise;
+};

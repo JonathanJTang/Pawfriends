@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 
 import { Route, Switch, BrowserRouter } from "react-router-dom";
-import {loginUser} from "./actions/apiRequests"
+import {checkSession} from "./actions/authenticationAndSessionCheck"
 
 
 // Temporary: import various components so we can work on them
@@ -28,7 +28,9 @@ class App extends React.Component {
       careTakers: [],
       tradeToys: [],
       curUserId: 1,
+      currentUser: null
     };
+    checkSession(this);
   }
 
   handleLogin = async (un, pw) => {
@@ -213,11 +215,12 @@ class App extends React.Component {
   };
 
   render() {
+    const { currentUser } = this.state;
     return (
       <div className="App">
         <BrowserRouter>
           {/* in phase 2, write function to switch modify navbar depending on user type (not logged in, user, admin) */}
-          <NavBar />
+          <NavBar {...this.props} app={this} appState={this.state}/>
           <Switch>
             {/* <Route
               exact
@@ -276,11 +279,15 @@ class App extends React.Component {
               )}
             />
             <Route
-              path="/"
-              render={(routeProps) => (
-                <Index {...routeProps} appState={this.state} handleLogin={this.handleRegistration} />
+              exact path={["/", "/login"] /* any of these URLs are accepted. */ }
+              render={ props => (
+                <div className="app">
+                    { /* Different componenets rendered depending on if someone is logged in. */}
+                    {!currentUser ?  <Index {...props} app={this} appState={this.state} handleLogin={this.handleRegistration} /> :  <Home {...props} app={this} appState={this.state} />}
+                </div>                  
               )}
             />
+            
           </Switch>
         </BrowserRouter>
       </div>

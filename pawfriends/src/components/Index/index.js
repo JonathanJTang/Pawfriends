@@ -16,21 +16,15 @@ class Index extends React.Component {
     this.setState({ input: this.state.input });
   };
 
-  handleSubmit = async (e) => {
+  handleLogin = async (e) => {
     e.preventDefault();
-
-    // if (this.validate() == 1) {
-    //   this.props.history.push("/home");
-    // } else if (this.validate() == 2) {
-    //   this.props.history.push("/admindashboard");
-    // }
     let user = await loginUser({
       username: this.state.input["name"],
       password: this.state.input["pass"]
     })
     if (user!== undefined) {
-      this.props.history.push("/home");
       alert("succesful login")
+      this.props.history.push("/home");
     } else {
       alert("bad login")
     }
@@ -75,7 +69,7 @@ class Index extends React.Component {
             onChange={this.handleChange}
             className={this.state.error ? "login-error" : ""}
           />
-          <input type="submit" value="Login" onClick={this.handleSubmit} />
+          <input type="submit" value="Login" onClick={this.handleLogin} />
           <p>Don't have an account?</p>
           <Link to="/registration" className="btn-reg">
             Register

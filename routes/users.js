@@ -56,7 +56,6 @@ router.post('/users/login', async (req, res) => {
 	    // by their username and password.
 		const user = await User.findByUsernamePassword(username, password);
 		if (!user) {
-			// res.redirect('/');
 			res.status(500).send('No such user'+ error)
 			
         } else {
@@ -65,32 +64,40 @@ router.post('/users/login', async (req, res) => {
             req.session.user = user._id;
             req.session.username = user.username
 			//res.redirect('/home');
-			res.send(user)
+			res.send({ currentUser: user.username })
 			
         }
     } catch (error) {
     	// redirect to login if can't login for any reason
 		if (isMongoError(error)) { 
-			res.status(500).redirect('/');
+			res.status(500).send();
 		} else {
-			res.status(400).redirect('/');
+			res.status(400).send();
 		}
     }
 
 })
 
 // A route to logout a user
-router.get('/users/logout', (req, res) => {
-	// Remove the session
-	req.session.destroy((error) => {
-		if (error) {
-			res.status(500).send(error)
-		} else {
-			res.redirect('/')
-		}
-	})
-})
+router.get("/users/logout", (req, res) => {
+    // Remove the session
+    req.session.destroy(error => {
+        if (error) {
+            res.status(500).send(error);
+        } else {
+            res.send("succesful logout")
+        }
+    });
+});
 
+// A route to check if a user is logged in on the session
+router.get("/users/check-session", (req, res) => {
+    if (req.session.user) {
+        res.send({ currentUser: req.session.username });
+    } else {
+        res.status(401).send();
+    }
+});
 
 
 
