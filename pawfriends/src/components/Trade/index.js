@@ -1,68 +1,72 @@
 import React from "react";
 
 import { Link } from "react-router-dom";
+import { removeTrade } from "../../actions/apiRequests";
+import Popup from "../Popup";
+import BookmarkButton from "./bookmark.js";
+import CheckButton from "./finish.js";
 
-import av1 from "../../images/user1.png";
-import av2 from "../../images/user2.png";
-import img1 from "../Trade/duck.png";
-import img2 from "../Trade/squeaky.png";
-import img3 from "../Trade/bundle.png";
+class Trade extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      toggle: false,
+    }
+  }
 
-class Item extends React.Component {
+  stateUpdate = (updatedTrade) => {
+    const i = this.props.trades.indexOf(this.props.trade);
+    this.props.trades[i] = updatedTrade;
+    this.props.stateUpdate(this.props.trades);
+  }
+
+  remove = async () => {
+    const response = await removeTrade(this.props.trade._id);
+    if (response !== undefined) {
+      const i = this.props.trades.indexOf(this.state.trade);
+      this.props.trades.splice(i, 1);
+      this.props.stateUpdate(this.props.trades);
+      this.handleClick();
+    }
+  }
+
+  handleClick = () => {
+    this.state.toggle ? this.setState({ toggle: false }) : this.setState({ toggle: true });
+  }
+
   render() {
-    const { trade, user } = this.props;
+    const { user, trade } = this.props;
 
-    const img = {
-      avatars: {
-        1: av1,
-        2: av2,
-      },
-      items: {
-        1: img1,
-        2: img2,
-        3: img3,
-      },
+    // Only display image if the post has one
+    let image = null;
+    if (trade.images.length > 0) {
+      image = <img alt="post" src={trade.images[0].image_url} />;
     }
 
     return (
-
       <div className="trade">
-        <img alt="post" src={img.items[trade.toyId]} />
+        {this.state.toggle && <Popup remove={this.remove} cancel={this.handleClick} />}
+        <div className="tradebar">
+          <p className="location">{user.location}</p>
+          <div>
+            <CheckButton trade={trade} stateUpdate={this.stateUpdate} />
+            <BookmarkButton trade={trade} />
+          </div>
+        </div>
+        {image}
         <div className="header">
-          <Link to={"/profile/" + user.id}>
-            <img src={img.avatars[user.id]} />
+          <Link to={`/profile/${user.id}`}>
+            <img src={user.avatar.image_url} alt="profile avatar" />
           </Link>
           <div className="postText">
             <Link to={"/profile/" + user.id}>
-              <p>@{user.name}</p>
+              <p>@{user.actualName}</p>
             </Link>
-            {trade.desc}
+            {trade.title}
           </div>
         </div>
-        <view>
-        <view style = {{flex: 1}}>
-        <button>Trade with user</button></view>
-        <view style = {{flex: 1,marginLeft: '20px'}}>
-        <button>Delete your trade</button></view>
-        </view>
-      </div >
-    );
-  }
-}
-
-/* Posts component */
-class Trade extends React.Component {
-  render() {
-    return (
-      <div className="posts">
-      <p>Trade pet supplies!</p>
-        <button>Create trade</button>
-
-        <div className="postsList">
-          {this.props.appState.tradeToys.map((trade, index) => (
-            <Item key={index} trade={trade} user={this.props.appState.users[trade.userId]} />
-          ))}
-        </div>
+        <button>Contact user</button>
+        <Link className="deletepost" onClick={this.handleClick}>Delete post</Link>
       </div>
     );
   }

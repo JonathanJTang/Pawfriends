@@ -10,6 +10,7 @@ const TradeSchema = new mongoose.Schema({
   postTime: { type: Date, required: true },
   title: { type: String, required: true },
   images: [ImageSchema],
+  done: { type: Boolean, required: true }
 });
 
 const Trade = mongoose.model("Trade", TradeSchema);

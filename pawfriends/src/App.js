@@ -9,7 +9,7 @@ import {checkSession} from "./actions/authenticationAndSessionCheck"
 import Registration from "./components/Registration";
 import Home from "./components/Home";
 import Posts from "./components/Posts";
-import Trade from "./components/Trade";
+import Trades from "./components/Trades";
 import Caretakers from "./components/Caretakers";
 import Settings from "./components/Settings";
 import Profile from "./components/Profile";
@@ -139,24 +139,6 @@ class App extends React.Component {
           tags: ["dog", "cat", "caretaking"],
         },
       ],
-      tradeToys: [
-        {
-          toyId: 1,
-          userId: 2,
-          desc: "Selling an almost brand new duck plush!",
-        },
-        {
-          toyId: 2,
-          userId: 1,
-          desc:
-            "A rarely used, almost brand new squeaky ball. Would be great to meet up anywhere near Yonge and Eg",
-        },
-        {
-          toyId: 3,
-          userId: 2,
-          desc: "Squicky balls in bundle",
-        },
-      ],
       users: [
         {
           id: 0,
@@ -247,7 +229,7 @@ class App extends React.Component {
             <Route
               exact
               path="/Trade"
-              render={() => <Trade appState={this.state} />}
+              render={() => <Trades />}
             />
             <Route
               exact

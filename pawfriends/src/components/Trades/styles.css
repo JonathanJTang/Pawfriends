@@ -1,0 +1,58 @@
+.trade-header {
+  margin: auto;
+  background-color: #dac8cb;
+  width: 500px;
+}
+
+.trade-header button, .popup-content button {
+  background-color: #9ca9bb;
+}
+
+.trade-header button:hover, .popup-content button:hover {
+  background-color: #6a6d85;
+}
+
+.trade-header h2 {
+  padding: 5px;
+  background-color: white;
+}
+
+.trade-header ul {
+  display: flex;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: -20px;
+  align-content: center;
+  justify-content: space-around;
+  width: 500px;
+  border-radius: 0.2em;
+}
+
+.trade-header a {
+  flex: 1;
+  padding: 10px;
+  transition: 0.2s;
+  color: white;
+}
+
+.trade-header a:hover {
+  color: #6a6d85;
+  background-color: white;
+}
+
+.tradebar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tradebar-btn {
+  display: inline-block;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.deletepost {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}

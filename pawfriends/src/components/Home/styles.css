@@ -21,27 +21,53 @@
 
 .service, .trade {
   background-color: white;
-  border-radius: 0.5em;
+  border-radius: 0.2em;
   overflow: hidden;
 }
 
-.home p, .header p {
+.home p, .header p, .deletepost, .tradebar p {
   opacity: 0.6;
 }
 
 .trade, .service {
-  padding: 10px 20px 10px 20px;
+  position: relative;
+  padding: 10px;
 }
 
 .trade div:last-child {
   align-self: flex-end;
 }
 
-.trade img {
+.trade>img {
   display: block;
   margin: auto;
   width: 150px;
   height: 150px;
   border: 1px solid #eeeeee;
   border-radius: 5em;
+  margin-top: 10px;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  padding: 10px;
+  gap: 20px;
+}
+
+.header div {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.header img:first-child {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #eeeeee;
+  border-radius: 5em;
+}
+
+.header p, .header h3 {
+  margin: 0;
 }
