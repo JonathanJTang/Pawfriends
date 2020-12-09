@@ -46,8 +46,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
   secret: '***REMOVED***', // later we will define the session secret as an environment variable for production. for now, we'll just hardcode it.
   cookie: { // the session cookie sent, containing the session id.
-      expires: 60000, // 1 minute expiry
-      httpOnly: true // important: saves it in only browser's memory - not accessible by javascript (so it can't be stolen/changed by scripts!).
+    expires: 60000, // 1 minute expiry
+    httpOnly: true // important: saves it in only browser's memory - not accessible by javascript (so it can't be stolen/changed by scripts!).
   },
   // Session saving options
   saveUninitialized: false, // don't save the initial session if the session object is unmodified (for example, we didn't log in).
@@ -442,13 +442,128 @@ jsonApiRouter.get("/services", async (req, res) => {
   }
 });
 
+/* Modifies the response object into a format with all the information needed by
+ * the frontend. */
+const modifyTradeReponse = async (response, postOwner, curUser) => {
+  addOwnerToResponse(response, postOwner);
+};
+
 // get all trade postings
 jsonApiRouter.get("/trades", async (req, res) => {
+  // const username = req.session.username;
+  const username = "user"; // TODO: remove after authentication is implemented
   try {
-    // could use .limit to limit the number of items to return
-    const allTrades = await Trade.find().sort({ postTime: "descending" });
-    res.send(allTrades);
+    // Authentication passed, meaning user is valid
+    const curUser = await User.findOne({ username: username });
+
+    // could use .limit() before .lean() to limit the number of items to return
+    const userPosts = await Trade.find()
+      .sort({
+        postTime: "descending",
+      })
+      .select("-__v") // remove fields unnecessary for the client
+      .lean();
+    // Modify array to send to the client
+    // userPosts.forEach(async (post) => {});
+    for (const post of userPosts) {
+      const ownerId = post.owner;
+      const postOwner = await User.findById(ownerId);
+      await modifyTradeReponse(post, postOwner, curUser);
+    }
+    res.send(userPosts);
   } catch (error) {
+    handleError(error, res);
+  }
+});
+
+/* Create a new trade */
+jsonApiRouter.post("/trades", multipartMiddleware, async (req, res) => {
+  // const username = req.session.username;
+  const username = "user"; // TODO: remove after authentication is implemented
+  try {
+    // Validate user input (title and content must be nonempty strings)
+    if (
+      typeof req.body.title !== "string" ||
+      req.body.title === ""
+    ) {
+      res.status(400).send("Bad Request");
+      return;
+    }
+
+    // Authentication passed, meaning user is valid
+    const user = await User.findOne({ username: username });
+
+    // Create a new trade
+    const trade = new Trade({
+      owner: user._id,
+      postTime: new Date(), // use current server time
+      title: req.body.title,
+      images: [], // TODO: implement image upload functionality
+      done: false,
+    });
+    // console.log("req.files: ", req.files);
+    // if (req.files && req.files.image !== undefined) {
+    //   // There's an uploaded image, upload it to the Cloudinary server.
+    //   console.log("imagePath: ", req.files.image.path);
+    //   const imageInfo = await uploadImage(req.files.image.path);
+    //   post.images.push(imageInfo);
+    // }
+    const newTrade = await trade.save();
+    // Build the JSON object to respond with
+    const jsonReponse = newTrade.toObject();
+    delete jsonReponse["__v"];
+    await modifyTradeReponse(jsonReponse, user, user);
+    res.send(jsonReponse);
+  } catch (error) {
+    // TODO: return 500 Internal server error if error was from uploadImage
+    handleError(error, res);
+  }
+});
+
+// Mark a trade as complete
+jsonApiRouter.put("/trades/:tradeId/done", async (req, res) => {
+  const tradeId = req.params.tradeId;
+  try {
+    // Check that id is valid
+    if (!ObjectID.isValid(tradeId)) {
+      res.status(404).send();
+      return;
+    }
+    const trade = await Trade.findById(tradeId);
+    if (trade === null) {
+      res.status(404).send();
+      return;
+    }
+    trade.done = true;
+    await trade.save();
+
+    res.send({});
+  } catch (error) {
+    handleError(error, res);
+  }
+});
+
+// Delete a trade
+jsonApiRouter.delete("/trades/:tradeId", async (req, res) => {
+  const tradeId = req.params.tradeId;
+  try {
+    if (!ObjectID.isValid(tradeId)) {
+      res.status(404).send();
+      return;
+    }
+    const trade = await Trade.findByIdAndDelete(tradeId);
+    if (trade === null) {
+      res.status(404).send();
+      return;
+    }
+
+    trade.images.forEach((imageInfo) => {
+      // Use uploader.destroy API to delete image from cloudinary server.
+      deleteImage(imageInfo);
+    });
+    res.send({});
+  } catch (error) {
+    // TODO: return 500 Internal server error if error was from deleteImage?
     handleError(error, res);
   }
 });

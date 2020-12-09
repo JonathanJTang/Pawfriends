@@ -70,6 +70,47 @@ export const modifyLikePost = (likePost, postId) => {
   return commentPromise;
 };
 
+export const getAllTrades = () => {
+  const tradesListPromise = fetchRequest(baseUrl + "/api/trades");
+  // This promise resolves to an array of posts
+  return tradesListPromise;
+};
+
+export const createTrade = (trade) => {
+  const request = new Request(baseUrl + "/api/trades", {
+    method: "post",
+    body: JSON.stringify(trade),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const tradePromise = fetchRequest(request);
+  // This promise resolves to an object containing post info
+  return tradePromise;
+};
+
+export const finishTrade = (tradeId) => {
+  const request = new Request(baseUrl + `/api/trades/${tradeId}/done`, {
+    method: "put",
+  });
+
+  const tradePromise = fetchRequest(request);
+  // This promise resolves to an object containing post info
+  return tradePromise;
+};
+
+export const removeTrade = (tradeId) => {
+  const request = new Request(baseUrl + `/api/trades/${tradeId}`, {
+    method: "delete",
+  });
+
+  const tradePromise = fetchRequest(request);
+  // This promise resolves to an object containing post info
+  return tradePromise;
+};
+
 // <--- USER API --->
 export const createUser = (userInfo) => {
   
