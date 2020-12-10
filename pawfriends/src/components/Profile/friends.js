@@ -4,18 +4,19 @@ import "./friends.css";
 
 class Friends extends React.Component {
   render() {
-    // replace with server call
-    const friends = this.props.appState.users[this.props.match.params.id].friends;
+    const { friends } = this.props.user;
 
     return (
-      <div className='profile-friends'>
-        {friends.length > 0 && friends.map(friendId => (
-          <Link to={`/profile/${friendId}`}>
-            <img src={require(`../../images/user${friendId}.png`).default} />
-            <p>{this.props.appState.users[friendId].name}</p>
-          </Link>
-        ))}
-      </div>
+      <>
+        {Object.entries(this.props.user).length !== 0 && <div className='profile-friends'>
+          {friends.length > 0 && friends.map(friend => (
+            <Link to={`/profile/${friend.username}`}>
+              <img src={friend.profilePicture.image_url} alt="friend" />
+              <p>{friend.actualName}</p>
+            </Link>
+          ))}
+        </div>}
+      </>
     );
   }
 }

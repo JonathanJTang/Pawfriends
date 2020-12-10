@@ -57,7 +57,7 @@ export const createComment = (comment, postId) => {
 export const modifyLikePost = (likePost, postId) => {
   const request = new Request(baseUrl + `/api/posts/${postId}/like`, {
     method: "put",
-    body: JSON.stringify({like: likePost}),
+    body: JSON.stringify({ like: likePost }),
     headers: {
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json",
@@ -111,9 +111,69 @@ export const removeTrade = (tradeId) => {
   return tradePromise;
 };
 
+export const getUserByUsername = (username) => {
+  const request = new Request(baseUrl + `/api/users/${username}`, {
+    method: "get",
+  });
+
+  const promise = fetchRequest(request);
+  return promise;
+};
+
+export const editStatus = (status, username) => {
+  const request = new Request(baseUrl + `/api/users/${username}/status`, {
+    method: "put",
+    body: JSON.stringify(status),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const promise = fetchRequest(request);
+  return promise;
+};
+
+export const addPet = (pet, userId) => {
+  const request = new Request(baseUrl + `/api/users/${userId}/pets`, {
+    method: "post",
+    body: JSON.stringify(pet),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const promise = fetchRequest(request);
+  return promise;
+};
+
+export const editPet = (pet, userId, petId) => {
+  const request = new Request(baseUrl + `/api/users/${userId}/${petId}`, {
+    method: "put",
+    body: JSON.stringify(pet),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const promise = fetchRequest(request);
+  return promise;
+};
+
+export const removePet = (userId, petId) => {
+  const request = new Request(baseUrl + `/api/users/${userId}/${petId}`, {
+    method: "delete",
+  });
+
+  const promise = fetchRequest(request);
+  return promise;
+};
+
 // <--- USER API --->
 export const createUser = (userInfo) => {
-  
+
   const request = new Request(baseUrl + `/api/users`, {
     method: "post",
     body: JSON.stringify(userInfo),
@@ -128,7 +188,7 @@ export const createUser = (userInfo) => {
 };
 
 export const loginUser = (userInfo) => {
-  
+
   const request = new Request(baseUrl + `/users/login`, {
     method: "post",
     body: JSON.stringify(userInfo),
@@ -143,7 +203,7 @@ export const loginUser = (userInfo) => {
 };
 
 export const logoutUser = () => {
-  
+
   const request = new Request(baseUrl + `/users/logout`, {
     method: "get",
     headers: {

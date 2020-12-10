@@ -1,15 +1,34 @@
 import React from "react";
 
+import { editPet, removePet } from "../../actions/apiRequests";
+import Popup from "../Popup";
+
 class PetProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      edit: false,
-    };
+      toggle: false,
+    }
   }
 
-  handleEdit = () => {
-    this.state.edit ? this.setState({ edit: false }) : this.setState({ edit: true });
+  handleChange = async (e) => {
+    const pet = this.props.pet;
+    pet[e.target.name] = e.target.value;
+    await editPet(pet, this.props.user._id, this.props.pet._id);
+  }
+
+  handleClick = () => {
+    this.state.toggle ? this.setState({ toggle: false }) : this.setState({ toggle: true });
+  }
+
+  remove = async () => {
+    const response = await removePet(this.props.user._id, this.props.pet._id);
+    if (response !== undefined) {
+      const i = this.props.petsList.indexOf(this.props.pet);
+      this.props.petsList.splice(i, 1);
+      this.props.stateUpdate(this.props.petsList);
+      this.handleClick();
+    }
   }
 
   render() {
@@ -17,21 +36,42 @@ class PetProfile extends React.Component {
 
     return (
       <div className='pet'>
-        <div>
-          <img src='http://placekitten.com/g/150/150' class='petimg' />
-          <textarea className="petname" disabled={!this.state.edit}>{pet.name}</textarea>
+        <div className="petcontainer">
+          <img src="http://placekitten.com/g/150/150" alt="pet" className="petimg" />
+          <textarea
+            name="name"
+            className="petname"
+            defaultValue={pet.name}
+            onChange={this.handleChange}
+          />
         </div>
-        <div>
+        <div className="petcontainer">
+          {this.state.toggle && <Popup confirm={this.remove} cancel={this.handleClick} />}
           <span className='petinfo'>
-            <img src={require('../../images/like.png').default} />
-            <textarea maxlength='20' className='likes' disabled={!this.state.edit}>{pet.likes}</textarea>
-            <img src={require('../../images/dislike.png').default} />
-            <textarea maxlength='20' className='dislikes' disabled={!this.state.edit}>{pet.dislikes}</textarea>
+            <img src={require('../../images/like.png').default} alt="likes" />
+            <textarea
+              name="likes"
+              className="likes"
+              maxLength="20"
+              defaultValue={pet.likes}
+              onChange={this.handleChange}
+            />
+            <img src={require('../../images/dislike.png').default} alt="dislikes" />
+            <textarea
+              name="dislikes"
+              className="dislikes"
+              maxLength="20"
+              defaultValue={pet.dislikes} onChange={this.handleChange}
+            />
           </span>
           <h3>About Me</h3>
-          <textarea className='petdesc' disabled={!this.state.edit}>Write anything about your pet here</textarea>
+          <textarea
+            name="description"
+            className='description'
+            defaultValue={pet.description} onChange={this.handleChange}
+          />
         </div>
-        <button onClick={this.handleEdit} />
+        <button className="deletepet" onClick={this.handleClick} />
       </div >
     );
   }

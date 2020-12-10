@@ -13,33 +13,51 @@
 
 .popup-content {
   position: relative;
+  display: flex;
+  flex-direction: column;
   margin: auto;
   width: 400px;
   height: 200px;
   border-radius: 0.2em;
   color: white;
-  background-color: #dac8cb;
-}
-
-.popup-content p {
-  margin-top: 80px;
+  background-color: #c1e2e7;
 }
 
 .popup-content div {
   display: flex;
-  gap: 10px;
-  justify-content: center;
+  gap: 15px;
+  margin: auto;
+}
+
+.popup-content button:first-child {
+  background-color: #da8fa6;
+}
+
+.popup-content button:last-child {
+  background-color: #9bb5ce;
+}
+
+.popup-content button:first-child:hover {
+  background-color: #e79aba;
+}
+
+.popup-content button:last-child:hover {
+  background-color: #94c8e0;
+}
+
+.popup-content h2, .popup-content p {
+  text-align: center;
+  opacity: 1;
 }
 
 .popup-content h2 {
-  position: absolute;
-  top: 0;
   margin: 0;
-  padding: 5px 0;
+  padding: 10px 0;
   width: 100%;
   height: 20px;
   background-color: white;
   color: black;
   font-size: 16px;
   letter-spacing: 0.1em;
+  border-radius: 0.2em 0.2em 0 0;
 }

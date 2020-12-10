@@ -8,7 +8,7 @@ const multipart = require("connect-multiparty");
 const multipartMiddleware = multipart();
 
 // import the mongoose models
-const { User } = require("../../models/user");
+const { User, Pet } = require("../../models/user");
 const { Post } = require("../../models/post");
 const { Service } = require("../../models/service");
 const { Trade } = require("../../models/trade");
@@ -525,6 +525,146 @@ const mongoChecker = (req, res, next) => {
       handleError(error, res);
     }
   });
+
+  /* Return User object that matches username */
+jsonApiRouter.get("/users/:username", async (req, res) => {
+    const username = req.params.username;
+    try {
+      // Search for user
+      const user = await User.findOne({ username: username });
+      if (user === null) {
+        res.status(404).send();
+        return;
+      }
+  
+      if (user.profilePicture === undefined) {
+        user.profilePicture = globals.defaultAvatar;
+      }
+  
+      // Temporary, add fields to user on registration
+      if (user.status === undefined) {
+        user.status = "Empty status";
+      }
+  
+      if (user.location === undefined) {
+        user.location = "Somewhere, Earth";
+      }
+  
+      res.send(user);
+    } catch (error) {
+      handleError(error, res);
+    }
+  });
+  
+  // Save user status change
+  jsonApiRouter.put("/users/:username/status", async (req, res) => {
+    const username = req.params.username;
+    try {
+      const user = await User.findOne({ username: username });
+      // validate
+      if (user === null) {
+        res.status(404).send();
+        return;
+      }
+      if (
+        typeof req.body.status !== "string"
+      ) {
+        res.status(400).send("Bad Request");
+        return;
+      }
+      // save status
+      user.status = req.body.status;
+      user.save();
+  
+      res.send({});
+    } catch (error) {
+      handleError(error, res);
+    }
+  });
+  
+  // Add a new pet to user's profile
+  jsonApiRouter.post("/users/:userId/pets", async (req, res) => {
+    try {
+      const user = await User.findById(req.params.userId);
+      if (user === null) {
+        res.status(404).send();
+        return;
+      }
+      if (
+        typeof req.body.name !== "string" ||
+        typeof req.body.likes !== "string" ||
+        typeof req.body.dislikes !== "string"
+      ) {
+        res.status(400).send("Bad Request");
+        return;
+      }
+      const newPet = new Pet({
+        name: req.body.name,
+        likes: req.body.likes,
+        dislikes: req.body.dislikes,
+        description: "Write anything about your pet here"
+      })
+      user.pets.push(newPet);
+      user.save();
+      res.send(newPet);
+    } catch (error) {
+      handleError(error, res);
+    }
+  });
+  
+  // Save pet information
+  jsonApiRouter.put("/users/:userId/:petId", async (req, res) => {
+    try {
+      const user = await User.findById(req.params.userId);
+      if (user === null) {
+        res.status(404).send();
+        return;
+      }
+      const pet = user.pets.id(req.params.petId);
+      if (pet === null) {
+        res.status(404).send();
+        return;
+      }
+      // save information
+      const i = user.pets.indexOf(pet);
+      user.pets[i].name = req.body.name;
+      user.pets[i].likes = req.body.likes;
+      user.pets[i].dislikes = req.body.dislikes;
+      user.pets[i].description = req.body.description;
+      user.save();
+  
+      res.send({});
+    } catch (error) {
+      handleError(error, res);
+      console.log("hmm")
+    }
+  });
+  
+  // Delete a pet
+  jsonApiRouter.delete("/users/:userId/:petId", async (req, res) => {
+    try {
+      const user = await User.findById(req.params.userId);
+      if (user === null) {
+        res.status(404).send();
+        return;
+      }
+      const pet = user.pets.id(req.params.petId);
+      if (pet === null) {
+        res.status(404).send();
+        return;
+      }
+      // delete pet at index
+      const i = user.pets.indexOf(pet);
+      user.pets.splice(i, 1);
+      user.save();
+  
+      res.send({});
+    } catch (error) {
+      handleError(error, res);
+      console.log("hmm")
+    }
+  });
+  
 
   // export the router
 module.exports = jsonApiRouter

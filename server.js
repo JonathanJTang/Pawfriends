@@ -11,6 +11,7 @@ const path = require("path");
 const { mongoose } = require("./db/mongoose");
 mongoose.set("useFindAndModify", false); // for some deprecation issues
 
+
 // body-parser: middleware for parsing HTTP JSON body into a usable object
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
@@ -58,7 +59,8 @@ app.use(
 );
 
 
-app.use('/api', require('./routes/jsonRoutes/jsonRoutes'));
+
+app.use("/api", require('./routes/jsonRoutes/jsonRoutes'));
 app.use(require('./routes/userRoutes/users'))
 
 /* Webpage routes */

@@ -21,9 +21,7 @@
 }
 
 .navbar ul li {
-    display: inline-block;
     margin: 13px 20px 0px 20px;
-    list-style: none;
     text-transform: uppercase;
     letter-spacing: 0.2em;
     font-weight: bold;
@@ -36,7 +34,6 @@
 }
 
 .inactive:hover, .active {
-    display: flex;
     opacity: 1;
     border-bottom-color: #bde0e5;
 }

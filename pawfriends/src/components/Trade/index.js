@@ -45,7 +45,7 @@ class Trade extends React.Component {
 
     return (
       <div className="trade">
-        {this.state.toggle && <Popup remove={this.remove} cancel={this.handleClick} />}
+        {this.state.toggle && <Popup confirm={this.remove} cancel={this.handleClick} />}
         <div className="tradebar">
           <p className="location">{user.location}</p>
           <div>
@@ -55,11 +55,11 @@ class Trade extends React.Component {
         </div>
         {image}
         <div className="header">
-          <Link to={`/profile/${user.id}`}>
+          <Link to={`/profile/${user.username}`}>
             <img src={user.avatar.image_url} alt="profile avatar" />
           </Link>
           <div className="postText">
-            <Link to={"/profile/" + user.id}>
+            <Link to={`/profile/${user.username}`}>
               <p>@{user.actualName}</p>
             </Link>
             {trade.title}

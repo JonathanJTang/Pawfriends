@@ -9,7 +9,7 @@
     padding: 100px 50px 30px 50px;
     width: 700px;
     border-radius: 0.2em;
-    background-color: #dac8cb;
+    background-color: #c1e2e7;
 }
 
 .profile-nav {
@@ -23,6 +23,14 @@
     gap: 25px;
     background-color: white;
     border-radius: 0.2em 0.2em 0 0;
+}
+
+.profile-nav button {
+    background-color: #d4d5e9;
+}
+
+.profile-nav button:hover {
+    background-color: #b6bbd8;
 }
 
 .profile h1, .petname {
@@ -40,4 +48,8 @@
     position: absolute;
     top: 15px;
     right: 20px;
+}
+
+.profile .active {
+    background-color: #b6bbd8;
 }
