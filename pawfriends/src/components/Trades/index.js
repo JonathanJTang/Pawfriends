@@ -91,7 +91,7 @@ class Trades extends React.Component {
     return (
       <div className="posts">
         <div className="trade-header">
-          <img src={pup} class="tradepup" />
+          <img src={pup} className="tradepup" />
           <h2>Trade pet supplies!</h2>
           {this.state.toggle ?
             <form className="createPost" onSubmit={this.handleSubmit}>
