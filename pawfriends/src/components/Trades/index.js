@@ -4,6 +4,7 @@ import "./styles.css";
 import { Link } from "react-router-dom";
 import { getAllTrades, createTrade } from "../../actions/apiRequests";
 import Trade from "../Trade";
+import pup from "../../images/tradepup.png";
 
 class Trades extends React.Component {
   constructor(props) {
@@ -90,6 +91,7 @@ class Trades extends React.Component {
     return (
       <div className="posts">
         <div className="trade-header">
+          <img src={pup} class="tradepup" />
           <h2>Trade pet supplies!</h2>
           {this.state.toggle ?
             <form className="createPost" onSubmit={this.handleSubmit}>
@@ -112,13 +114,13 @@ class Trades extends React.Component {
             <button onClick={this.handleToggle}>Create trade</button>
           }
           <ul>
-            <Link to="" onClick={this.handleClick} name="current">
+            <Link to="" className={this.state.filter === "current" ? "active" : ""} onClick={this.handleClick} name="current">
               <li name="current">Current trades</li>
             </Link>
-            <Link to="" onClick={this.handleClick} name="past">
+            <Link to="" className={this.state.filter === "past" ? "active" : ""} onClick={this.handleClick} name="past">
               <li name="past">Past trades</li>
             </Link>
-            <Link to="" onClick={this.handleClick} name="saved">
+            <Link to="" className={this.state.filter === "saved" ? "active" : ""} onClick={this.handleClick} name="saved">
               <li name="saved">Saved</li>
             </Link>
           </ul>

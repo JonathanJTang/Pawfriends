@@ -1,20 +1,27 @@
 .trade-header {
+  position: relative;
   margin: auto;
-  background-color: #dac8cb;
+  background-color: #c1e2e7;
   width: 500px;
 }
 
-.trade-header button, .popup-content button {
-  background-color: #9ca9bb;
+.trade-header button {
+  background-color: #a8d9e4;
 }
 
-.trade-header button:hover, .popup-content button:hover {
-  background-color: #6a6d85;
+.trade-header button {
+  border: 2px solid white;
+}
+
+.trade-header button:hover {
+  color: #a8d9e4;
+  background-color: white;
 }
 
 .trade-header h2 {
-  padding: 5px;
+  padding: 10px;
   background-color: white;
+  letter-spacing: 0.05em;
 }
 
 .trade-header ul {
@@ -33,16 +40,24 @@
   padding: 10px;
   transition: 0.2s;
   color: white;
+  background-color: #c1e2e7;
 }
 
-.trade-header a:hover {
-  color: #6a6d85;
-  background-color: white;
+.trade-header a:hover, .trade-header .active {
+  background-color: #a8d9e4;
+}
+
+.trade-header form {
+  width: 80%;
 }
 
 .tradebar {
   display: flex;
   justify-content: space-between;
+}
+
+.tradebar .location::before {
+  content: url("../../images/location.png");
 }
 
 .tradebar-btn {
@@ -55,4 +70,10 @@
   position: absolute;
   right: 10px;
   bottom: 10px;
+}
+
+.tradepup {
+  position: absolute;
+  top: -50px;
+  left: -200px;
 }
