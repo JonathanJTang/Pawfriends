@@ -6,10 +6,7 @@ const express = require('express');
 const router = express.Router(); // Express Router
 
 // import the user mongoose model
-const { User } = require('../models/user')
-
-// // helpers/middlewares
-// const { mongoChecker, isMongoError } = require("./helpers/mongo_helpers");
+const { User } = require('../../models/user')
 
 /*** Helper functions below **********************************/
 function isMongoError(error) { // checks for first error returned by promise rejection if Mongo database suddently disconnects
@@ -17,7 +14,6 @@ function isMongoError(error) { // checks for first error returned by promise rej
 }
 
 /*** User API routes ****************/
-// Set up a POST route to create a user of your web app (*not* a student).
 router.post('/users', async (req, res) => {
 
 	// Create a new user
@@ -42,8 +38,6 @@ router.post('/users', async (req, res) => {
 		}
 	}
 })
-
-//////////////
 
 /*** Login and Logout routes ***/
 //A route to login and create a session
@@ -98,8 +92,6 @@ router.get("/users/check-session", (req, res) => {
         res.status(401).send();
     }
 });
-
-
 
 // export the router
 module.exports = router
