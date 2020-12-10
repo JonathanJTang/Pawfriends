@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 
 import { Route, Switch, BrowserRouter } from "react-router-dom";
-import {checkSession} from "./actions/authenticationAndSessionCheck"
+import { checkSession } from "./actions/authenticationAndSessionCheck"
 
 
 // Temporary: import various components so we can work on them
@@ -55,8 +55,8 @@ class App extends React.Component {
     //   console.log("doesn't exist");
     //   this.setState({ curUserId: -1 });
     // }
-    
-    
+
+
   };
 
   handleRegistration = (un, pw) => {
@@ -69,8 +69,8 @@ class App extends React.Component {
         password: pw,
       };
       userArr.push(newUser);
-      
-      
+
+
       this.setState({ users: userArr });
     }
   };
@@ -202,7 +202,7 @@ class App extends React.Component {
       <div className="App">
         <BrowserRouter>
           {/* in phase 2, write function to switch modify navbar depending on user type (not logged in, user, admin) */}
-          <NavBar {...this.props} app={this} appState={this.state}/>
+          <NavBar {...this.props} app={this} appState={this.state} />
           <Switch>
             {/* <Route
               exact
@@ -244,7 +244,7 @@ class App extends React.Component {
             <Route
               exact
               path="/profile/:id"
-              render={(props) => <Profile {...props} appState={this.state} />}
+              render={(props) => <Profile {...props} />}
             />
             <Route
               exact
@@ -261,15 +261,15 @@ class App extends React.Component {
               )}
             />
             <Route
-              exact path={["/", "/login"] /* any of these URLs are accepted. */ }
-              render={ props => (
+              exact path={["/", "/login"] /* any of these URLs are accepted. */}
+              render={props => (
                 <div className="app">
-                    { /* Different componenets rendered depending on if someone is logged in. */}
-                    {!currentUser ?  <Index {...props} app={this} appState={this.state} handleLogin={this.handleRegistration} /> :  <Home {...props} app={this} appState={this.state} />}
-                </div>                  
+                  { /* Different componenets rendered depending on if someone is logged in. */}
+                  {!currentUser ? <Index {...props} app={this} appState={this.state} handleLogin={this.handleRegistration} /> : <Home {...props} app={this} appState={this.state} />}
+                </div>
               )}
             />
-            
+
           </Switch>
         </BrowserRouter>
       </div>

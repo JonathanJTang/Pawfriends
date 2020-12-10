@@ -1,44 +1,45 @@
 import React from "react";
 import "./info.css";
 
+import { editStatus } from "../../actions/apiRequests";
+
 class Info extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      flip: false,
-    };
+    this.state = { flip: false };
   }
 
   handleFlip = () => {
     this.state.flip ? this.setState({ flip: false }) : this.setState({ flip: true });
   }
 
-  render() {
-    // replace with server call
-    const curUserId = this.props.appState.curUserId;
-    const profileId = this.props.match.params.id;
-    const user = this.props.appState.users[profileId];
+  handleChange = async (e) => {
+    await editStatus({ status: e.target.value }, this.props.user.username);
+  }
 
+  render() {
+    const { user } = this.props;
     return (
       <>
-        { user != null &&
+        { Object.entries(user).length !== 0 &&
           <div className='card'>
             {/* face of card: profile pic, name, status */}
             {!this.state.flip &&
               <div>
-                <img src={require(`../../images/user${user.id}.png`).default} className='avatar' />
+                <img src={user.profilePicture.image_url} alt="profile" className='avatar' />
 
-                <img src={require(`../../images/${user.favpet}.png`).default} className='favpet' />
-                <img src={require(`../../images/${user.gender}.png`).default} className='gender' />
+                {/* <img src={require(`../../images/${user.favpet}.png`).default} className='favpet' /> */}
+                <img src={require(`../../images/${(user.gender).toLowerCase()}.png`).default} alt="gender" className='gender' />
 
-                <h1>{user.name}</h1>
-                <textarea className='status' maxlength='26'>{user.status}</textarea>
+                <h1>{user.actualName}</h1>
+                <textarea className='status' maxLength='26' defaultValue={user.status} onChange={this.handleChange} />
               </div>
             }
 
             {/* back of card: user's information */}
             {this.state.flip &&
               <div className='cardinfo'>
+                <h2>{`About ${user.actualName}`}</h2>
                 <p className='location'>{user.location}</p>
                 <p className='birthday'>{user.birthday}</p>
               </div>

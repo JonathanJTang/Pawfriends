@@ -1,7 +1,9 @@
 .profile-pet {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
+  width: 750px;
 }
 
 .profile-pet h1 {
@@ -11,26 +13,28 @@
 .profile-pet>div {
   position: relative;
   display: flex;
-  width: 700px;
+  width: 720px;
   height: 220px;
   padding: 25px 15px 15px 15px;
   border-radius: 0.5em;
   text-align: left;
-  background-color: white;
+  background-color: #ffffffcc;
   justify-content: flex-end;
 }
 
 .profile-pet>button {
   align-self: flex-end;
-  background-color: #9c9fb4;
+  background-color: #a8d9e4;
+  border: 2px solid white;
 }
 
 .profile-pet>button:hover {
-  background-color: #6a6d85;
+  color: #a8d9e4;
+  background-color: white;
 }
 
 .profile-pet form {
-  background-color: white;
+  background-color: #ffffffcc;
   margin: auto;
   width: 50%;
   border-radius: 0.5em;
@@ -41,6 +45,10 @@
   gap: 10px;
 }
 
+.profile-pet form input[type=submit] {
+  width: 50%;
+}
+
 .profile-pet form img, .petimg {
   width: 120px;
   height: 120px;
@@ -48,6 +56,10 @@
   padding: 3px;
   border: 2px solid #9c9fb4;
   border-radius: 5em;
+}
+
+.pet textarea {
+  border: none;
 }
 
 .petinfo {
@@ -67,91 +79,84 @@
   width: 50%;
 }
 
+.petinfo>img {
+  opacity: 0.5;
+}
+
 .likes:disabled, .dislikes:disabled {
   border-color: transparent;
   background-color: transparent;
 }
 
-.profile-pet>div::before, .profile-pet>div::after {
-  content: '';
-  position: absolute;
-  top: 10px;
-  width: 15px;
-  height: 15px;
-  border-radius: 5em;
-}
-
-.profile-pet>div::before {
-  right: 10px;
-  background-color: #e5bdbd;
-}
-
-.profile-pet>div::after {
-  right: 35px;
-  background-color: #e5dfbd;
-}
-
-.pet div {
+.petcontainer {
   display: flex;
   flex-direction: column;
   flex: 0.77;
 }
 
-.pet div:first-child {
+.petcontainer:first-child {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  background-color: #6a6d85;
+  background-color: #c1e2e756;
   border-radius: 0.5em 0em 0em 0.5em;
 }
 
 .petname {
-  color: white;
   text-align: center;
   padding: 20px 0;
   margin: auto;
   width: 150px;
-  border: none;
+  color: #6a6d85;
   background-color: transparent;
   overflow: hidden;
 }
 
-.petdesc, .petinfo textarea {
+.description, .petinfo textarea {
   font-size: 14px;
   letter-spacing: 0.1em;
 }
 
-.petdesc {
+.description {
   height: 100%;
   padding: 10px;
-  color: white;
-  background-color: #9ca9bb;
   border-radius: 0.5em;
 }
 
-.petdesc:enabled {
-  background-color: #6a6d85;
+.description:hover, .description:focus, .likes:hover, .likes:focus, .dislikes:hover, .dislikes:focus {
+  background-color: #c1e2e73b;
 }
 
 .petimg {
   border-color: white;
 }
 
-.pet button {
+.deletepet, .pet::before, .pet::after {
   position: absolute;
-  width: 24px;
-  height: 24px;
-  top: 65px;
-  left: 240px;
-  background-color: transparent;
-  border: none;
+  content: "";
+  top: 10px;
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  border-radius: 5em;
 }
 
-.pet button:hover {
-  background-color: transparent;
+.deletepet {
+  right: 10px;
+  background-color: #e5bdbd;
 }
 
-.pet button::before {
-  content: url('../../images/edit.png');
+.pet::before {
+  right: 35px;
+  background-color: #e5dfbd;
+}
+
+.pet::after {
+  right: 60px;
+  background-color: #cfe5bd;
+}
+
+.pet .popup, .pet .popup h2 {
+  border-radius: 0.2em;
 }

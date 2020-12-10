@@ -2,10 +2,13 @@ import React from "react";
 import PetProfile from "./petProfile.js";
 import "./pets.css";
 
+import { addPet } from "../../actions/apiRequests";
+
 class Pets extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      pets: this.props.user.pets,
       addPet: false,
       newPet: {
         name: "",
@@ -13,6 +16,10 @@ class Pets extends React.Component {
         dislikes: "",
       }
     }
+  }
+
+  stateUpdate = petData => {
+    this.setState({ pets: petData });
   }
 
   handleClick = () => {
@@ -23,40 +30,60 @@ class Pets extends React.Component {
     this.state.newPet[e.target.name] = e.target.value;
   }
 
-  handleSubmit = e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
-    const pets = this.props.appState.users[this.props.match.params.id].pets;
-    // replace with server call
-    pets.push({
-      name: this.state.newPet.name,
-      likes: this.state.newPet.likes,
-      dislikes: this.state.newPet.dislikes,
-    })
-    this.setState({ addPet: false });
+    const pet = await addPet(this.state.newPet, this.props.user._id);
+    if (pet !== undefined) {
+      this.state.pets.push(pet);
+      this.setState({
+        pets: this.state.pets,
+        addPet: false,
+      });
+    }
   }
 
   render() {
     // replace with server call
-    const pets = this.props.appState.users[this.props.match.params.id].pets;
-    const curUserId = this.props.appState.curUserId;
-    const profileId = this.props.match.params.id;
+    // const pets = this.props.appState.users[this.props.match.params.id].pets;
+    // const curUserId = this.props.appState.curUserId;
+    // const profileId = this.props.match.params.id;
+
+    const { user } = this.props;
 
     return (
-      <div className='profile-pet'>
-        {curUserId == profileId && <button onClick={this.handleClick}>Add pet</button>}
-        {this.state.addPet &&
-          <form>
-            <img src='http://placekitten.com/g/150/150' />
-            <input name='name' placeholder="Pet's name" onChange={this.handleChange} />
-            <input name='likes' placeholder="Likes" onChange={this.handleChange} />
-            <input name='dislikes' placeholder="Dislikes" onChange={this.handleChange} />
-            <button onClick={this.handleSubmit}>Save</button>
-          </form>
-        }
-        {pets.map(pet => (
-          <PetProfile pet={pet} />
-        ))}
-      </div>
+      <>
+        {Object.entries(user).length !== 0 && < div className='profile-pet'>
+          {/* {curUserId == profileId && <button onClick={this.handleClick}>Add pet</button>} */}
+          <button onClick={this.handleClick}>Add pet</button>
+          {this.state.addPet &&
+            <form onSubmit={this.handleSubmit}>
+              <img src='http://placekitten.com/g/150/150' alt="pet" />
+              <input
+                name="name"
+                placeholder="Pet's name"
+                onChange={this.handleChange}
+                required
+              />
+              <input
+                name="likes"
+                placeholder="Likes"
+                onChange={this.handleChange}
+                required
+              />
+              <input
+                name="dislikes"
+                placeholder="Dislikes"
+                onChange={this.handleChange}
+                required
+              />
+              <input type="submit" value="Save" />
+            </form>
+          }
+          {this.state.pets.map((pet, index) => (
+            <PetProfile key={index} user={user} pet={pet} petsList={this.state.pets} stateUpdate={this.stateUpdate} />
+          ))}
+        </div>}
+      </>
     );
   }
 }
