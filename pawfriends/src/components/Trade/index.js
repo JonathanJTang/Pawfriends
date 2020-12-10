@@ -23,7 +23,7 @@ class Trade extends React.Component {
   remove = async () => {
     const response = await removeTrade(this.props.trade._id);
     if (response !== undefined) {
-      const i = this.props.trades.indexOf(this.state.trade);
+      const i = this.props.trades.findIndex(current_trade => current_trade._id == this.props.trade._id)
       this.props.trades.splice(i, 1);
       this.props.stateUpdate(this.props.trades);
       this.handleClick();
