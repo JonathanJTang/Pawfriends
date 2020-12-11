@@ -15,6 +15,7 @@ import AdminDashboard from "./components/AdminDashboard";
 import Index from "./components/Index";
 
 import NavBar from "./components/NavBar";
+import NavBarGuest from "./components/NavBarGuest";
 
 class App extends React.Component {
   // Global state passed to all components of the app
@@ -98,16 +99,8 @@ class App extends React.Component {
     return (
       <div className="App">
         <BrowserRouter>
-          {/* in phase 2, write function to switch modify navbar depending on user type (not logged in, user, admin) */}
-          <NavBar {...this.props} app={this} appState={this.state} />
+          {currentUser ? <NavBar app={this} currentUser={currentUser} /> : <NavBarGuest />}
           <Switch>
-            {/* <Route
-              exact
-              path="/Login"
-              render={() => (
-                <Login appState={this.state} handleLogin={this.handleLogin} />
-              )}
-            /> */}
             <Route
               exact
               path="/Registration"
@@ -128,7 +121,7 @@ class App extends React.Component {
             <Route
               exact
               path="/profile/:id"
-              render={(props) => <Profile {...props} />}
+              render={(props) => <Profile {...props} currentUser={currentUser} />}
             />
             <Route
               exact
@@ -137,24 +130,15 @@ class App extends React.Component {
             />
             <Route
               exact
-              path="/Home"
-              render={() => (
-                <div>
-                  <Home appState={this.state} />
-                </div>
-              )}
-            />
-            <Route
-              exact
               path={["/", "/login"] /* any of these URLs are accepted. */}
               render={(props) => (
                 <div className="app">
                   {/* Different componenets rendered depending on if someone is logged in. */}
                   {!currentUser ? (
-                    <Index {...props} />
+                    <Index />
                   ) : (
-                    <Home {...props} app={this} appState={this.state} />
-                  )}
+                      <Home {...props} app={this} appState={this.state} />
+                    )}
                 </div>
               )}
             />

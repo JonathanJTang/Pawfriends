@@ -2,7 +2,6 @@ import React from "react";
 import "./styles.css";
 
 import { Link } from "react-router-dom";
-import NavBarGuest from "../NavBarGuest";
 import {loginUser} from "../../actions/apiRequests"
 
 class Index extends React.Component {
@@ -24,7 +23,7 @@ class Index extends React.Component {
     })
     if (user!== undefined) {
       alert("succesful login")
-      this.props.history.push("/home");
+      window.location.reload();
     } else {
       alert("bad login")
     }
@@ -52,7 +51,6 @@ class Index extends React.Component {
   render() {
     return (
       <div className="login">
-        <NavBarGuest />
         <form>
           <h1>Welcome back!</h1>
           <input
