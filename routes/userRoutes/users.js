@@ -12,7 +12,7 @@ const { User } = require('../../models/user')
 const { isMongoError, mongoChecker } = require('../helpers/routeHelpers')
 
 /*** User API routes ****************/
-router.post('/users', mongoChecker async (req, res) => {
+router.post('/users', mongoChecker, async (req, res) => {
 
 	// Create a new user
 	const user = new User({
