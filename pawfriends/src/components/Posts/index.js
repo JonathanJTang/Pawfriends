@@ -20,7 +20,6 @@ class CreatePost extends React.Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-
     const images = e.currentTarget.children.namedItem("image").files;
     for (const image of images) {
       const validFileTypes = ["png", "jpg", "jpeg", "gif"];
@@ -104,6 +103,10 @@ class Posts extends React.Component {
     this.setState({ showCreatePostBox: false, posts: updatedPosts });
   };
 
+  stateUpdate = (updatedPosts) => {
+    this.setState({ posts: updatedPosts });
+  }
+
   render() {
     return (
       <div className="posts">
@@ -122,7 +125,7 @@ class Posts extends React.Component {
 
         <div className="postsList">
           {this.state.posts.map((post, index) => (
-            <Post key={post._id} postData={post} user={post.owner} />
+            <Post key={post._id} postData={post} user={post.owner} posts={this.state.posts} stateUpdate={this.stateUpdate} />
           ))}
         </div>
       </div>
