@@ -93,6 +93,9 @@ class Trades extends React.Component {
         <div className="trade-header">
           <img src={pup} className="tradepup" />
           <h2>Trade pet supplies!</h2>
+          <h4>Need some extra toys?</h4>
+          <h4> See what your other pet owners are trading! </h4>
+          <h4>Click on "CREATE TRADE" to move forward with an exchange!</h4>
           {this.state.toggle ?
             <form className="createPost" onSubmit={this.handleSubmit}>
               <textarea
