@@ -195,7 +195,7 @@ class Caretakers extends React.Component {
             <Service
               key={index}
               service={service}
-              user={this.props.appState.users[service.userId]}
+              user={null /*TODO: remove dependence on appState, get necessary information from server */ /*this.props.appState.users[service.userId]*/}
               setFilterTag={this.setFilterTag}
             />
           ))}

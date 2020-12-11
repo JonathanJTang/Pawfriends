@@ -30,7 +30,7 @@ class Home extends React.Component {
 
   render() {
     const appState = this.props.appState;
-    const users = this.props.appState.users;
+    // const users = this.props.appState.users;
 
     let allPosts, allServices, allTrades;
 
@@ -45,7 +45,7 @@ class Home extends React.Component {
         <div key={index} className="service">
           <h3>{service.desc}</h3>
           <Link to={"/profile/" + service.userId}>
-            <p>@{users[service.userId].name}</p>
+            <p>@{/*users[service.userId].name*/}</p>
           </Link>
         </div>
       ));

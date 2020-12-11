@@ -7,6 +7,7 @@ import "./styles.css";
 class AdminDashboard extends React.Component {
   render() {
     const { appState } = this.props;
+    // TODO: remove dependence on appState, instead get information from server calls
 
     return (
       <div className="stats">
