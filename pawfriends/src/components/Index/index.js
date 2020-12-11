@@ -32,22 +32,22 @@ class Index extends React.Component {
     
   };
 
-  validate = () => {
-    const user = this.props.appState.users.find(
-      (user) => user.username === this.state.input["name"]
-    );
-    if (user !== undefined && this.state.input["pass"] === user.password) {
-      // Username and password matches one of the registered users
-      this.props.appState.curUserId = user.id;
-      if (user.type === "user") {
-        return 1;
-      }
-      if (user.type === "admin") {
-        return 2;
-      }
-    }
-    this.setState({ error: true }); // Otherwise, an error occurred
-  };
+  // validate = () => {
+  //   const user = this.props.appState.users.find(
+  //     (user) => user.username === this.state.input["name"]
+  //   );
+  //   if (user !== undefined && this.state.input["pass"] === user.password) {
+  //     // Username and password matches one of the registered users
+  //     this.props.appState.curUserId = user.id;
+  //     if (user.type === "user") {
+  //       return 1;
+  //     }
+  //     if (user.type === "admin") {
+  //       return 2;
+  //     }
+  //   }
+  //   this.setState({ error: true }); // Otherwise, an error occurred
+  // };
 
   render() {
     return (

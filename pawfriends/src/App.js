@@ -2,8 +2,7 @@ import React from "react";
 import "./App.css";
 
 import { Route, Switch, BrowserRouter } from "react-router-dom";
-import { checkSession } from "./actions/authenticationAndSessionCheck"
-
+import { checkSession } from "./actions/authenticationAndSessionCheck";
 
 // Temporary: import various components so we can work on them
 import Registration from "./components/Registration";
@@ -24,11 +23,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       users: [],
-      posts: [],
-      careTakers: [],
-      tradeToys: [],
-      curUserId: 1,
-      currentUser: null
+      currentUser: null,
     };
     checkSession(this);
   }
@@ -55,11 +50,10 @@ class App extends React.Component {
     //   console.log("doesn't exist");
     //   this.setState({ curUserId: -1 });
     // }
-
-
   };
 
   handleRegistration = (un, pw) => {
+    // TODO: have this method make a server call
     let userArr = this.state.users;
     if (pw != "") {
       let newUser = {
@@ -70,7 +64,6 @@ class App extends React.Component {
       };
       userArr.push(newUser);
 
-
       this.setState({ users: userArr });
     }
   };
@@ -78,44 +71,6 @@ class App extends React.Component {
   componentDidMount = () => {
     document.title = "PawFriends";
     this.setState({
-      posts: [
-        {
-          title: "Having a great day",
-          _id: 1,
-          owner: {
-            id: 1,
-            username: "user",
-            actualName: "John Smith",
-            avatar: {
-              image_id: "pawfriends/defaultAvatar_sflv0g.png",
-              image_url:
-                "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png",
-            },
-          },
-          postTime: "2020-05-20T08:26:00.000Z",
-          content: "Hope everyone's doing well!",
-          image: 1,
-          comments: [],
-        },
-        {
-          title: "I love my cat",
-          _id: 2,
-          owner: {
-            id: 2,
-            username: "user2",
-            actualName: "Jane Doe",
-            avatar: {
-              image_id: "pawfriends/defaultAvatar_sflv0g.png",
-              image_url:
-                "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png",
-            },
-          },
-          postTime: "2020-07-30T14:26:00.000Z",
-          content: "Her expression is so my mood right now",
-          image: 2,
-          comments: [],
-        },
-      ],
       services: [
         {
           userId: 1,
@@ -211,26 +166,9 @@ class App extends React.Component {
                 <Login appState={this.state} handleLogin={this.handleLogin} />
               )}
             /> */}
-            <Route
-              exact
-              path="/Registration"
-              render={() => (
-                <Registration
-                  appState={this.state}
-                  handleRegistration={this.handleRegistration}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/Posts"
-              render={() => <Posts />}
-            />
-            <Route
-              exact
-              path="/Trade"
-              render={() => <Trades />}
-            />
+            <Route exact path="/Registration" render={(props) => <Registration {...props} />} />
+            <Route exact path="/Posts" render={() => <Posts />} />
+            <Route exact path="/Trade" render={() => <Trades />} />
             <Route
               exact
               path="/Caretakers"
@@ -261,15 +199,21 @@ class App extends React.Component {
               )}
             />
             <Route
-              exact path={["/", "/login"] /* any of these URLs are accepted. */}
-              render={props => (
+              exact
+              path={["/", "/login"] /* any of these URLs are accepted. */}
+              render={(props) => (
                 <div className="app">
-                  { /* Different componenets rendered depending on if someone is logged in. */}
-                  {!currentUser ? <Index {...props} app={this} appState={this.state} handleLogin={this.handleRegistration} /> : <Home {...props} app={this} appState={this.state} />}
+                  {/* Different componenets rendered depending on if someone is logged in. */}
+                  {!currentUser ? (
+                    <Index
+                      {...props}
+                    />
+                  ) : (
+                    <Home {...props} app={this} appState={this.state} />
+                  )}
                 </div>
               )}
             />
-
           </Switch>
         </BrowserRouter>
       </div>
