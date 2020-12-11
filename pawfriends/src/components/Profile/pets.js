@@ -43,18 +43,12 @@ class Pets extends React.Component {
   }
 
   render() {
-    // replace with server call
-    // const pets = this.props.appState.users[this.props.match.params.id].pets;
-    // const curUserId = this.props.appState.curUserId;
-    // const profileId = this.props.match.params.id;
-
-    const { user } = this.props;
+    const { user, isOwnProfile } = this.props;
 
     return (
       <>
         {Object.entries(user).length !== 0 && < div className='profile-pet'>
-          {/* {curUserId == profileId && <button onClick={this.handleClick}>Add pet</button>} */}
-          <button onClick={this.handleClick}>Add pet</button>
+          {isOwnProfile && <button onClick={this.handleClick}>Add pet</button>}
           {this.state.addPet &&
             <form onSubmit={this.handleSubmit}>
               <img src='http://placekitten.com/g/150/150' alt="pet" />
@@ -80,7 +74,7 @@ class Pets extends React.Component {
             </form>
           }
           {this.state.pets.map((pet, index) => (
-            <PetProfile key={index} user={user} pet={pet} petsList={this.state.pets} stateUpdate={this.stateUpdate} />
+            <PetProfile key={index} user={user} pet={pet} petsList={this.state.pets} stateUpdate={this.stateUpdate} isOwnProfile={isOwnProfile} />
           ))}
         </div>}
       </>

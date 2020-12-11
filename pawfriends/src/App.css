@@ -97,3 +97,7 @@ ul {
 ul li {
   list-style: none;
 }
+
+textarea:disabled {
+  background-color: transparent !important;
+}

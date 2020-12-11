@@ -18,7 +18,7 @@ class Info extends React.Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, isOwnProfile } = this.props;
     return (
       <>
         { Object.entries(user).length !== 0 &&
@@ -32,7 +32,7 @@ class Info extends React.Component {
                 <img src={require(`../../images/${(user.gender).toLowerCase()}.png`).default} alt="gender" className='gender' />
 
                 <h1>{user.actualName}</h1>
-                <textarea className='status' maxLength='26' defaultValue={user.status} onChange={this.handleChange} />
+                <textarea className='status' maxLength='26' defaultValue={user.status} onChange={this.handleChange} disabled={!isOwnProfile} />
               </div>
             }
 

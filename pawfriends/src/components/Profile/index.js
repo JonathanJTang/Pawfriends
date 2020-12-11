@@ -28,21 +28,20 @@ class Profile extends React.Component {
   }
 
   render() {
-    // replace with server calls
-    // const curUserId = this.props.appState.curUserId;
-    // const profileId = this.props.match.params.id;
+    const { currentUser } = this.props;
+    const isOwnProfile = currentUser === this.state.user.username;
 
     return (
       <div className='profile'>
-        {/* {curUserId == profileId ? null : <button>Remove friend</button>} */}
+        {isOwnProfile && <button>Remove friend</button>}
         <div className='profile-nav'>
           <button name="info" className={this.state.show === "info" ? "active" : ""} onClick={this.show}>Info</button>
           <button name="pets" className={this.state.show === "pets" ? "active" : ""} onClick={this.show}>Pets</button>
           <button name="friends" className={this.state.show === "friends" ? "active" : ""} onClick={this.show}>Friends</button>
         </div>
-        {this.state.show === 'info' && <Info {...this.props} user={this.state.user} />}
-        {this.state.show === 'pets' && <Pets {...this.props} user={this.state.user} />}
-        {this.state.show === 'friends' && <Friends {...this.props} user={this.state.user} />}
+        {this.state.show === 'info' && <Info {...this.props} user={this.state.user} isOwnProfile={isOwnProfile} />}
+        {this.state.show === 'pets' && <Pets {...this.props} user={this.state.user} isOwnProfile={isOwnProfile} />}
+        {this.state.show === 'friends' && <Friends {...this.props} user={this.state.user} isOwnProfile={isOwnProfile} />}
       </div>
     );
   }

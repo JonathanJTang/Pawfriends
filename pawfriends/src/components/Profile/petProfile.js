@@ -32,7 +32,7 @@ class PetProfile extends React.Component {
   }
 
   render() {
-    const { pet } = this.props;
+    const { pet, isOwnProfile } = this.props;
 
     return (
       <div className='pet'>
@@ -43,6 +43,7 @@ class PetProfile extends React.Component {
             className="petname"
             defaultValue={pet.name}
             onChange={this.handleChange}
+            disabled={!isOwnProfile}
           />
         </div>
         <div className="petcontainer">
@@ -55,23 +56,28 @@ class PetProfile extends React.Component {
               maxLength="20"
               defaultValue={pet.likes}
               onChange={this.handleChange}
+              disabled={!isOwnProfile}
             />
             <img src={require('../../images/dislike.png').default} alt="dislikes" />
             <textarea
               name="dislikes"
               className="dislikes"
               maxLength="20"
-              defaultValue={pet.dislikes} onChange={this.handleChange}
+              defaultValue={pet.dislikes}
+              onChange={this.handleChange}
+              disabled={!isOwnProfile}
             />
           </span>
           <h3>About Me</h3>
           <textarea
             name="description"
             className='description'
-            defaultValue={pet.description} onChange={this.handleChange}
+            defaultValue={pet.description}
+            onChange={this.handleChange}
+            disabled={!isOwnProfile}
           />
         </div>
-        <button className="deletepet" onClick={this.handleClick} />
+        <button className="deletepet" onClick={this.handleClick} disabled={!isOwnProfile} />
       </div >
     );
   }
