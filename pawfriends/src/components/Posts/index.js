@@ -110,7 +110,12 @@ class Posts extends React.Component {
   render() {
     return (
       <div className="posts">
+      <div>
+     
         <NavBar />
+        <div className="trade-header">
+          <h4> {"\n"}</h4>
+           <h4> Share cute moments or fond memories with your pet! </h4>
 
         {this.state.showCreatePostBox ? (
           <CreatePost
@@ -122,6 +127,8 @@ class Posts extends React.Component {
             <button onClick={this.newPostHandler}>Create post</button>
           </div>
         )}
+        </div>
+        </div>
 
         <div className="postsList">
           {this.state.posts.map((post, index) => (
