@@ -4,7 +4,6 @@ import "./App.css";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { checkSession } from "./actions/authenticationAndSessionCheck";
 
-// Temporary: import various components so we can work on them
 import Registration from "./components/Registration";
 import Home from "./components/Home";
 import Posts from "./components/Posts";
@@ -21,52 +20,49 @@ class App extends React.Component {
   // Global state passed to all components of the app
   constructor(props) {
     super(props);
-    this.state = {
-      users: [],
-      currentUser: null,
-    };
+    this.state = { currentUser: null };
     checkSession(this);
   }
 
-  handleLogin = async (un, pw) => {
-    // let thisUser = this.state.users.find(
-    //   (user) => user.un == un && user.pw == pw
-    // );
-    // if (thisUser) {
-    //   if (
-    //     (thisUser.type == "user" &&
-    //       thisUser.un == "user" &&
-    //       thisUser.pw == "user") ||
-    //     (thisUser.type == "admin" &&
-    //       thisUser.un == "admin" &&
-    //       thisUser.pw == "admin")
-    //   ) {
-    //     console.log("user or admin per assignment");
-    //   } else {
-    //     console.log("every other user");
-    //   }
-    //   this.setState({ curUserId: thisUser.id });
-    // } else {
-    //   console.log("doesn't exist");
-    //   this.setState({ curUserId: -1 });
-    // }
-  };
+  // handleLogin = async (un, pw) => {
+  // let thisUser = this.state.users.find(
+  //   (user) => user.un == un && user.pw == pw
+  // );
+  // if (thisUser) {
+  //   if (
+  //     (thisUser.type == "user" &&
+  //       thisUser.un == "user" &&
+  //       thisUser.pw == "user") ||
+  //     (thisUser.type == "admin" &&
+  //       thisUser.un == "admin" &&
+  //       thisUser.pw == "admin")
+  //   ) {
+  //     console.log("user or admin per assignment");
+  //   } else {
+  //     console.log("every other user");
+  //   }
+  //   this.setState({ curUserId: thisUser.id });
+  // } else {
+  //   console.log("doesn't exist");
+  //   this.setState({ curUserId: -1 });
+  // }
+  // };
 
-  handleRegistration = (un, pw) => {
-    // TODO: have this method make a server call
-    let userArr = this.state.users;
-    if (pw != "") {
-      let newUser = {
-        username: un,
-        type: "user",
-        id: userArr.length + 1,
-        password: pw,
-      };
-      userArr.push(newUser);
+  // handleRegistration = (un, pw) => {
+  //   // TODO: have this method make a server call
+  //   let userArr = this.state.users;
+  //   if (pw != "") {
+  //     let newUser = {
+  //       username: un,
+  //       type: "user",
+  //       id: userArr.length + 1,
+  //       password: pw,
+  //     };
+  //     userArr.push(newUser);
 
-      this.setState({ users: userArr });
-    }
-  };
+  //     this.setState({ users: userArr });
+  //   }
+  // };
 
   componentDidMount = () => {
     document.title = "PawFriends";
@@ -94,60 +90,6 @@ class App extends React.Component {
           tags: ["dog", "cat", "caretaking"],
         },
       ],
-      users: [
-        {
-          id: 0,
-          type: "admin",
-          username: "admin",
-          password: "admin",
-        },
-        {
-          id: 1,
-          type: "user",
-          username: "user",
-          password: "user",
-          name: "John Smith",
-          gender: "male",
-          status: "Competitive coffee drinker",
-          birthday: "1998-07-22",
-          location: "Toronto, Canada",
-          favpet: "dog",
-          pets: [
-            {
-              name: "Mimi",
-              likes: "Naps, looking at birds",
-              dislikes: "Rain",
-            },
-            {
-              name: "Lupin",
-              likes: "Flowers, walks, rain",
-              dislikes: "Thunder",
-            },
-          ],
-          // stores the ids of this user's friends
-          friends: [2],
-        },
-        {
-          id: 2,
-          type: "user",
-          username: "user2",
-          password: "user2",
-          name: "Jane Doe",
-          gender: "female",
-          status: "Staying comfy",
-          birthday: "1999-03-09",
-          location: "Ottawa, Canada",
-          favpet: "cat",
-          pets: [
-            {
-              name: "Cinnamon",
-              likes: "Treats, music",
-              dislikes: "Strangers",
-            },
-          ],
-          friends: [1],
-        },
-      ],
     });
   };
 
@@ -166,7 +108,11 @@ class App extends React.Component {
                 <Login appState={this.state} handleLogin={this.handleLogin} />
               )}
             /> */}
-            <Route exact path="/Registration" render={(props) => <Registration {...props} />} />
+            <Route
+              exact
+              path="/Registration"
+              render={(props) => <Registration {...props} />}
+            />
             <Route exact path="/Posts" render={() => <Posts />} />
             <Route exact path="/Trade" render={() => <Trades />} />
             <Route
@@ -205,9 +151,7 @@ class App extends React.Component {
                 <div className="app">
                   {/* Different componenets rendered depending on if someone is logged in. */}
                   {!currentUser ? (
-                    <Index
-                      {...props}
-                    />
+                    <Index {...props} />
                   ) : (
                     <Home {...props} app={this} appState={this.state} />
                   )}
