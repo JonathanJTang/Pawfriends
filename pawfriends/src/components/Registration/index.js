@@ -1,9 +1,9 @@
 import React from "react";
 import "./styles.css";
 import "../Index/styles.css";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import NavBarGuest from "../NavBarGuest";
-import { getAllUsersPosts, createPost, createUser } from "../../actions/apiRequests";
+import { createUser, loginUser } from "../../actions/apiRequests";
 
 /* Registration component */
 class Registration extends React.Component {
@@ -16,7 +16,7 @@ class Registration extends React.Component {
         password: "",
         actualName: "",
         birthday: "",
-        gender:"",
+        gender: "Secret", // default value so field is not empty upon submit
       },
       submitted: false,
     };
@@ -35,25 +35,32 @@ class Registration extends React.Component {
 
   handleRegistration = async (e) => {
     e.preventDefault();
-    
+
     let user = await createUser({
-      "username": this.state.user.username,
-      "password": this.state.user.password,
-      "actualName": this.state.user.actualName,
-      "birthday": this.state.user.birthday,
-      "gender": this.state.user.gender
-    })
+      username: this.state.user.username,
+      password: this.state.user.password,
+      actualName: this.state.user.actualName,
+      birthday: this.state.user.birthday,
+      gender: this.state.user.gender,
+    });
     if (user !== undefined) {
-      alert("successfully made user"+ this.state.user.username)
+      alert("successfully made user " + this.state.user.username);
+      // Log in the user and redirect to the home page
+      user = await loginUser({
+        username: this.state.user.username,
+        password: this.state.user.password,
+      });
+      if (user !== undefined) {
+        this.props.history.push("/home");
+      }
     }
-    
   };
 
   render() {
     return (
-      <div className='login'>
+      <div className="login">
         <NavBarGuest />
-        <form>
+        <form onSubmit={this.handleRegistration}>
           <h1>Create a Pawfriends account</h1>
           <label>Account</label>
           <input
@@ -62,42 +69,43 @@ class Registration extends React.Component {
             placeholder="Username"
             value={this.state.value}
             onChange={this.handleChange}
+            required
           />
           <input
             type="text"
             name="password"
-            placeholder="Password"
+            placeholder="Password (minimum 4 characters)"
             value={this.state.value}
             onChange={this.handleChange}
+            required
           />
           <label>Name</label>
           <input
-            type='text'
+            type="text"
             name="actualName"
-            
             onChange={this.handleChange}
+            required
           />
           <label>Birthday</label>
           <input
-            type='date'
+            type="date"
             name="birthday"
             onChange={this.handleChange}
+            required
           />
           <label>Gender</label>
-          <select
-            name="gender"
-            onChange={this.handleChange}
-          >
-            <option disabled selected value> -- select an option -- </option>
+          <select name="gender" onChange={this.handleChange}>
+            <option disabled selected value>
+              -- select an option --
+            </option>
             <option>Male</option>
             <option>Female</option>
-            <option>Secret!</option>
+            <option>Secret</option>
           </select>
-          <input type='submit'
-            value="Register"
-            onClick={this.handleRegistration}
-          />
-          <Link to='/' className='btn-reg btn-log'>Back to login</Link>
+          <input type="submit" value="Register" />
+          <Link to="/" className="btn-reg btn-log">
+            Back to login
+          </Link>
         </form>
       </div>
     );
