@@ -1,143 +1,37 @@
 import React from 'react';
 import './styles.css';
 
-import avatar from '../../images/user1.png';
-
-class ProfileSettings extends React.Component {
-  constructor() {
-    super();
-    this.state = { name: 'John Smith', gender: '1', location: 'Toronto, Canada', birthday: '1998-07-22', cat: false, dog: true };
-  }
-
-  setCat = e => {
-    e.preventDefault();
-    this.state.cat ? this.setState({ cat: false }) : this.setState({ cat: true });
-  }
-
-  setDog = e => {
-    e.preventDefault();
-    this.state.dog ? this.setState({ dog: false }) : this.setState({ dog: true });
-  }
-
-  render() {
-    return (
-      <form className='set-form'>
-        <label>
-          <p></p>
-          <img src={avatar} />
-        </label>
-        <label>
-          <p>Name</p>
-          <input type='text' defaultValue={this.state.name} />
-        </label>
-        <label>
-          <p>Gender</p>
-          <select defaultValue={this.state.gender}>
-            <option value='1'>Male</option>
-            <option value='2'>Female</option>
-            <option value='3'>Secret! :)</option>
-          </select>
-        </label>
-        <label>
-          <p>Location</p>
-          <input type='text' defaultValue={this.state.location} />
-        </label>
-        <label>
-          <p>Birthday</p>
-          <input type='date' defaultValue={this.state.birthday} />
-        </label>
-        <label>
-          <p>Cats or Dogs? (or both!)</p>
-          <div>
-            <button onClick={this.setCat} className={this.state.cat ? 'btn-cat set-toggle' : 'btn-cat'}></button>
-            <button onClick={this.setDog} className={this.state.dog ? 'btn-dog set-toggle' : 'btn-dog'}></button>
-          </div>
-        </label>
-        <input type='submit' value='Save Changes' />
-      </form>
-    );
-  }
-}
-
-class AccountSettings extends React.Component {
-  constructor() {
-    super();
-    this.state = { username: 'user', pass: 'user' };
-  }
-
-  render() {
-    return (
-      <form className='set-form'>
-        <label>
-          <p>Username</p>
-          <input type='text' value={this.state.username} disabled />
-        </label>
-        <label>
-          <p>Password</p>
-          <input type='password' defaultValue={this.state.pass} />
-        </label>
-        <input type='submit' value='Save Changes' />
-      </form>
-    );
-  }
-}
-
-class SiteSettings extends React.Component {
-  constructor() {
-    super();
-    this.state = { darkmode: false };
-  }
-
-  render() {
-    return (
-      <form className='set-form'>
-        <label>
-          <p>Dark mode</p>
-          <input type='checkbox' defaultChecked={this.state.darkmode} />
-        </label>
-        <input type='submit' value='Save Changes' />
-      </form>
-    );
-  }
-}
+import ProfileSettings from "./profile.js";
+import AccountSettings from "./account.js";
 
 /* Settings component */
 class Settings extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { setting: 1 };
+    this.state = { toggle: true };
   }
 
-  setProfile = () => {
-    this.setState({ setting: 1 });
-  }
+  // componentDidMount = async () => {
+  //   const user = await getUserByUsername(this.props.currentUser);
+  //   if (user !== undefined) {
+  //     this.setState({ user: user });
+  //   }
+  // }
 
-  setAccount = () => {
-    this.setState({ setting: 2 });
-  }
-
-  setSite = () => {
-    this.setState({ setting: 3 });
+  handleClick = () => {
+    this.state.toggle ? this.setState({ toggle: false }) : this.setState({ toggle: true });
   }
 
   render() {
-    let form;
-    if (this.state.setting == 1) {
-      form = <ProfileSettings />
-    } else if (this.state.setting == 2) {
-      form = <AccountSettings />
-    } else {
-      form = <SiteSettings />
-    }
+    const { currentUser } = this.props;
 
     return (
       <div className='set'>
         <ul className='set-nav'>
-          <li onClick={this.setProfile} className={this.state.setting == 1 ? 'set-toggle' : ''}>User Profile</li>
-          <li onClick={this.setAccount} className={this.state.setting == 2 ? 'set-toggle' : ''}>Account</li>
-          <li onClick={this.setSite} className={this.state.setting == 3 ? 'set-toggle' : ''}>Site Settings</li>
+          <li onClick={this.handleClick} className={this.state.toggle ? 'set-toggle' : ''}>User Profile</li>
+          <li onClick={this.handleClick} className={!this.state.toggle ? 'set-toggle' : ''}>Account</li>
         </ul>
-        {form}
+        {this.state.toggle ? <ProfileSettings currentUser={currentUser} /> : <AccountSettings />}
       </div>
     );
   }
