@@ -42,7 +42,7 @@ class Post extends React.Component {
       `${datetimeElements[0]} ${datetimeElements[1]}, ${datetimeElements[2]}` +
       `  ${datetimeElements[3].slice(0, 5)}`;
 
-    // Only display image if the post has one
+    // Only display image if the post has any (currently only shows the 1st one)
     let image = null;
     if (postData.images.length > 0) {
       image = <img alt="post" src={postData.images[0].image_url} />;

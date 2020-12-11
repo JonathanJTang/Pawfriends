@@ -20,11 +20,25 @@ class CreatePost extends React.Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const titleText = e.currentTarget.children.namedItem("createPostTitle")
-      .value;
-    const bodyText = e.currentTarget.children.namedItem("createPostBody").value;
 
-    const post = await createPost({ title: titleText, content: bodyText });
+    const images = e.currentTarget.children.namedItem("image").files;
+    for (const image of images) {
+      const validFileTypes = ["png", "jpg", "jpeg", "gif"];
+      const filenameSegments = image.name.split(".");
+      if (
+        !validFileTypes.includes(filenameSegments[filenameSegments.length - 1].toLowerCase())
+      ) {
+        // One of the uploaded files is not of a valid image type
+        alert(
+          `File "${image.name}" is not a valid image type (must be one of the ` +
+            `following file types: .png, .jpg, .jpeg, .gif)`
+        );
+        return;
+      }
+    }
+
+    const formData = new FormData(e.currentTarget);
+    const post = await createPost(formData);
     if (post !== undefined) {
       // Server call succeeded
       this.props.postsList.unshift(post);
@@ -38,17 +52,23 @@ class CreatePost extends React.Component {
         <input
           className="createPostTitle createPostTextarea"
           type="text"
-          name="createPostTitle"
+          name="title"
           placeholder="Post title:"
           required
         />
         <textarea
           className="createPostBody createPostTextarea"
           type="text"
-          name="createPostBody"
+          name="content"
           placeholder="Write a message:"
           onInput={this.resizeTextarea.bind(this, 2)}
           required
+        />
+        <input
+          className="createPostImageUpload"
+          type="file"
+          name="image"
+          accept=".png, .jpg, .jpeg, .gif"
         />
         <input
           type="submit"

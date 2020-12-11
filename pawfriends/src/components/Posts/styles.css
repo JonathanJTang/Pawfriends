@@ -42,6 +42,13 @@
   display: none;
 }
 
+.createPostImageUpload {
+  letter-spacing: 0.2em;
+  color: white;
+  background-color: #bde0e5;
+  cursor: pointer;
+}
+
 .createPostSubmitButton {
   width: 30%;
   /* margin-bottom: 15px; */

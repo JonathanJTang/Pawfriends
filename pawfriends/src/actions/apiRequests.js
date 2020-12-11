@@ -13,7 +13,7 @@ const fetchRequest = (request) => {
       return json;
     })
     .catch((error) => {
-      console.log("failed fetching @" + Request)
+      console.log("failed fetching @" + Request);
       console.log(error);
     });
 };
@@ -24,14 +24,10 @@ export const getAllUsersPosts = () => {
   return postsListPromise;
 };
 
-export const createPost = (post) => {
+export const createPost = (formData) => {
   const request = new Request(baseUrl + "/api/posts", {
     method: "post",
-    body: JSON.stringify(post),
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json",
-    },
+    body: formData,
   });
 
   const postPromise = fetchRequest(request);
@@ -173,8 +169,7 @@ export const removePet = (userId, petId) => {
 
 // <--- USER API --->
 export const createUser = (userInfo) => {
-
-  const request = new Request(baseUrl + `/api/users`, {
+  const request = new Request(baseUrl + `/users`, {
     method: "post",
     body: JSON.stringify(userInfo),
     headers: {
@@ -188,7 +183,6 @@ export const createUser = (userInfo) => {
 };
 
 export const loginUser = (userInfo) => {
-
   const request = new Request(baseUrl + `/users/login`, {
     method: "post",
     body: JSON.stringify(userInfo),
@@ -203,7 +197,6 @@ export const loginUser = (userInfo) => {
 };
 
 export const logoutUser = () => {
-
   const request = new Request(baseUrl + `/users/logout`, {
     method: "get",
     headers: {

@@ -10,7 +10,6 @@ class LikeButton extends React.Component {
   constructor(props) {
     super(props);
     this.clicked = false;
-    console.log(this.props.postData.userLiked);
     if (this.props.postData.userLiked !== undefined) {
       this.clicked = this.props.postData.userLiked;
     }
