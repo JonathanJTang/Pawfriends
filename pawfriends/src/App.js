@@ -103,19 +103,19 @@ class App extends React.Component {
           <Switch>
             <Route
               exact
-              path="/Registration"
+              path="/registration"
               render={(props) => <Registration {...props} />}
             />
-            <Route exact path="/Posts" render={() => <Posts />} />
-            <Route exact path="/Trade" render={() => <Trades />} />
+            <Route exact path="/posts" render={() => <Posts />} />
+            <Route exact path="/trades" render={() => <Trades />} />
             <Route
               exact
-              path="/Caretakers"
+              path="/services"
               render={() => <Caretakers appState={this.state} />}
             />
             <Route
               exact
-              path="/Settings"
+              path="/settings"
               render={() => <Settings currentUser={currentUser} />}
             />
             <Route
@@ -125,7 +125,7 @@ class App extends React.Component {
             />
             <Route
               exact
-              path="/AdminDashboard"
+              path="/admindashboard"
               render={() => <AdminDashboard appState={this.state} />}
             />
             <Route

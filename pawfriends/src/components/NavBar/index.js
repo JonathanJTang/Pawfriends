@@ -10,12 +10,20 @@ class NavBar extends React.Component {
     return (
       <div className="navbar">
         <ul>
-          <NavLink exact to='/' className='inactive'><li>Home</li></NavLink>
-          <NavLink to='/posts' className='inactive'><li>Posts</li></NavLink>
-          <NavLink to='/trade' className='inactive'><li>Trade</li></NavLink>
-          <NavLink to='/caretakers' className='inactive'><li>Services</li></NavLink>
+          <NavLink exact to="/" className="inactive">
+            <li>Home</li>
+          </NavLink>
+          <NavLink to="/posts" className="inactive">
+            <li>Posts</li>
+          </NavLink>
+          <NavLink to="/trades" className="inactive">
+            <li>Trades</li>
+          </NavLink>
+          <NavLink to="/services" className="inactive">
+            <li>Services</li>
+          </NavLink>
         </ul>
-        <Dropdown app={this.props.app} currentUser={this.props.currentUser}/>
+        <Dropdown app={this.props.app} currentUser={this.props.currentUser} />
       </div>
     );
   }

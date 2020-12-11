@@ -56,7 +56,7 @@ class Home extends React.Component {
     return (
       <div className="home">
         <div>
-          <Link to={"/caretakers"}>
+          <Link to={"/services"}>
             <h1>Services</h1>
           </Link>
           {allServices}
@@ -68,7 +68,7 @@ class Home extends React.Component {
           {allPosts}
         </div>
         <div>
-          <Link to={"/trade"}>
+          <Link to={"/trades"}>
             <h1>Trade pet supplies</h1>
           </Link>
           {allTrades}

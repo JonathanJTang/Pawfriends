@@ -72,7 +72,7 @@ const handleError = (error, res) => {
 jsonApiRouter.use(mongoChecker);
 jsonApiRouter.use(authenticate);
 
-/* Modifies the 'owner' key of the response object into a format with all the
+/* Overwrites the 'owner' key of the response object into a format with all the
  * information needed by the frontend. */
 const addOwnerToResponse = (response, owner) => {
   response.owner = {
@@ -104,8 +104,7 @@ const modifyPostReponse = async (response, postOwner, curUser) => {
 
   // Populate comments array
   for (const comment of response.comments) {
-    const commentOwnerId = comment.owner;
-    const commentOwner = await User.findById(commentOwnerId);
+    const commentOwner = await User.findById(comment.owner);
     addOwnerToResponse(comment, commentOwner);
   }
 
@@ -311,7 +310,7 @@ jsonApiRouter.put("/posts/:postId/like", async (req, res) => {
   }
 });
 
-// get all posts (limit to the current user + the current user's friends?)
+// Get all posts (limit to the current user + the current user's friends?)
 jsonApiRouter.get("/posts", async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
@@ -328,11 +327,40 @@ jsonApiRouter.get("/posts", async (req, res) => {
       .lean();
     // Modify array to send to the client
     for (const post of userPosts) {
-      const ownerId = post.owner;
-      const postOwner = await User.findById(ownerId);
+      const postOwner = await User.findById(post.owner);
       await modifyPostReponse(post, postOwner, curUser);
     }
     res.send(userPosts);
+  } catch (error) {
+    handleError(error, res);
+  }
+});
+
+// Get a specific post
+jsonApiRouter.get("/posts/:postId", async (req, res) => {
+  const username = req.session.username;
+  // const username = "user"; // TODO: remove after authentication is implemented
+  const postId = req.params.postId;
+  try {
+    if (!ObjectID.isValid(postId)) {
+      res.status(404).send();
+      return;
+    }
+    const post = await Post.findById(postId);
+    if (post === null) {
+      res.status(404).send();
+      return;
+    }
+    
+    // Authentication passed, meaning user is valid
+    const curUser = await User.findOne({ username: username });
+
+    // Modify post response to send to the client
+    const postOwner = await User.findById(post.owner);
+    const jsonReponse = post.toObject();
+    delete jsonReponse["__v"];
+    await modifyPostReponse(jsonReponse, postOwner, curUser);
+    res.send(jsonReponse);
   } catch (error) {
     handleError(error, res);
   }
@@ -398,7 +426,7 @@ const modifyTradeReponse = async (response, postOwner, curUser) => {
 
 /**************** TRADE ROUTES ****************/
 
-// get all trade postings
+// Get all trade postings
 jsonApiRouter.get("/trades", async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
@@ -415,11 +443,40 @@ jsonApiRouter.get("/trades", async (req, res) => {
       .lean();
     // Modify array to send to the client
     for (const trade of allTrades) {
-      const ownerId = trade.owner;
-      const postOwner = await User.findById(ownerId);
+      const postOwner = await User.findById(trade.owner);
       await modifyTradeReponse(trade, postOwner, curUser);
     }
     res.send(allTrades);
+  } catch (error) {
+    handleError(error, res);
+  }
+});
+
+// Get a specific trade posting
+jsonApiRouter.get("/trades/:tradeId", async (req, res) => {
+  const username = req.session.username;
+  // const username = "user"; // TODO: remove after authentication is implemented
+  const tradeId = req.params.tradeId;   
+  try {
+    if (!ObjectID.isValid(tradeId)) {
+      res.status(404).send();
+      return;
+    }
+    const trade = await Trade.findById(tradeId);
+    if (trade === null) {
+      res.status(404).send();
+      return;
+    }
+
+    // Authentication passed, meaning user is valid
+    const curUser = await User.findOne({ username: username });
+
+    // Modify trade response to send to the client
+    const postOwner = await User.findById(trade.owner);
+    const jsonReponse = trade.toObject();
+    delete jsonReponse["__v"];
+    await modifyTradeReponse(jsonReponse, postOwner, curUser);
+    res.send(jsonReponse);
   } catch (error) {
     handleError(error, res);
   }

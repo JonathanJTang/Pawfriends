@@ -21,11 +21,10 @@ const session = require("express-session");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 /// Middleware for creating sessions and session cookies.
-// A session is created on every request, but whether or not it is saved depends on the option flags provided.
 app.use(session({
   secret: '***REMOVED***', // later we will define the session secret as an environment variable for production. for now, we'll just hardcode it.
   cookie: { // the session cookie sent, containing the session id.
-    expires: 60000, // 1 minute expiry
+    expires: 3600000, // 60 minute expiry
     httpOnly: true // important: saves it in only browser's memory - not accessible by javascript (so it can't be stolen/changed by scripts!).
   },
   // Session saving options
@@ -37,39 +36,27 @@ app.use(session({
 const cors = require("cors");
 app.use(cors());
 
-// Create a session and session cookie
-app.use(
-  session({
-    secret: "***REMOVED***",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      expires: 60000,
-      httpOnly: true,
-    },
-  })
-);
-
 
 
 app.use("/api", require('./routes/jsonRoutes/jsonRoutes'));
 app.use(require('./routes/userRoutes/users'))
+app.use(require("./routes/adminRoutes/adminRoutes"));
 
 /* Webpage routes */
 // These must be exact routes (not case-sensitive?)
 const goodPageRoutesExact = [
   "/",
   "/login",
-  "/home",
-  "/admindashboard",
   "/registration",
+  "/home",
   "/settings",
-  "/caretakers",
-  "/trade",
   "/posts",
+  "/trades",
+  "/services",
+  "/admindashboard",
 ];
 // Routes beginning with these strings are acceptable
-const goodPageRoutesBeginning = ["/profile/"];
+const goodPageRoutesBeginning = ["/profile/", "/posts/", "/trades/", "/services/"];
 
 // Serve the build
 app.use(express.static(path.join(__dirname, "/pawfriends/build")));
