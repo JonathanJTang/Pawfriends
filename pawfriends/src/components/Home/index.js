@@ -30,30 +30,26 @@ class Home extends React.Component {
 
   render() {
     const appState = this.props.appState;
-    // const users = this.props.appState.users;
+    const users = this.props.appState.users;
 
     let allPosts, allServices, allTrades;
 
     if (this.state.posts) {
       allPosts = this.state.posts.map((post, index) => (
-        <Post key={post._id} postData={post} user={post.owner} />
+        <Link to="/posts/">
+          <Post key={post._id} postData={post} user={post.owner} />
+        </Link>
       ));
     }
 
     if (appState.services) {
       allServices = appState.services.map((service, index) => (
         <div key={index} className="service">
-          <h3>{service.desc}</h3>
+          <Link to="/cartakers"><h3>{service.desc}</h3></Link>
           <Link to={"/profile/" + service.userId}>
-            <p>@{/*users[service.userId].name*/}</p>
+            <p>@{users[service.userId].name}</p>
           </Link>
         </div>
-      ));
-    }
-
-    if (this.state.trades) {
-      allTrades= this.state.trades.map((trade, index) => (
-        <Trade key={trade._id} trade={trade} trades={this.state.trades} user={trade.owner} stateUpdate={this.stateUpdate} />
       ));
     }
 
