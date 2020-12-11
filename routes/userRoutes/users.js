@@ -8,10 +8,8 @@ const router = express.Router(); // Express Router
 // import the user mongoose model
 const { User } = require('../../models/user')
 
-/*** Helper functions below **********************************/
-function isMongoError(error) { // checks for first error returned by promise rejection if Mongo database suddently disconnects
-	return typeof error === 'object' && error !== null && error.name === "MongoNetworkError"
-}
+// import helpers
+const { isMongoError } = require('../helpers/routeHelpers')
 
 /*** User API routes ****************/
 router.post('/users', async (req, res) => {
