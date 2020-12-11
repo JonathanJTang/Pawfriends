@@ -16,14 +16,6 @@ mongoose.set("useFindAndModify", false); // for some deprecation issues
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-// cloudinary: configure using credentials found on your Cloudinary Dashboard
-const cloudinary = require("cloudinary");
-cloudinary.config({
-  cloud_name: "dypmf5kee",
-  api_key: "666517587772385",
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
 // express-session for managing user sessions
 const session = require("express-session");
 app.use(bodyParser.urlencoded({ extended: true }));

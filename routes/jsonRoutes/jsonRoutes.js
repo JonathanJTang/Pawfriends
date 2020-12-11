@@ -7,6 +7,8 @@ const jsonApiRouter = express.Router(); // Express Router
 const multipart = require("connect-multiparty");
 const multipartMiddleware = multipart();
 
+const fs = require('fs');
+
 // import the mongoose models
 const { User, Pet } = require("../../models/user");
 const { Post } = require("../../models/post");
@@ -17,10 +19,18 @@ const { Trade } = require("../../models/trade");
 const { mongoose } = require("../../db/mongoose");
 const { ObjectID } = require("mongodb");
 
+// cloudinary: configure using credentials found on the Cloudinary Dashboard
+const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+  cloud_name: "dypmf5kee",
+  api_key: "666517587772385",
+  api_secret: "***REMOVED***",
+});
 // Global object
 const globals = {};
+globals.validImageFileTypes = ["png", "jpg", "jpeg", "gif"];
 globals.defaultAvatar = {
-  image_id: "pawfriends/defaultAvatar_sflv0g.png",
+  image_id: "pawfriends/defaultAvatar_sflv0g",
   image_url:
     "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png",
 };
@@ -80,7 +90,7 @@ const mongoChecker = (req, res, next) => {
     }
   };
   jsonApiRouter.use(mongoChecker);
-  jsonApiRouter.use(authenticate);  // TODO: enable when authenticate is done
+  jsonApiRouter.use(authenticate);
   
   /* Modifies the 'owner' key of the response object into a format with all the
    * information needed by the frontend. */
@@ -128,11 +138,11 @@ const mongoChecker = (req, res, next) => {
     return new Promise((resolve, reject) => {
       cloudinary.uploader.upload(
         imagePath, // req.files contains uploaded files
-        { folder: "Pawfriends" },
+        { folder: "pawfriends/" },
         function (error, result) {
           console.log(error, result);
           if (error) {
-            reject(null); // TODO: finish & test
+            reject(error);
           } else {
             resolve({
               image_id: result.public_id,
@@ -144,8 +154,23 @@ const mongoChecker = (req, res, next) => {
     });
   };
 
+  const deleteImage = (imageInfo) => {
+    return new Promise((resolve, reject) => {
+      cloudinary.uploader.destroy(imageInfo.image_id,
+        {invalidate: true},
+        function (error, result) {
+        console.log(error, result);
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  };
 
-/**************** API ROUTES for updating various objs in database (Posts, Services, Tradesc) ****************/
+
+/**************** API ROUTES for updating various objs in database (Posts, Services, Trades) ****************/
 /* API routes
 * Note: these are defined on the jsonApiRouter express router, which is loaded
 * on the "/api" url prefix already */
@@ -154,8 +179,8 @@ const mongoChecker = (req, res, next) => {
 
   /* Create a new post */
   jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
-    // const username = req.session.username;
-    const username = "user"; // TODO: remove after authentication is implemented
+    const username = req.session.username;
+    // const username = "user"; // TODO: remove after authentication is implemented
     try {
       // Validate user input (title and content must be nonempty strings)
       if (
@@ -181,12 +206,17 @@ const mongoChecker = (req, res, next) => {
         images: [], // TODO: implement image upload functionality
         comments: [],
       });
-      console.log("req.files: ", req.files);
-      if (req.files && req.files.image !== undefined) {
+      if (req.files) {
         // There's an uploaded image, upload it to the Cloudinary server.
-        console.log("imagePath: ", req.files.image.path);
-        const imageInfo = await uploadImage(req.files.image.path);
-        post.images.push(imageInfo);
+
+        if (req.files.image !== undefined && globals.validImageFileTypes.includes(image.name.split(".").pop().toLowerCase())) {
+          const imageInfo = await uploadImage(req.files.image.path);
+          post.images.push(imageInfo);
+        }
+        // Delete temporary files in req.files to not take up space on server
+        for (const key in req.files) {
+          fs.unlink(req.files[key].path, (error) => {if (error){console.log(error)}});
+        }
       }
       const newPost = await post.save();
       // Build the JSON object to respond with
@@ -202,8 +232,8 @@ const mongoChecker = (req, res, next) => {
   
   /* Add a comment onto a post */
   jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
-    // const username = req.session.username;
-    const username = "user"; // TODO: remove after authentication is implemented
+    const username = req.session.username;
+    // const username = "user"; // TODO: remove after authentication is implemented
     const postId = req.params.postId;
     try {
       // Check that postId is valid
@@ -243,8 +273,8 @@ const mongoChecker = (req, res, next) => {
   
   // Like or unlike a post
   jsonApiRouter.put("/posts/:postId/like", async (req, res) => {
-    // const username = req.session.username;
-    const username = "user"; // TODO: remove after authentication is implemented
+    const username = req.session.username;
+    // const username = "user"; // TODO: remove after authentication is implemented
     const postId = req.params.postId;
     try {
       // Check that postId is valid
@@ -290,8 +320,8 @@ const mongoChecker = (req, res, next) => {
   
   // get all posts (limit to the current user + the current user's friends?)
   jsonApiRouter.get("/posts", async (req, res) => {
-    // const username = req.session.username;
-    const username = "user"; // TODO: remove after authentication is implemented
+    const username = req.session.username;
+    // const username = "user"; // TODO: remove after authentication is implemented
     try {
       // Authentication passed, meaning user is valid
       const curUser = await User.findOne({ username: username });
@@ -316,50 +346,17 @@ const mongoChecker = (req, res, next) => {
     }
   });
   
-  // get all posts from the selected user
-  // TODO: Jonathan -- this route needs to be updated with the same logic
-  // in the GET /posts handler
-  
-  // jsonApiRouter.get("/users/:username/posts", async (req, res) => {
-  //   const username = req.params.username;
-  //   try {
-  //     // Authentication passed, meaning user is valid
-  //     const user = await User.findOne({ username: username });
-  //     // could use .limit to limit the number of items to return
-  //     const userPosts = await Post.find({ owner: user._id }).sort({
-  //       postTime: "descending",
-  //     });
-  //     console.log(userPosts);
-  //     res.send(userPosts);
-  //   } catch (error) {
-  //     handleError(error, res);
-  //   }
-  // });
-  
-  const deleteImage = (imageInfo) => {
-    return new Promise((resolve, reject) => {
-      cloudinary.uploader.destroy(imageInfo.image_id, function (error, result) {
-        console.log(error, result);
-        if (error) {
-          reject(null); // TODO: finish & test
-        } else {
-          resolve();
-        }
-      });
-    });
-  };
-  
   // Delete a post
-  jsonApiRouter.delete("posts/:postId", async (req, res) => {
-    // const username = req.session.username;
-    const username = "user"; // TODO: remove after authentication
+  jsonApiRouter.delete("/posts/:postId", async (req, res) => {
+    const username = req.session.username;
+    // const username = "user"; // TODO: remove after authentication
     const postId = req.params.postId;
     try {
       if (!ObjectID.isValid(postId)) {
         res.status(404).send();
         return;
       }
-      const post = await Post.findByIdAndDelete(postId);
+      const post = await Post.findById(postId);
       if (post === null) {
         res.status(404).send();
         return;
@@ -369,15 +366,16 @@ const mongoChecker = (req, res, next) => {
       const user = await User.findOne({ username: username });
   
       // Only the post owner can delete the post
-      if (post.owner.toString() !== user._id.toString) {
+      if (post.owner.toString() !== user._id.toString()) {
         res.status(403).send();
         return;
       }
   
-      post.images.forEach((imageInfo) => {
-        // Use uploader.destroy API to delete image from cloudinary server.
-        deleteImage(imageInfo);
-      });
+      // Delete images from cloudinary server
+      for (const image of post.images) {
+        await deleteImage(image)
+      }
+      post.remove();
       res.send();
     } catch (error) {
       // TODO: return 500 Internal server error if error was from deleteImage?
