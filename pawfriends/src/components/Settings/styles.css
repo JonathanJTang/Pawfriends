@@ -1,20 +1,31 @@
 .set {
     display: flex;
     margin: auto;
-    max-width: 1000px;
+    padding: 0 50px 30px 50px;
+    width: 850px;
 }
 
 .set-nav {
     flex: 0.3;
     margin-left: 50px;
-    height: 180px;
-    border-radius: 2.25em;
+    border-radius: 0.2em 0 0 0.2em;
     background-color: white;
     overflow: hidden;
+    border-right: 1px solid #f3f2f2;
+}
+
+.set-form img {
+    margin: auto;
+    width: 120px;
+    height: 120px;
+    border: 2px solid #c1e2e7;
+    padding: 3px;
+    border-radius: 10em;
 }
 
 .set-nav li {
     padding: 20px;
+    border-right: 2px solid transparent;
     border-bottom: 1px solid #f3f2f2;
     transition: 0.2s ease;
     cursor: pointer;
@@ -22,22 +33,23 @@
 
 .set-nav li:hover, .set-toggle {
     background-color: #fafafa;
-    opacity: 1 !important;
+    border-right-color: #c1e2e7 !important;
 }
 
 .set-form {
     display: flex;
     flex: 1;
     flex-direction: column;
-    margin: 0px 50px 0px 50px;
+    gap: 10px;
     padding: 50px 50px 30px 50px;
-    border-radius: 2.25em;
+    border-radius: 0 0.2em 0.2em 0;
     background-color: white;
 }
 
 .set-form label {
     display: flex;
-    margin-bottom: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 .set-form p {
@@ -46,33 +58,23 @@
     letter-spacing: 0.2em;
 }
 
-.set-form div {
-    flex: 1;
-    margin-top: 20px;
-}
-
-.set-form img {
-    margin: auto;
-    width: 120px;
-    height: 120px;
-    border: 4px solid #bde0e5;
-    border-radius: 10em;
-}
-
 .set-form input, .set-form select {
-    margin: auto;
-    flex: 1;
-    padding: 10px 0px 10px 0px;
-    width: 100%;
+    padding: 10px 0;
 }
 
 .set-form input[type=submit] {
-    margin-top: 20px;
+    margin: auto;
+    width: 50%;
+    background-color: #b6bbd8;
+}
+
+.set-form input[type=submit]:hover {
+    background-color: #c1e2e7;
 }
 
 .set-form button {
     display: inline-block;
-    margin: 0px 20px 0px 20px;
+    margin: 0 30px;
     border: none;
     background-color: transparent;
     opacity: 0.5;

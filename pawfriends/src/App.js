@@ -116,7 +116,7 @@ class App extends React.Component {
             <Route
               exact
               path="/Settings"
-              render={() => <Settings appState={this.state} />}
+              render={() => <Settings currentUser={currentUser} />}
             />
             <Route
               exact
