@@ -108,7 +108,16 @@ export const removeTrade = (tradeId) => {
 };
 
 export const getUserByUsername = (username) => {
-  const request = new Request(baseUrl + `/api/users/${username}`, {
+  const request = new Request(baseUrl + `/api/users/username/${username}`, {
+    method: "get",
+  });
+
+  const promise = fetchRequest(request);
+  return promise;
+};
+
+export const getUserById = (userId) => {
+  const request = new Request(baseUrl + `/api/users/userId/${userId}`, {
     method: "get",
   });
 
@@ -160,6 +169,24 @@ export const editPet = (pet, userId, petId) => {
 
 export const removePet = (userId, petId) => {
   const request = new Request(baseUrl + `/api/users/${userId}/${petId}`, {
+    method: "delete",
+  });
+
+  const promise = fetchRequest(request);
+  return promise;
+};
+
+export const addFriend = (userId, friendId) => {
+  const request = new Request(baseUrl + `/api/users/${userId}/friends/${friendId}`, {
+    method: "put",
+  });
+
+  const promise = fetchRequest(request);
+  return promise;
+};
+
+export const removeFriend = (userId, friendId) => {
+  const request = new Request(baseUrl + `/api/users/${userId}/friends/${friendId}`, {
     method: "delete",
   });
 
