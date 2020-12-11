@@ -1,4 +1,4 @@
-const baseUrl = process.env.SERVER_BASE_URL || "http://localhost:5000";
+const baseUrl = process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
 export const checkSession = (app) => {
     const url = baseUrl + "/users/check-session";
     console.log("git here")
