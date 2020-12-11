@@ -11,8 +11,9 @@ class Trade extends React.Component {
     super(props);
     this.state = {
       toggle: false,
+      contactToggle: false
     }
-  }
+}T
 
   stateUpdate = (updatedTrade) => {
     const i = this.props.trades.indexOf(this.props.trade);
@@ -32,6 +33,10 @@ class Trade extends React.Component {
 
   handleClick = () => {
     this.state.toggle ? this.setState({ toggle: false }) : this.setState({ toggle: true });
+  }
+
+  handleContactToggle = () => {
+    this.state.contactToggle ? this.setState({ contactToggle: false }) : this.setState({ contactToggle: true });
   }
 
   render() {
@@ -55,17 +60,29 @@ class Trade extends React.Component {
         </div>
         {image}
         <div className="header">
-          <Link to={`/profile/${user.username}`}>
-            <img src={user.avatar.image_url} alt="profile avatar" />
+          <Link to={`/profile/${trade.owner.actualName}`}>
+            <img src={trade.owner.avatar.image_url} alt="profile avatar" />
           </Link>
           <div className="postText">
-            <Link to={`/profile/${user.username}`}>
-              <p>@{user.actualName}</p>
+            <Link to={`/profile/${trade.owner.username}`}>
+              <p>@{trade.owner.actualName}</p>
             </Link>
             {trade.title}
           </div>
         </div>
-        <button>Contact user</button>
+        {this.state.contactToggle ?
+          <div className='tradeinfo'>
+            <div>
+              <strong>Email:</strong>
+            </div>
+            <div>
+              <p>{trade.owner.username}@email.com</p>
+            </div>
+            <button onClick={this.handleContactToggle}>Close</button>
+          </div>
+          :
+          <button onClick={this.handleContactToggle}>Contact user</button>
+        }
         <Link className="deletepost" onClick={this.handleClick}>Delete post</Link>
       </div>
     );
