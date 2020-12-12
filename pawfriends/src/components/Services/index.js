@@ -26,7 +26,6 @@ class Service extends React.Component {
 
   render() {
     const { service, user } = this.props;
-    console.log(service, user);
 
     return (
       <div className="trade">
