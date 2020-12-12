@@ -2,14 +2,14 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 80px;
+  gap: 50px;
 }
 
 .profile-friends>* {
   padding: 15px;
-  background-color: #6a6d85;
+  background-color: #ffffffcc;
   border-radius: 0.5em;
-  color: white;
+  color: #6a6d85;
 }
 
 .profile-friends img {
