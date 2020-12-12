@@ -121,7 +121,7 @@ class Posts extends React.Component {
           <NavBar />
           <div className="trade-header">
             <h4> {"\n"}</h4>
-            <h4> Share cute moments or fond memories with your pet! </h4>
+            <h2> Share cute moments or fond memories with your pet! </h2>
 
             {this.state.showCreatePostBox ? (
               <CreatePost
