@@ -40,7 +40,7 @@ app.use(cors());
 
 app.use("/api", require('./routes/jsonRoutes/jsonRoutes'));
 app.use(require('./routes/userRoutes/users'))
-app.use(require("./routes/adminRoutes/adminRoutes"));
+// app.use(require("./routes/adminRoutes/adminRoutes"));
 
 /* Webpage routes */
 // These must be exact routes (not case-sensitive?)

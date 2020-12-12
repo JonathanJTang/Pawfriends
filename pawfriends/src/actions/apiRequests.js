@@ -197,6 +197,20 @@ export const editStatus = (status, username) => {
   return promise;
 };
 
+export const updateSettings = (status, username) => {
+  const request = new Request(baseUrl + `/api/users/${username}/settings`, {
+    method: "put",
+    body: JSON.stringify(status),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const promise = fetchRequest(request);
+  return promise;
+};
+
 export const addPet = (pet, userId) => {
   const request = new Request(baseUrl + `/api/users/${userId}/pets`, {
     method: "post",

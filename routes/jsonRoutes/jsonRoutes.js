@@ -714,6 +714,35 @@ jsonApiRouter.put("/users/:username/status", async (req, res) => {
   }
 });
 
+// Save user status change
+jsonApiRouter.put("/users/:username/settings", async (req, res) => {
+  const username = req.params.username;
+  if (req.session.username !== username) {
+    // users can only edit their own profile
+    res.status(403).send();
+    return;
+  }
+  try {
+    const user = await User.findOne({ username: username });
+    // validate
+    if (user === null) {
+      res.status(404).send();
+      return;
+    }
+    // save status
+    user.actualName = req.body.actualName;
+    user.gender = req.body.gender;
+    user.birthday = req.body.birthday;
+    user.location = req.body.location;
+    user.email = req.body.email;
+    user.save();
+
+    res.send({});
+  } catch (error) {
+    handleError(error, res);
+  }
+});
+
 // Add a new pet to user's profile
 jsonApiRouter.post("/users/:userId/pets", async (req, res) => {
   if (req.session.user !== req.params.userId) {
