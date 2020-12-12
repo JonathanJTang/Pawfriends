@@ -52,4 +52,16 @@ The features of our web appliction includes creating posts for your pet, viewing
 * `GET /services` Gets array of all services in the DB
 * `GET /trades` Gets array of all trades in the DB
 
-### Library/Framework used: React, Node, Express, Mongodb, Mongoose
+Responses for posts, trades, and services have an "owner" property that represents the user who created the post/trade/service listing; the "owner" object has the following format:
+`{
+    "_id": the owner's,
+    "username": user's username,
+    "actualName": user's real name,
+    "avatar": {
+        "image_id": the cloudinary public image id
+        "image_url": the cloudinary image url
+    }
+}`
+
+
+### Library/Framework used: React, Node, Express, Mongodb, Mongoose, connect-multiparty, cloudinary
