@@ -570,7 +570,7 @@ jsonApiRouter.delete("/trades/:tradeId", async (req, res) => {
 /**************** USER PROFILE ROUTES ****************/
 
 /* Return User object that matches username */
-jsonApiRouter.get("/users/:username", async (req, res) => {
+jsonApiRouter.get("/users/username/:username", async (req, res) => {
   const username = req.params.username;
   try {
     // Search for user
@@ -584,7 +584,34 @@ jsonApiRouter.get("/users/:username", async (req, res) => {
       user.profilePicture = globals.defaultAvatar;
     }
 
-    // Temporary, add fields to user on registration
+    if (user.status === undefined) {
+      user.status = "Empty status";
+    }
+
+    if (user.location === undefined) {
+      user.location = "Somewhere, Earth";
+    }
+
+    res.send(user);
+  } catch (error) {
+    handleError(error, res);
+  }
+});
+
+/* Return User object that matches userId */
+jsonApiRouter.get("/users/userId/:userId", async (req, res) => {
+  try {
+    // Search for user
+    const user = await User.findById(req.params.userId);
+    if (user === null) {
+      res.status(404).send();
+      return;
+    }
+
+    if (user.profilePicture === undefined) {
+      user.profilePicture = globals.defaultAvatar;
+    }
+
     if (user.status === undefined) {
       user.status = "Empty status";
     }
@@ -717,6 +744,67 @@ jsonApiRouter.delete("/users/:userId/:petId", async (req, res) => {
     // delete pet at index
     const i = user.pets.indexOf(pet);
     user.pets.splice(i, 1);
+    user.save();
+
+    res.send({});
+  } catch (error) {
+    handleError(error, res);
+    console.log("hmm");
+  }
+});
+
+/* Add a friend */
+jsonApiRouter.put("/users/:userId/friends/:friendId", async (req, res) => {
+  if (req.session.user !== req.params.userId) {
+    // users can only edit their own profile
+    res.status(403).send();
+    return;
+  }
+  try {
+    const user = await User.findById(req.params.userId);
+    if (user === null) {
+      res.status(404).send();
+      return;
+    }
+    // create friends array if no friends yet
+    if (!user.friends) {
+      user.friends = []
+    }
+    // don't add if already friends
+    if (user.friends.includes(req.params.friendId)) {
+      res.status(403).send();
+      return;
+    }
+    user.friends.push(req.params.friendId);
+    user.save();
+
+    res.send({});
+  } catch (error) {
+    handleError(error, res);
+    console.log("hmm");
+  }
+});
+
+/* Remove a friend */
+jsonApiRouter.delete("/users/:userId/friends/:friendId", async (req, res) => {
+  if (req.session.user !== req.params.userId) {
+    // users can only edit their own profile
+    res.status(403).send();
+    return;
+  }
+  try {
+    const user = await User.findById(req.params.userId);
+    if (user === null) {
+      res.status(404).send();
+      return;
+    }
+    // only remove friend that exists
+    if (!user.friends || !user.friends.includes(req.params.friendId)) {
+      res.status(403).send();
+      return;
+    }
+    const index = user.friends.indexOf(req.params.friendId);
+    user.friends.splice(index, 1);
     user.save();
 
     res.send({});

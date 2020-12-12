@@ -4,7 +4,7 @@ import "./friends.css";
 
 class Friends extends React.Component {
   render() {
-    const { friends } = this.props.user;
+    const { friends } = this.props;
 
     return (
       <>
