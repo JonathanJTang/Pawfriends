@@ -107,7 +107,7 @@ class App extends React.Component {
               render={(props) => <Registration {...props} />}
             />
             <Route exact path="/posts" render={() => <Posts />} />
-            <Route exact path="/trades" render={() => <Trades />} />
+            <Route exact path="/trade" render={() => <Trades currentUser={currentUser} />} />
             <Route
               exact
               path="/services"

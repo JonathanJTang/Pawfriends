@@ -17,15 +17,15 @@ class Trades extends React.Component {
         title: "",
       },
     }
-    console.log(this.props.currentUser);
   }
 
   async componentDidMount() {
-    // Fetch list of posts from server
+    // Fetch list of trades from server
     const tradesList = await getAllTrades();
     if (tradesList !== undefined) {
       // Server call succeeded
       this.setState({ trades: tradesList });
+      console.log(tradesList);
     }
   }
 
@@ -59,9 +59,8 @@ class Trades extends React.Component {
     return trade.done;
   }
 
-  filterSaved = trade => {
-    // TODO: get current user's list of saved trades
-    return !trade.done;
+  filterUser = trade => {
+    return trade.owner.username === this.props.currentUser;
   }
 
   handleClick = e => {
@@ -83,9 +82,10 @@ class Trades extends React.Component {
     const filters = {
       "current": this.filterCurrent,
       "past": this.filterPast,
-      "saved": this.filterSaved,
+      "user": this.filterUser,
     }
 
+    // Filter list of trades based on set filter
     let filteredTrades = this.state.trades.filter(filters[this.state.filter]);
 
     return (
@@ -94,7 +94,7 @@ class Trades extends React.Component {
           <img src={pup} className="tradepup" />
           <h2>Trade pet supplies!</h2>
           <h4>Need some extra toys?</h4>
-          <h4> See what your other pet owners are trading! </h4>
+          <h4>See what your other pet owners are trading!</h4>
           <h4>Click on "CREATE TRADE" to move forward with an exchange!</h4>
           {this.state.toggle ?
             <form className="createPost" onSubmit={this.handleSubmit}>
@@ -123,8 +123,8 @@ class Trades extends React.Component {
             <Link to="" className={this.state.filter === "past" ? "active" : ""} onClick={this.handleClick} name="past">
               <li name="past">Past trades</li>
             </Link>
-            <Link to="" className={this.state.filter === "saved" ? "active" : ""} onClick={this.handleClick} name="saved">
-              <li name="saved">Saved</li>
+            <Link to="" className={this.state.filter === "user" ? "active" : ""} onClick={this.handleClick} name="user">
+              <li name="user">My trades</li>
             </Link>
           </ul>
         </div>
@@ -136,6 +136,7 @@ class Trades extends React.Component {
               trade={trade}
               trades={this.state.trades}
               user={trade.owner}
+              currentUser={this.props.currentUser}
               stateUpdate={this.stateUpdate}
             />
           ))}

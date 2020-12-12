@@ -3,7 +3,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { removeTrade } from "../../actions/apiRequests";
 import Popup from "../Popup";
-import BookmarkButton from "./bookmark.js";
 import CheckButton from "./finish.js";
 
 class Trade extends React.Component {
@@ -13,7 +12,7 @@ class Trade extends React.Component {
       toggle: false,
       contactToggle: false
     }
-}T
+  }
 
   stateUpdate = (updatedTrade) => {
     const i = this.props.trades.indexOf(this.props.trade);
@@ -24,7 +23,7 @@ class Trade extends React.Component {
   remove = async () => {
     const response = await removeTrade(this.props.trade._id);
     if (response !== undefined) {
-      const i = this.props.trades.findIndex(current_trade => current_trade._id == this.props.trade._id)
+      const i = this.props.trades.findIndex(current_trade => current_trade._id == this.props.trade._id);
       this.props.trades.splice(i, 1);
       this.props.stateUpdate(this.props.trades);
       this.handleClick();
@@ -40,7 +39,7 @@ class Trade extends React.Component {
   }
 
   render() {
-    const { user, trade } = this.props;
+    const { user, currentUser, trade } = this.props;
 
     // Only display image if the post has one
     let image = null;
@@ -55,7 +54,6 @@ class Trade extends React.Component {
           <p className="location">{user.location}</p>
           <div>
             <CheckButton trade={trade} stateUpdate={this.stateUpdate} />
-            <BookmarkButton trade={trade} />
           </div>
         </div>
         {image}
@@ -83,7 +81,7 @@ class Trade extends React.Component {
           :
           <button onClick={this.handleContactToggle}>Contact user</button>
         }
-        <Link className="deletepost" onClick={this.handleClick}>Delete post</Link>
+        {user.username === currentUser && <Link className="deletepost" onClick={this.handleClick}>Delete post</Link>}
       </div>
     );
   }

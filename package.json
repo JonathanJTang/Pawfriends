@@ -21,7 +21,7 @@
         "express": "^4.17.1",
         "express-session": "^1.17.0",
         "mongodb": "^3.5.9",
-        "mongoose": "^5.9.26",
-        "validator": "^13.1.1"
+        "mongoose": "^5.11.7",
+        "validator": "^13.5.2"
     }
 }
