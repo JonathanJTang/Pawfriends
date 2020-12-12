@@ -106,6 +106,7 @@ class Services extends React.Component {
           <h2>
             Offer or receive services such as pet sitting and matchmaking!
           </h2>
+          <h4>Looking for a specific service? Filter by poster name or tag!</h4>
           {this.state.toggle ? (
             <form className="createPost" onSubmit={this.handleSubmit}>
               <input
@@ -142,8 +143,8 @@ class Services extends React.Component {
               />
             </form>
           ) : (
-            <button onClick={this.handleClick}>Add a service</button>
-          )}
+              <button onClick={this.handleClick}>Add a service</button>
+            )}
         </div>
         <div className="postsList">
           <div className="filter">
