@@ -45,6 +45,7 @@ const UserSchema = new mongoose.Schema({
   pets: [PetSchema],
   friends: [ObjectId],
   settings: { type: Map, of: String },
+  admin: Boolean,
 });
 
 // Mongoose middleware

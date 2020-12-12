@@ -25,7 +25,6 @@ class Trades extends React.Component {
     if (tradesList !== undefined) {
       // Server call succeeded
       this.setState({ trades: tradesList });
-      console.log(tradesList);
     }
   }
 

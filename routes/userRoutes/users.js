@@ -85,7 +85,7 @@ router.get("/users/logout", (req, res) => {
 // A route to check if a user is logged in on the session
 router.get("/users/check-session", (req, res) => {
     if (req.session.user) {
-        res.send({ currentUser: req.session.username });
+        res.send({ currentUser: req.session.username});
     } else {
         res.status(401).send();
     }
