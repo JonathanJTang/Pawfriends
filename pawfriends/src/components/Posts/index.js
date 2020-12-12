@@ -25,7 +25,9 @@ class CreatePost extends React.Component {
       const validFileTypes = ["png", "jpg", "jpeg", "gif"];
       const filenameSegments = image.name.split(".");
       if (
-        !validFileTypes.includes(filenameSegments[filenameSegments.length - 1].toLowerCase())
+        !validFileTypes.includes(
+          filenameSegments[filenameSegments.length - 1].toLowerCase()
+        )
       ) {
         // One of the uploaded files is not of a valid image type
         alert(
@@ -103,36 +105,47 @@ class Posts extends React.Component {
     this.setState({ showCreatePostBox: false, posts: updatedPosts });
   };
 
-  stateUpdate = (updatedPosts) => {
-    this.setState({ posts: updatedPosts });
-  }
+  removePostHandler = (postsArrayIndex) => {
+    this.state.posts.splice(postsArrayIndex, 1);
+    this.setState({ posts: this.state.posts });
+  };
+
+  postsStateUpdate = () => {
+    this.setState({ posts: this.state.posts });
+  };
 
   render() {
     return (
       <div className="posts">
-      <div>
-     
-        <NavBar />
-        <div className="trade-header">
-          <h4> {"\n"}</h4>
-           <h4> Share cute moments or fond memories with your pet! </h4>
+        <div>
+          <NavBar />
+          <div className="trade-header">
+            <h4> {"\n"}</h4>
+            <h4> Share cute moments or fond memories with your pet! </h4>
 
-        {this.state.showCreatePostBox ? (
-          <CreatePost
-            postsList={this.state.posts}
-            parentStateUpdater={this.createPostHandler}
-          />
-        ) : (
-          <div>
-            <button onClick={this.newPostHandler}>Create post</button>
+            {this.state.showCreatePostBox ? (
+              <CreatePost
+                postsList={this.state.posts}
+                parentStateUpdater={this.createPostHandler}
+              />
+            ) : (
+              <div>
+                <button onClick={this.newPostHandler}>Create post</button>
+              </div>
+            )}
           </div>
-        )}
-        </div>
         </div>
 
         <div className="postsList">
           {this.state.posts.map((post, index) => (
-            <Post key={post._id} postData={post} user={post.owner} posts={this.state.posts} stateUpdate={this.stateUpdate} />
+            <Post
+              key={post._id}
+              postData={post}
+              user={post.owner}
+              postsArrayIndex={index}
+              removePost={this.removePostHandler}
+              parentStateUpdate={this.postsStateUpdate}
+            />
           ))}
         </div>
       </div>

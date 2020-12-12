@@ -70,7 +70,12 @@ const handleError = (error, res) => {
   }
 };
 jsonApiRouter.use(mongoChecker);
-jsonApiRouter.use(authenticate);
+// jsonApiRouter.use(authenticate);
+
+// Return true is obj is not a nonempty string
+const notValidString = (obj) => {
+  return typeof obj !== "string" || obj === "";
+};
 
 /* Overwrites the 'owner' key of the response object into a format with all the
  * information needed by the frontend. */
@@ -184,12 +189,7 @@ jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
   // const username = "user"; // TODO: remove after authentication is implemented
   try {
     // Validate user input (title and content must be nonempty strings)
-    if (
-      typeof req.body.title !== "string" ||
-      typeof req.body.content !== "string" ||
-      req.body.title === "" ||
-      req.body.content === ""
-    ) {
+    if (notValidString(req.body.title) || notValidString(req.body.content)) {
       res.status(400).send("Bad Request");
       return;
     }
@@ -239,7 +239,7 @@ jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
       return;
     }
     // Validate user input (content must be an nonempty string)
-    if (typeof req.body.content !== "string" || req.body.content === "") {
+    if (notValidString(req.body.content)) {
       res.status(400).send("Bad Request");
       return;
     }
@@ -351,7 +351,7 @@ jsonApiRouter.get("/posts/:postId", async (req, res) => {
       res.status(404).send();
       return;
     }
-    
+
     // Authentication passed, meaning user is valid
     const curUser = await User.findOne({ username: username });
 
@@ -396,7 +396,7 @@ jsonApiRouter.delete("/posts/:postId", async (req, res) => {
       await deleteImage(image);
     }
     post.remove();
-    res.send();
+    res.send({});
   } catch (error) {
     // Return 500 Internal server error if error was from deleteImage?
     handleError(error, res);
@@ -414,6 +414,52 @@ jsonApiRouter.get("/services", async (req, res) => {
     const allServices = await Service.find().sort({ postTime: "descending" });
     res.send(allServices);
   } catch (error) {
+    handleError(error, res);
+  }
+});
+
+/* Create a new service posting */
+jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
+  // const username = req.session.username;
+  const username = "user"; // TODO: remove after authentication is implemented
+  try {
+    // Validate user input (description, email, phone, and all elements of the tags array must be nonempty strings)
+    if (
+      notValidString(req.body.description) ||
+      notValidString(req.body.email) ||
+      notValidString(req.body.phone) ||
+      !Array.isArray(req.body.tags) ||
+      req.body.tags.some((tag) => notValidString(tag))
+    ) {
+      res.status(400).send("Bad Request");
+      return;
+    }
+
+    // Authentication passed, meaning user is valid
+    const user = await User.findOne({ username: username });
+
+    // Create a new trade
+    const service = new Service({
+      owner: user._id,
+      postTime: new Date(), // use current server time
+      description: req.body.description,
+      email: req.body.email,
+      phone: req.body.phone,
+      tags: req.body.tags,
+      images: [],
+    });
+    if (req.files) {
+      await processFilesForEntry(req.files, service);
+    }
+    const newService = await service.save();
+    // Build the JSON object to respond with
+    const jsonReponse = newService.toObject();
+    delete jsonReponse["__v"];
+    // await modifyServiceReponse(jsonReponse, user, user);
+    addOwnerToResponse(jsonReponse, user);
+    res.send(jsonReponse);
+  } catch (error) {
+    // Return 500 Internal server error if error was from uploadImage?
     handleError(error, res);
   }
 });
@@ -456,7 +502,7 @@ jsonApiRouter.get("/trades", async (req, res) => {
 jsonApiRouter.get("/trades/:tradeId", async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
-  const tradeId = req.params.tradeId;   
+  const tradeId = req.params.tradeId;
   try {
     if (!ObjectID.isValid(tradeId)) {
       res.status(404).send();
@@ -488,7 +534,7 @@ jsonApiRouter.post("/trades", multipartMiddleware, async (req, res) => {
   // const username = "user"; // TODO: remove after authentication is implemented
   try {
     // Validate user input (title and content must be nonempty strings)
-    if (typeof req.body.title !== "string" || req.body.title === "") {
+    if (notValidString(req.body.title)) {
       res.status(400).send("Bad Request");
       return;
     }
@@ -505,7 +551,7 @@ jsonApiRouter.post("/trades", multipartMiddleware, async (req, res) => {
       done: false,
     });
     if (req.files) {
-      await processFilesForEntry(req.files, tradeId);
+      await processFilesForEntry(req.files, trade);
     }
     const newTrade = await trade.save();
     // Build the JSON object to respond with
@@ -669,7 +715,7 @@ jsonApiRouter.post("/users/:userId/pets", async (req, res) => {
       return;
     }
     if (
-      typeof req.body.name !== "string" ||
+      notValidString(req.body.name) ||
       typeof req.body.likes !== "string" ||
       typeof req.body.dislikes !== "string"
     ) {
