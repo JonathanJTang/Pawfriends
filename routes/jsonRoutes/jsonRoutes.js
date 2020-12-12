@@ -70,7 +70,7 @@ const handleError = (error, res) => {
   }
 };
 jsonApiRouter.use(mongoChecker);
-// jsonApiRouter.use(authenticate);
+jsonApiRouter.use(authenticate);
 
 // Return true is obj is not a nonempty string
 const notValidString = (obj) => {
