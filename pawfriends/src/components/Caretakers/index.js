@@ -28,12 +28,12 @@ class Service extends React.Component {
     return (
       <div className="trade">
         <div className="header">
-          <Link to={`/profile/${user.id}`}>
+          <Link to={`/profile/`}>
             <img src={require(`../../images/user${user.id}.png`).default} />
           </Link>
 
           <div className="postText">
-            <Link to={`/profile/${user.id}`}>
+            <Link to={`/profile/`}>
               <p>@{user.name}</p>
             </Link>
             {service.desc}
