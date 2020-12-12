@@ -1,3 +1,4 @@
+
 import React from "react";
 import "./styles.css";
 
@@ -28,12 +29,12 @@ class Service extends React.Component {
     return (
       <div className="trade">
         <div className="header">
-          <Link to={`/profile/`}>
+          <Link to={`/profile/${user.id}`}>
             <img src={require(`../../images/user${user.id}.png`).default} />
           </Link>
 
           <div className="postText">
-            <Link to={`/profile/`}>
+            <Link to={`/profile/${user.id}`}>
               <p>@{user.name}</p>
             </Link>
             {service.desc}
