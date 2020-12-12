@@ -8,7 +8,7 @@ import Registration from "./components/Registration";
 import Home from "./components/Home";
 import Posts from "./components/Posts";
 import Trades from "./components/Trades";
-import Caretakers from "./components/Caretakers";
+import Services from "./components/Services";
 import Settings from "./components/Settings";
 import Profile from "./components/Profile";
 import AdminDashboard from "./components/AdminDashboard";
@@ -22,7 +22,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { currentUser: null };
-    checkSession(this);
+    // checkSession(this);  // moved to componentDidMount
   }
 
   // handleLogin = async (un, pw) => {
@@ -67,51 +67,41 @@ class App extends React.Component {
 
   componentDidMount = () => {
     document.title = "PawFriends";
-    this.setState({
-      services: [
-        {
-          userId: 1,
-          email: "john.smith@gmail.com",
-          phone: "111-111-11111",
-          desc: "Looking for someone to dogsit? I am the right one!",
-          tags: ["dog", "caretaking"],
-        },
-        {
-          userId: 2,
-          email: "jane.doe@gmail.com",
-          phone: "222-222-2222",
-          desc: "Tofu, a 2 year old shiba, is looking for his girlfriend!",
-          tags: ["dog", "dating"],
-        },
-        {
-          userId: 1,
-          email: "john.smith@gmail.com",
-          phone: "111-111-11111",
-          desc: "I can take care of your pet any time next week!",
-          tags: ["dog", "cat", "caretaking"],
-        },
-      ],
-    });
+    checkSession(this);
+    console.log("Checked session");
   };
 
   render() {
     const { currentUser } = this.state;
+    console.log(currentUser);
     return (
       <div className="App">
         <BrowserRouter>
-          {currentUser ? <NavBar app={this} currentUser={currentUser} /> : <NavBarGuest />}
+          {currentUser ? (
+            <NavBar app={this} currentUser={currentUser} />
+          ) : (
+            <NavBarGuest />
+          )}
           <Switch>
             <Route
               exact
               path="/registration"
               render={(props) => <Registration {...props} />}
             />
-            <Route exact path="/posts" render={() => <Posts />} />
-            <Route exact path="/trades" render={() => <Trades />} />
+            <Route
+              exact
+              path="/posts"
+              render={(props) => <Posts {...props} />}
+            />
+            <Route
+              exact
+              path="/trades"
+              render={(props) => <Trades {...props} />}
+            />
             <Route
               exact
               path="/services"
-              render={() => <Caretakers appState={this.state} />}
+              render={(props) => <Services {...props} />}
             />
             <Route
               exact
@@ -121,7 +111,9 @@ class App extends React.Component {
             <Route
               exact
               path="/profile/:id"
-              render={(props) => <Profile {...props} currentUser={currentUser} />}
+              render={(props) => (
+                <Profile {...props} currentUser={currentUser} />
+              )}
             />
             <Route
               exact
@@ -137,8 +129,8 @@ class App extends React.Component {
                   {!currentUser ? (
                     <Index />
                   ) : (
-                      <Home {...props} app={this} appState={this.state} />
-                    )}
+                    <Home {...props} app={this} appState={this.state} />
+                  )}
                 </div>
               )}
             />
