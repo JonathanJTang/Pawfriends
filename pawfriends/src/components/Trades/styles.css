@@ -68,7 +68,7 @@
 
 .tradebar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
 .tradebar .location::before {
