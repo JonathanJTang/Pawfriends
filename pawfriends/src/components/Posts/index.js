@@ -32,7 +32,7 @@ class CreatePost extends React.Component {
         // One of the uploaded files is not of a valid image type
         alert(
           `File "${image.name}" is not a valid image type (must be one of the ` +
-            `following file types: .png, .jpg, .jpeg, .gif)`
+          `following file types: .png, .jpg, .jpeg, .gif)`
         );
         return;
       }
@@ -120,8 +120,8 @@ class Posts extends React.Component {
         <div>
           <NavBar />
           <div className="trade-header">
-            <h4> {"\n"}</h4>
-            <h2> Share cute moments or fond memories with your pet! </h2>
+            <h2>Share cute moments with your pet!</h2>
+            <h4>Create, like, or comment on a post!</h4>
 
             {this.state.showCreatePostBox ? (
               <CreatePost
@@ -129,10 +129,10 @@ class Posts extends React.Component {
                 parentStateUpdater={this.createPostHandler}
               />
             ) : (
-              <div>
-                <button onClick={this.newPostHandler}>Create post</button>
-              </div>
-            )}
+                <div>
+                  <button onClick={this.newPostHandler}>Create post</button>
+                </div>
+              )}
           </div>
         </div>
 
