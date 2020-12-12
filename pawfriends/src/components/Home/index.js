@@ -45,7 +45,7 @@ class Home extends React.Component {
     if (appState.services) {
       allServices = appState.services.map((service, index) => (
         <div key={index} className="service">
-          <Link to="/caretakers"><h3>{service.desc}</h3></Link>
+          <Link to="/services"><h3>{service.desc}</h3></Link>
           <Link to={"/profile/" + service.userId}>
             <p>@{/*users[service.userId].name*/}</p>
           </Link>

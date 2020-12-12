@@ -410,8 +410,21 @@ jsonApiRouter.get("/services", async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
   try {
-    // could use .limit to limit the number of items to return
-    const allServices = await Service.find().sort({ postTime: "descending" });
+    // Authentication passed, meaning user is valid
+    // const curUser = await User.findOne({ username: username });
+
+    // could use .limit() before .lean() to limit the number of items to return
+    const allServices = await Service.find()
+      .sort({
+        postTime: "descending",
+      })
+      .select("-__v") // remove fields unnecessary for the client
+      .lean();
+    // Modify array to send to the client
+    for (const service of allServices) {
+      const postOwner = await User.findById(service.owner);
+      addOwnerToResponse(service, postOwner);
+    }
     res.send(allServices);
   } catch (error) {
     handleError(error, res);
@@ -814,7 +827,7 @@ jsonApiRouter.put("/users/:userId/friends/:friendId", async (req, res) => {
     }
     // create friends array if no friends yet
     if (!user.friends) {
-      user.friends = []
+      user.friends = [];
     }
     // don't add if already friends
     if (user.friends.includes(req.params.friendId)) {
