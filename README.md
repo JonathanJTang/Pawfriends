@@ -29,20 +29,20 @@ The features of our web appliction includes creating posts for your pet, viewing
 ![trade 1](https://raw.githubusercontent.com/csc309-fall-2020/team48/master/pawfriends/src/images/3trade.png?token=ANTWPT2FNBXNU3ZPXMKMQW273VIN4 "trade")
 ## User Journey of Pawfriends - II. Regular User
 0. Enter `user` for ID and `user` for password.
-1. If you want to see the posts created by you, click `Post`. You can view previous posts, like a post, leave comments on the post, make a new post, or delete the post. Clicking any user's name or profile picture will redirect to their profile. Before deletion, when you click the button to delete the post, you will be asked to confirm if you actually want to delete the post.
-2. If you want to see the posts for trades, click `Trade`. You can view previous trade posts, accept the trade, or create a new trade. To create a new trade post, click "CREATE TRADE". You can explore current trades or previous trades by clicking corresponding button. Also, you can delete the trade if you are the poster of the trade.  
-3. If you want to see the posts for pet daycare or matchmaking, click `Services`. You can see posts for dogsits or matchmaking, contact the poster, or create your own listing.
-The services section provide sorting functionality. You can filter posts by userID or tags, which creates a better view tailored to your or your pet's needs. For each posting of Services section, you can click the name of the poster's name to see what the poster is like, as this section is mainly intended for actual meetups that would leave a larger impact on you or your pets, such as matchmaking or pet daycare, compared to trading pet supplies. If you click contact info, it would give you the original poster's phone number and email so that you could contact the person to arrange a meetup. 
+1. If you want to see the posts created by you, click `Post`. You can view previous posts, like a post, leave comments on the post (new feature), make a new post, or delete the post (new feature). Clicking any user's name or profile picture will redirect to their profile (new feature). Before deletion, when you click the button to delete the post, you will be asked to confirm if you actually want to delete the post (new feature).
+2. If you want to see the posts for trades, click `Trade`. You can view previous trade posts and create a new trade. You can contact the poster to initiate the trade (new feature). To create a new trade post, click "CREATE TRADE". You can explore current trades or previous trades by clicking corresponding button(new feature). Also, you can delete the trade if you are the poster of the trade. The services section provide sorting functionality (new feature). You can filter posts by userID or tags, which creates a better view tailored to your or your pet's needs. For each posting of Services section, you can click the name of the poster to see what the poster is like, as this section is mainly intended for actual meetups that would leave a larger impact on you or your pets, such as matchmaking or pet daycare, compared to trading pet supplies. If you click contact info, it would give you the original poster's phone number and email so that you could contact the person to arrange a meetup for offering or receiving services (new feature). 
 3. Click the profile icon in the top right of the navigation bar to open a dropdown menu which links to 'Profile', 'Settings', and 'Logout' pages.
-4. In your user profile, you can modify your status and view your profile information. Click the tabs to navigate between user info, your pets, and friends list. You can add or delete friends in this section.
-5. In the pets section, you can view your pet information, including their likes and dislikes.
-6. If you want to modify your user profile, account, or site settings, visit the settings page via dropdown menu. Switch between the different setting section using the list on the left.
+4. In Profile, you can modify your status and view your profile information. Click the tabs to navigate between user info, your pets, and friends list. You can add or delete friends in this section (new feature). 
+5. In Setting, you can edit your own personal information in profile section and account information in the account section
+6. In the pets section, you can view your pet's about me section and edit it (new feature).
+
 
 
 ## User Journey of Pawfriends - III. Admin User
 0. Enter `admin` for ID and `admin` for password.
 1. You will be able to see the general statistics of our website such as the number of regular users, admin users, and posts.
 2. You can manage regular site users by viewing their profile info or deleting a user's account.
+3. You can explore the admin dashboard for user management. (New Feature)
 
 # Overview of the routes
 
