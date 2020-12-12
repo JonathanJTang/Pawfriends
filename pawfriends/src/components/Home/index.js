@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 
 import Post from "../Post";
 import Trade from "../Trade";
-import { getAllUsersPosts, getAllTrades } from "../../actions/apiRequests";
+import Service from "../Service";
+import {
+  getAllUsersPosts,
+  getAllTrades,
+  getAllServices,
+} from "../../actions/apiRequests";
 
 /* Home component */
 class Home extends React.Component {
@@ -12,7 +17,7 @@ class Home extends React.Component {
     super(props);
     this.state = {
       posts: [],
-      trades: []
+      trades: [],
     };
   }
 
@@ -20,18 +25,20 @@ class Home extends React.Component {
     // Fetch list of posts from server
     const postsList = await getAllUsersPosts();
     const tradesList = await getAllTrades();
-    this.setState({ posts: postsList, trades: tradesList });
+    const servicesList = await getAllServices();
+    this.setState({
+      posts: postsList,
+      trades: tradesList,
+      services: servicesList,
+    });
   }
 
   // for Trade component, extend to posts and services for post deletion on home page?
   stateUpdate = (updatedTrades) => {
     this.setState({ trades: updatedTrades });
-  }
+  };
 
   render() {
-    const appState = this.props.appState;
-    // const users = this.props.appState.users;
-
     let allPosts, allServices, allTrades;
 
     if (this.state.posts) {
@@ -42,20 +49,27 @@ class Home extends React.Component {
       ));
     }
 
-    if (appState.services) {
-      allServices = appState.services.map((service, index) => (
-        <div key={index} className="service">
-          <Link to="/services"><h3>{service.desc}</h3></Link>
-          <Link to={"/profile/" + service.userId}>
-            <p>@{/*users[service.userId].name*/}</p>
-          </Link>
-        </div>
+    if (this.state.services) {
+      allServices = this.state.services.map((service, index) => (
+        <Service
+          key={index}
+          service={service}
+          user={service.owner}
+          serviceArrayIndex={index}
+          setFilterTag={this.setFilterTag}
+        />
       ));
     }
 
     if (this.state.trades) {
-      allTrades= this.state.trades.map((trade, index) => (
-        <Trade key={trade._id} trade={trade} trades={this.state.trades} user={trade.owner} stateUpdate={this.stateUpdate} />
+      allTrades = this.state.trades.map((trade, index) => (
+        <Trade
+          key={trade._id}
+          trade={trade}
+          trades={this.state.trades}
+          user={trade.owner}
+          stateUpdate={this.stateUpdate}
+        />
       ));
     }
 
