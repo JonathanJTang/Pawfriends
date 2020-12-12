@@ -51,7 +51,7 @@ class Registration extends React.Component {
         password: this.state.user.password,
       });
       if (user !== undefined) {
-        this.props.history.push("/home");
+        this.props.history.push("/");
       }
     }
   };

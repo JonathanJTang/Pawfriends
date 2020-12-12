@@ -24,6 +24,11 @@
   letter-spacing: 0.05em;
 }
 
+.trade-header h4 {
+  color: rgb(112, 143, 170);
+  font-weight: normal;
+}
+
 .trade-header ul {
   display: flex;
   margin: auto;
@@ -51,6 +56,12 @@
   width: 80%;
 }
 
+.tradepup {
+  position: absolute;
+  top: -50px;
+  left: -200px;
+}
+
 .tradebar {
   display: flex;
   justify-content: space-between;
@@ -69,10 +80,4 @@
 .deletepost {
   display: block;
   text-align: right;
-}
-
-.tradepup {
-  position: absolute;
-  top: -50px;
-  left: -200px;
 }
