@@ -13,11 +13,12 @@ const fetchRequest = (request) => {
       return json;
     })
     .catch((error) => {
-      console.log("failed fetching @" + Request);
+      console.log("failed fetching @" + request.body);
       console.log(error);
     });
 };
 
+// <--- POST API --->
 export const getAllUsersPosts = () => {
   const postsListPromise = fetchRequest(baseUrl + "/api/posts");
   // This promise resolves to an array of posts
@@ -28,6 +29,16 @@ export const createPost = (formData) => {
   const request = new Request(baseUrl + "/api/posts", {
     method: "post",
     body: formData,
+  });
+
+  const postPromise = fetchRequest(request);
+  // This promise resolves to an object containing post info
+  return postPromise;
+};
+
+export const removePost = (postId) => {
+  const request = new Request(baseUrl + `/api/posts/${postId}`, {
+    method: "delete",
   });
 
   const postPromise = fetchRequest(request);
@@ -66,9 +77,11 @@ export const modifyLikePost = (likePost, postId) => {
   return commentPromise;
 };
 
+
+// <--- TRADE API --->
 export const getAllTrades = () => {
   const tradesListPromise = fetchRequest(baseUrl + "/api/trades");
-  // This promise resolves to an array of posts
+  // This promise resolves to an array of trades
   return tradesListPromise;
 };
 
@@ -83,7 +96,7 @@ export const createTrade = (trade) => {
   });
 
   const tradePromise = fetchRequest(request);
-  // This promise resolves to an object containing post info
+  // This promise resolves to an object containing trade info
   return tradePromise;
 };
 
@@ -93,7 +106,7 @@ export const finishTrade = (tradeId) => {
   });
 
   const tradePromise = fetchRequest(request);
-  // This promise resolves to an object containing post info
+  // This promise resolves to an object containing trade info
   return tradePromise;
 };
 
@@ -103,10 +116,55 @@ export const removeTrade = (tradeId) => {
   });
 
   const tradePromise = fetchRequest(request);
-  // This promise resolves to an object containing post info
+  // This promise resolves to an object containing trade info
   return tradePromise;
 };
 
+
+// <--- SERVICE API --->
+export const getAllServices = () => {
+  const servicesListPromise = fetchRequest(baseUrl + "/api/services");
+  // This promise resolves to an array of services
+  return servicesListPromise;
+};
+
+export const createService = (service) => {
+  const request = new Request(baseUrl + "/api/services", {
+    method: "post",
+    body: JSON.stringify(service),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const servicePromise = fetchRequest(request);
+  // This promise resolves to an object containing service info
+  return servicePromise;
+};
+
+export const finishService = (serviceId) => {
+  const request = new Request(baseUrl + `/api/services/${serviceId}/done`, {
+    method: "put",
+  });
+
+  const servicePromise = fetchRequest(request);
+  // This promise resolves to an object containing service info
+  return servicePromise;
+};
+
+export const removeService = (serviceId) => {
+  const request = new Request(baseUrl + `/api/services/${serviceId}`, {
+    method: "delete",
+  });
+
+  const servicePromise = fetchRequest(request);
+  // This promise resolves to an object containing service info
+  return servicePromise;
+};
+
+
+// <--- USER PROFILE API --->
 export const getUserByUsername = (username) => {
   const request = new Request(baseUrl + `/api/users/username/${username}`, {
     method: "get",
