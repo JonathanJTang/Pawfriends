@@ -46,9 +46,11 @@ The features of our web appliction includes creating posts for your pet, viewing
 
 # Overview of the routes
 
-* `POST /users/:username/posts` : Creates a post for user with **username**
-* `GET /users/:username/posts` : Gets array of posts from the user with **username**
-* `POST /users/:username/posts` Delete the post with **postId** from user with **username**
+* `POST /posts` : Create a post
+    * Expects request to have nonempty string properties `title` and `content`, and optionally have an image uploaded by the form.
+* `GET /posts/:postId` : Gets the post with postId
+* `GET /posts` : Gets array of all posts created on the system
+* `DELETE /posts/:postId` Delete the post with `postId`
 * `GET /services` Gets array of all services in the DB
 * `GET /trades` Gets array of all trades in the DB
 
@@ -62,6 +64,7 @@ Responses for posts, trades, and services have an "owner" property that represen
         "image_url": the cloudinary image url
     }
 }`
+
 
 
 ### Library/Framework used: React, Node, Express, Mongodb, Mongoose, connect-multiparty, cloudinary
