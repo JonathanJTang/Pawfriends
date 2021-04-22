@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 /// Middleware for creating sessions and session cookies.
 app.use(session({
-  secret: '***REMOVED***', // later we will define the session secret as an environment variable for production. for now, we'll just hardcode it.
+  secret: process.env.EXPRESS_SESSION_SECRET, // defined as an environment variable for production
   cookie: { // the session cookie sent, containing the session id.
     expires: 3600000, // 60 minute expiry
     httpOnly: true // important: saves it in only browser's memory - not accessible by javascript (so it can't be stolen/changed by scripts!).
@@ -33,8 +33,10 @@ app.use(session({
 }));
 
 // CORS setting (for development)
-const cors = require("cors");
-app.use(cors());
+if (process.env.NODE_ENV !== 'production') {
+  const cors = require("cors");
+  app.use(cors());
+}
 
 
 

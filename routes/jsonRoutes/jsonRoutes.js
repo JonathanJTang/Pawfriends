@@ -24,9 +24,9 @@ const { isMongoError, mongoChecker } = require("../helpers/routeHelpers");
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({
   cloud_name: "dypmf5kee",
-  api_key: "666517587772385",
+  api_key: "846954122682332",
   api_secret:
-    process.env.CLOUDINARY_API_SECRET || "***REMOVED***",
+    process.env.CLOUDINARY_API_SECRET,
 });
 // Global object
 const globals = {};
