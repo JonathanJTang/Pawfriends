@@ -33,10 +33,10 @@ app.use(session({
 }));
 
 // CORS setting (for development)
-if (process.env.NODE_ENV !== 'production') {
-  const cors = require("cors");
-  app.use(cors());
-}
+//if (process.env.NODE_ENV !== 'production') {
+const cors = require("cors");
+app.use(cors());
+//}
 
 
 
