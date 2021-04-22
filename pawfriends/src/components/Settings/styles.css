@@ -85,9 +85,9 @@
 }
 
 .btn-cat::after {
-    content: url('./cat.png');
+    content: url('../../images/cat.png');
 }
 
 .btn-dog::after {
-    content: url('./dog.png');
+    content: url('../../images/dog.png');
 }
