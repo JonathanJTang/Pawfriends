@@ -1,17 +1,13 @@
-# team48 - Pawfriends
+# Pawfriends
+This was done for a course project at the University of Toronto (CSC309 - Programming on the Web) with 3 other team members. We were asked to use minimal libraries, and instead use as much plain HTML/CSS/Javascript as we could to demonstrate our understanding of web programming.
+
+### Deployed webpage link: https://pawfriend.herokuapp.com/
 
 ![homepage 1](./readme_images/0main.png)
 
-## Deployed webpage link: https://pawfriend.herokuapp.com/
 
-## Steps for local development environment setup
+&nbsp;
 
-0. Have `npm` installed
-1. Open a terminal shell and navigate to the root directory of this repo
-2. Run `npm run setup` to install all dependencies
-3. Make sure a the Mongo database service is running
-4. Run `npm run build-run` to build the React app and start the Node server (to run the React development server, navigate to the `pawfriends` subdirectory and run `npm run start`)
-5. Open the generated link in a browser (default local development link: http://localhost:5000/)
 
 # Features of Pawfriends
 
@@ -48,7 +44,22 @@ The features of our web appliction includes creating posts for your pet, viewing
 2. You can manage regular site users by viewing their profile info or deleting a user's account.
 3. You can explore the admin dashboard for user management. (New Feature)
 
-# Overview of the routes
+
+&nbsp;
+
+&nbsp;
+
+# Technical details
+## Steps for local development environment setup
+
+0. Have `npm` installed
+1. Open a terminal shell and navigate to the root directory of this repo
+2. Run `npm run setup` to install all dependencies
+3. Make sure a the Mongo database service is running
+4. Run `npm run build-run` to build the React app and start the Node server (to run the React development server, navigate to the `pawfriends` subdirectory and run `npm run start`)
+5. Open the generated link in a browser (default local development link: http://localhost:5000/)
+6. 
+## Overview of the backend routes
 
 - `POST /posts` : Create a post
   - Expects request to have nonempty string properties `title` and `content`, and optionally have an image uploaded by the form.
@@ -78,4 +89,4 @@ Responses for posts, trades, and services have an "owner" property that represen
   } \
   Logs in a user for this webapp and returns a JSON with this format `{ currentUser: user.username }`
 
-### Library/Framework used: React, Node, Express, Mongodb, Mongoose, connect-multiparty, cloudinary
+### Libraries/Frameworks used: React, Node, Express, Mongodb, Mongoose, connect-multiparty, cloudinary
