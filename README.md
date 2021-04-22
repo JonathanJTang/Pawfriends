@@ -1,6 +1,6 @@
 # team48 - Pawfriends
 
-![homepage 1](https://raw.githubusercontent.com/csc309-fall-2020/team48/master/pawfriends/src/images/0main.png?token=ANTWPT3OZQHCPUYMXZBLYJS73VG4K "Home Page")
+![homepage 1](./readme_images/0main.png)
 
 ## Deployed webpage link: https://pawfriend.herokuapp.com/
 
@@ -19,7 +19,7 @@ The features of our web appliction includes creating posts for your pet, viewing
 
 # User Journeys
 
-![login 1](https://raw.githubusercontent.com/csc309-fall-2020/team48/master/pawfriends/src/images/1login.png?token=ANTWPT5QGEGVNB27GEBIUQK73VHPY "login")
+![login 1](./readme_images/1login.png)
 
 ## User Journey of Pawfriends - I. Main page
 
@@ -29,7 +29,7 @@ The features of our web appliction includes creating posts for your pet, viewing
 3. You will be able to see three different sections: Posts, Trades, and Services. You can navigate to each section by clicking this header.
 4. The main page works like Newsfeed; if you click the content in either of Services, New Posts, Trade Pet Supplies, you will be directed to the corresponding section.
 
-![trade 1](https://raw.githubusercontent.com/csc309-fall-2020/team48/master/pawfriends/src/images/3trade.png?token=ANTWPT2FNBXNU3ZPXMKMQW273VIN4 "trade")
+![trade 1](./readme_images/3trade.png)
 
 ## User Journey of Pawfriends - II. Regular User
 
