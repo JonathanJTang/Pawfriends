@@ -15,14 +15,16 @@ mongoose.set("useFindAndModify", false); // for some deprecation issues
 // body-parser: middleware for parsing HTTP JSON body into a usable object
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // express-session for managing user sessions
 const session = require("express-session");
-app.use(bodyParser.urlencoded({ extended: true }));
+const MongoStore = require('connect-mongo')(session) // to store session information on the database in production
+
 
 /// Middleware for creating sessions and session cookies.
 app.use(session({
-  secret: process.env.EXPRESS_SESSION_SECRET, // defined as an environment variable for production
+  secret: process.env.NODE_ENV === 'production' ? process.env.EXPRESS_SESSION_SECRET : "test secret", // defined as an environment variable for production
   cookie: { // the session cookie sent, containing the session id.
     expires: 3600000, // 60 minute expiry
     httpOnly: true // important: saves it in only browser's memory - not accessible by javascript (so it can't be stolen/changed by scripts!).
@@ -30,6 +32,8 @@ app.use(session({
   // Session saving options
   saveUninitialized: false, // don't save the initial session if the session object is unmodified (for example, we didn't log in).
   resave: false, // don't resave an session that hasn't been modified.
+  // In production, store sessions in the database
+  store: process.env.NODE_ENV === 'production' ? new MongoStore({ mongooseConnection: mongoose.connection }) : null
 }));
 
 // CORS setting (for development)
