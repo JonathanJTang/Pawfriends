@@ -8,18 +8,20 @@ class PetProfile extends React.Component {
     super(props);
     this.state = {
       toggle: false,
-    }
+    };
   }
 
   handleChange = async (e) => {
     const pet = this.props.pet;
     pet[e.target.name] = e.target.value;
     await editPet(pet, this.props.user._id, this.props.pet._id);
-  }
+  };
 
   handleClick = () => {
-    this.state.toggle ? this.setState({ toggle: false }) : this.setState({ toggle: true });
-  }
+    this.state.toggle
+      ? this.setState({ toggle: false })
+      : this.setState({ toggle: true });
+  };
 
   remove = async () => {
     const response = await removePet(this.props.user._id, this.props.pet._id);
@@ -29,15 +31,19 @@ class PetProfile extends React.Component {
       this.props.stateUpdate(this.props.petsList);
       this.handleClick();
     }
-  }
+  };
 
   render() {
     const { pet, isOwnProfile } = this.props;
 
     return (
-      <div className='pet'>
+      <div className="pet">
         <div className="petcontainer">
-          <img src="http://placekitten.com/g/150/150" alt="pet" className="petimg" />
+          <img
+            src="http://placekitten.com/g/150/150"
+            alt="pet"
+            className="petimg"
+          />
           <textarea
             name="name"
             className="petname"
@@ -47,9 +53,11 @@ class PetProfile extends React.Component {
           />
         </div>
         <div className="petcontainer">
-          {this.state.toggle && <Popup confirm={this.remove} cancel={this.handleClick} />}
-          <span className='petinfo'>
-            <img src={require('../../images/like.png').default} alt="likes" />
+          {this.state.toggle && (
+            <Popup confirm={this.remove} cancel={this.handleClick} />
+          )}
+          <span className="petinfo">
+            <img src={require("../../images/like.png").default} alt="likes" />
             <textarea
               name="likes"
               className="likes"
@@ -58,7 +66,10 @@ class PetProfile extends React.Component {
               onChange={this.handleChange}
               disabled={!isOwnProfile}
             />
-            <img src={require('../../images/dislike.png').default} alt="dislikes" />
+            <img
+              src={require("../../images/dislike.png").default}
+              alt="dislikes"
+            />
             <textarea
               name="dislikes"
               className="dislikes"
@@ -71,14 +82,18 @@ class PetProfile extends React.Component {
           <h3>About Me</h3>
           <textarea
             name="description"
-            className='description'
+            className="description"
             defaultValue={pet.description}
             onChange={this.handleChange}
             disabled={!isOwnProfile}
           />
         </div>
-        <button className="deletepet" onClick={this.handleClick} disabled={!isOwnProfile} />
-      </div >
+        <button
+          className="deletepet"
+          onClick={this.handleClick}
+          disabled={!isOwnProfile}
+        />
+      </div>
     );
   }
 }

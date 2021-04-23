@@ -10,7 +10,7 @@
   margin: auto;
 }
 
-.profile-pet>div {
+.profile-pet > div {
   position: relative;
   display: flex;
   width: 720px;
@@ -22,13 +22,13 @@
   justify-content: flex-end;
 }
 
-.profile-pet>button {
+.profile-pet > button {
   align-self: flex-end;
   background-color: #a8d9e4;
   border: 2px solid white;
 }
 
-.profile-pet>button:hover {
+.profile-pet > button:hover {
   color: #a8d9e4;
   background-color: white;
 }
@@ -45,11 +45,12 @@
   gap: 10px;
 }
 
-.profile-pet form input[type=submit] {
+.profile-pet form input[type="submit"] {
   width: 50%;
 }
 
-.profile-pet form img, .petimg {
+.profile-pet form img,
+.petimg {
   width: 120px;
   height: 120px;
   margin: 15px;
@@ -74,16 +75,18 @@
   height: 24px;
 }
 
-.likes, .dislikes {
+.likes,
+.dislikes {
   padding: 5px;
   width: 50%;
 }
 
-.petinfo>img {
+.petinfo > img {
   opacity: 0.5;
 }
 
-.likes:disabled, .dislikes:disabled {
+.likes:disabled,
+.dislikes:disabled {
   border-color: transparent;
   background-color: transparent;
 }
@@ -113,7 +116,8 @@
   overflow: hidden;
 }
 
-.description, .petinfo textarea {
+.description,
+.petinfo textarea {
   font-size: 14px;
   letter-spacing: 0.1em;
 }
@@ -124,7 +128,12 @@
   border-radius: 0.5em;
 }
 
-.description:hover, .description:focus, .likes:hover, .likes:focus, .dislikes:hover, .dislikes:focus {
+.description:hover,
+.description:focus,
+.likes:hover,
+.likes:focus,
+.dislikes:hover,
+.dislikes:focus {
   background-color: #c1e2e73b;
 }
 
@@ -132,7 +141,9 @@
   border-color: white;
 }
 
-.deletepet, .pet::before, .pet::after {
+.deletepet,
+.pet::before,
+.pet::after {
   position: absolute;
   content: "";
   top: 10px;
@@ -157,6 +168,7 @@
   background-color: #cfe5bd;
 }
 
-.pet .popup, .pet .popup h2 {
+.pet .popup,
+.pet .popup h2 {
   border-radius: 0.2em;
 }

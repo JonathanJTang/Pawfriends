@@ -5,7 +5,7 @@
   gap: 50px;
 }
 
-.profile-friends>* {
+.profile-friends > * {
   padding: 15px;
   background-color: #ffffffcc;
   border-radius: 0.5em;

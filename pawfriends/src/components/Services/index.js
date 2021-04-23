@@ -143,8 +143,8 @@ class Services extends React.Component {
               />
             </form>
           ) : (
-              <button onClick={this.handleClick}>Add a service</button>
-            )}
+            <button onClick={this.handleClick}>Add a service</button>
+          )}
         </div>
         <div className="postsList">
           <div className="filter">

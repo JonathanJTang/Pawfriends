@@ -2,7 +2,7 @@ import React from "react";
 import "./styles.css";
 
 import { Link } from "react-router-dom";
-import {loginUser} from "../../actions/apiRequests"
+import { loginUser } from "../../actions/apiRequests";
 
 class Index extends React.Component {
   constructor(props) {
@@ -19,16 +19,14 @@ class Index extends React.Component {
     e.preventDefault();
     let user = await loginUser({
       username: this.state.input["name"],
-      password: this.state.input["pass"]
-    })
-    if (user!== undefined) {
-      alert("succesful login")
+      password: this.state.input["pass"],
+    });
+    if (user !== undefined) {
+      alert("succesful login");
       window.location.reload();
     } else {
-      alert("bad login")
+      alert("bad login");
     }
-    
-    
   };
 
   // validate = () => {

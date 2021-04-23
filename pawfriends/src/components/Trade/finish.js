@@ -15,14 +15,18 @@ class CheckButton extends React.Component {
         this.props.stateUpdate(this.props.trade);
       }
     }
-  }
+  };
 
   render() {
     return (
       <div className="tradebar-btn">
-        <img src={this.props.trade.done ? checkFill : check} onClick={this.handleClick} />
+        <img
+          src={this.props.trade.done ? checkFill : check}
+          onClick={this.handleClick}
+          alt={this.props.trade.done ? "trade done" : "trade not done"}
+        />
       </div>
-    )
+    );
   }
 }
 

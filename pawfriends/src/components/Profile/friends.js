@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import "./friends.css";
 
 class Friends extends React.Component {
@@ -8,14 +8,17 @@ class Friends extends React.Component {
 
     return (
       <>
-        {Object.entries(this.props.user).length !== 0 && <div className='profile-friends'>
-          {friends.length > 0 && friends.map(friend => (
-            <Link to={`/profile/${friend.username}`}>
-              <img src={friend.profilePicture.image_url} alt="friend" />
-              <p>{friend.actualName}</p>
-            </Link>
-          ))}
-        </div>}
+        {Object.entries(this.props.user).length !== 0 && (
+          <div className="profile-friends">
+            {friends.length > 0 &&
+              friends.map((friend) => (
+                <Link to={`/profile/${friend.username}`}>
+                  <img src={friend.profilePicture.image_url} alt="friend" />
+                  <p>{friend.actualName}</p>
+                </Link>
+              ))}
+          </div>
+        )}
       </>
     );
   }

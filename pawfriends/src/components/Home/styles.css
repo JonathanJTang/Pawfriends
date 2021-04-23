@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Sacramento&display=swap");
 .home {
   display: flex;
   gap: 10px;
@@ -12,24 +12,29 @@
   font-size: 36px;
 }
 
-.home>div {
+.home > div {
   display: flex;
   flex-direction: column;
   flex: 1;
   gap: 10px;
 }
 
-.service, .trade {
+.service,
+.trade {
   background-color: white;
   border-radius: 0.2em;
   overflow: hidden;
 }
 
-.home p, .header p, .deletepost, .tradebar p {
+.home p,
+.header p,
+.deletepost,
+.tradebar p {
   opacity: 0.6;
 }
 
-.trade, .service {
+.trade,
+.service {
   position: relative;
   padding: 10px;
 }
@@ -38,7 +43,7 @@
   align-self: flex-end;
 }
 
-.trade>img {
+.trade > img {
   display: block;
   margin: auto;
   width: 150px;
@@ -68,6 +73,7 @@
   border-radius: 5em;
 }
 
-.header p, .header h3 {
+.header p,
+.header h3 {
   margin: 0;
 }

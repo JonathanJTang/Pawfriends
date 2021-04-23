@@ -45,7 +45,8 @@
   background-color: #94c8e0;
 }
 
-.popup-content h2, .popup-content p {
+.popup-content h2,
+.popup-content p {
   text-align: center;
   opacity: 1;
 }

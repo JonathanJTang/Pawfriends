@@ -1,93 +1,95 @@
 .set {
-    display: flex;
-    margin: auto;
-    padding: 0 50px 30px 50px;
-    width: 850px;
+  display: flex;
+  margin: auto;
+  padding: 0 50px 30px 50px;
+  width: 850px;
 }
 
 .set-nav {
-    flex: 0.3;
-    margin-left: 50px;
-    border-radius: 0.2em 0 0 0.2em;
-    background-color: white;
-    overflow: hidden;
-    border-right: 1px solid #f3f2f2;
+  flex: 0.3;
+  margin-left: 50px;
+  border-radius: 0.2em 0 0 0.2em;
+  background-color: white;
+  overflow: hidden;
+  border-right: 1px solid #f3f2f2;
 }
 
 .set-form img {
-    margin: auto;
-    width: 120px;
-    height: 120px;
-    border: 2px solid #c1e2e7;
-    padding: 3px;
-    border-radius: 10em;
+  margin: auto;
+  width: 120px;
+  height: 120px;
+  border: 2px solid #c1e2e7;
+  padding: 3px;
+  border-radius: 10em;
 }
 
 .set-nav li {
-    padding: 20px;
-    border-right: 2px solid transparent;
-    border-bottom: 1px solid #f3f2f2;
-    transition: 0.2s ease;
-    cursor: pointer;
+  padding: 20px;
+  border-right: 2px solid transparent;
+  border-bottom: 1px solid #f3f2f2;
+  transition: 0.2s ease;
+  cursor: pointer;
 }
 
-.set-nav li:hover, .set-toggle {
-    background-color: #fafafa;
-    border-right-color: #c1e2e7 !important;
+.set-nav li:hover,
+.set-toggle {
+  background-color: #fafafa;
+  border-right-color: #c1e2e7 !important;
 }
 
 .set-form {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 10px;
-    padding: 50px 50px 30px 50px;
-    border-radius: 0 0.2em 0.2em 0;
-    background-color: white;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 50px 50px 30px 50px;
+  border-radius: 0 0.2em 0.2em 0;
+  background-color: white;
 }
 
 .set-form label {
-    display: flex;
-    font-weight: bold;
-    text-transform: uppercase;
+  display: flex;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .set-form p {
-    flex: 0.5;
-    text-align: left;
-    letter-spacing: 0.2em;
+  flex: 0.5;
+  text-align: left;
+  letter-spacing: 0.2em;
 }
 
-.set-form input, .set-form select {
-    padding: 10px 0;
+.set-form input,
+.set-form select {
+  padding: 10px 0;
 }
 
-.set-form input[type=submit] {
-    margin: auto;
-    width: 50%;
-    background-color: #b6bbd8;
+.set-form input[type="submit"] {
+  margin: auto;
+  width: 50%;
+  background-color: #b6bbd8;
 }
 
-.set-form input[type=submit]:hover {
-    background-color: #c1e2e7;
+.set-form input[type="submit"]:hover {
+  background-color: #c1e2e7;
 }
 
 .set-form button {
-    display: inline-block;
-    margin: 0 30px;
-    border: none;
-    background-color: transparent;
-    opacity: 0.5;
+  display: inline-block;
+  margin: 0 30px;
+  border: none;
+  background-color: transparent;
+  opacity: 0.5;
 }
 
 .set-form button:hover {
-    opacity: 1;
+  opacity: 1;
 }
 
 .btn-cat::after {
-    content: url('../../images/cat.png');
+  content: url("../../images/cat.png");
 }
 
 .btn-dog::after {
-    content: url('../../images/dog.png');
+  content: url("../../images/dog.png");
 }

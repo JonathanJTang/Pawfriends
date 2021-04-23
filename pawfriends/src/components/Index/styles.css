@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Sacramento&display=swap");
 .login {
   display: flex;
   align-items: center;
@@ -6,8 +6,10 @@
   height: 100%;
 }
 
-.login h1::before, .login h1::after, .login form::before {
-  content: '';
+.login h1::before,
+.login h1::after,
+.login form::before {
+  content: "";
   position: absolute;
   top: 10px;
   width: 15px;
@@ -31,7 +33,7 @@
 }
 
 .login form::after {
-  content: url('../../images/pup.png');
+  content: url("../../images/pup.png");
   position: absolute;
   right: -100px;
   bottom: -120px;
@@ -58,7 +60,8 @@
   margin-bottom: 15px;
 }
 
-.login input, .login select {
+.login input,
+.login select {
   margin-bottom: 15px;
   padding: 10px 0px 10px 0px;
   width: 100%;
@@ -83,7 +86,7 @@
   border-radius: 0.2em;
   color: white;
   background-color: #c1bde5;
-  transition: .2s ease;
+  transition: 0.2s ease;
   cursor: pointer;
 }
 

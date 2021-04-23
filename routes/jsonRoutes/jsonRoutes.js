@@ -25,8 +25,7 @@ const cloudinary = require("cloudinary").v2;
 cloudinary.config({
   cloud_name: "dypmf5kee",
   api_key: "846954122682332",
-  api_secret:
-    process.env.CLOUDINARY_API_SECRET,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 // Global object
 const globals = {};
@@ -93,7 +92,7 @@ const addOwnerToResponse = (response, owner) => {
 
 /* Modifies the response object into a format with all the information needed by
  * the frontend. */
-const modifyPostReponse = async (response, postOwner, curUser) => {
+const modifyPostResponse = async (response, postOwner, curUser) => {
   addOwnerToResponse(response, postOwner);
 
   response.numLikes = response.likedUsers.length;
@@ -177,7 +176,7 @@ const processFilesForEntry = async (filesObj, entry) => {
   }
 };
 
-/**************** API ROUTES for updating various objs in database (Posts, Services, Trades) ****************/
+/**************** API ROUTES for updating various objects in database (Posts, Services, Trades) ****************/
 /* Note: these are defined on the jsonApiRouter express router, which is loaded
  * on the "/api" url prefix already */
 
@@ -214,7 +213,7 @@ jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
     // Build the JSON object to respond with
     const jsonReponse = newPost.toObject();
     delete jsonReponse["__v"];
-    await modifyPostReponse(jsonReponse, user, user);
+    await modifyPostResponse(jsonReponse, user, user);
     res.send(jsonReponse);
   } catch (error) {
     // Return 500 Internal server error if error was from uploadImage?
@@ -328,7 +327,7 @@ jsonApiRouter.get("/posts", async (req, res) => {
     // Modify array to send to the client
     for (const post of userPosts) {
       const postOwner = await User.findById(post.owner);
-      await modifyPostReponse(post, postOwner, curUser);
+      await modifyPostResponse(post, postOwner, curUser);
     }
     res.send(userPosts);
   } catch (error) {
@@ -359,7 +358,7 @@ jsonApiRouter.get("/posts/:postId", async (req, res) => {
     const postOwner = await User.findById(post.owner);
     const jsonReponse = post.toObject();
     delete jsonReponse["__v"];
-    await modifyPostReponse(jsonReponse, postOwner, curUser);
+    await modifyPostResponse(jsonReponse, postOwner, curUser);
     res.send(jsonReponse);
   } catch (error) {
     handleError(error, res);

@@ -17,34 +17,37 @@ class Dropdown extends React.Component {
     if (user !== undefined) {
       this.setState({ user: user });
     }
-  }
+  };
 
   show = () => {
     if (this.state.show) {
       this.setState({ show: false });
-      document.removeEventListener('mouseup', this.handleClick);
+      document.removeEventListener("mouseup", this.handleClick);
     } else {
       this.setState({ show: true });
-      document.addEventListener('mouseup', this.handleClick);
+      document.addEventListener("mouseup", this.handleClick);
     }
-  }
+  };
 
-  handleClick = e => {
-    if (!this.ref1.current.contains(e.target) && !this.ref2.current.contains(e.target)) {
+  handleClick = (e) => {
+    if (
+      !this.ref1.current.contains(e.target) &&
+      !this.ref2.current.contains(e.target)
+    ) {
       this.show();
     }
-  }
+  };
 
   handleLogout = () => {
-    let logoutpromise = logoutUser()
+    let logoutpromise = logoutUser();
     this.props.app.setState({
       currentUser: null,
     });
-    alert("logout")
+    alert("logout");
   };
 
   componentWillUnmount() {
-    document.removeEventListener('mouseup', this.handleClick);
+    document.removeEventListener("mouseup", this.handleClick);
   }
 
   render() {
@@ -54,23 +57,34 @@ class Dropdown extends React.Component {
     if (user.profilePicture) {
       image = user.profilePicture.image_url;
     } else {
-      image = "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png";
+      image =
+        "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png";
     }
     return (
       <div>
-        <img src={image} onClick={this.show} className='dropdown' ref={this.ref1} />
+        <img
+          src={image}
+          onClick={this.show}
+          className="dropdown"
+          ref={this.ref1}
+          alt={"dropdown button"}
+        />
 
-        {
-          this.state.show
-            ? (
-              <ul className='dropdown-list' ref={this.ref2}>
-                <li onClick={this.show}><Link to={`/profile/${user.username}`}>Profile</Link></li>
-                <li onClick={this.show}><Link to='/settings'>Settings</Link></li>
-                <li onClick={this.show}><Link to='/' onClick={this.handleLogout}>Logout</Link></li>
-              </ul>
-            )
-            : null
-        }
+        {this.state.show ? (
+          <ul className="dropdown-list" ref={this.ref2}>
+            <li onClick={this.show}>
+              <Link to={`/profile/${user.username}`}>Profile</Link>
+            </li>
+            <li onClick={this.show}>
+              <Link to="/settings">Settings</Link>
+            </li>
+            <li onClick={this.show}>
+              <Link to="/" onClick={this.handleLogout}>
+                Logout
+              </Link>
+            </li>
+          </ul>
+        ) : null}
       </div>
     );
   }

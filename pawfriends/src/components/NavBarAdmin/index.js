@@ -11,7 +11,6 @@ class NavBarAdmin extends React.Component {
           <li>Admin Dashboard</li>
         </ul>
       </div>
-
     );
   }
 }

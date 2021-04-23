@@ -16,7 +16,7 @@ class Trades extends React.Component {
       newTrade: {
         title: "",
       },
-    }
+    };
   }
 
   async componentDidMount() {
@@ -40,32 +40,32 @@ class Trades extends React.Component {
 
   handleToggle = () => {
     this.setState({ toggle: true });
-  }
+  };
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.state.newTrade[e.target.name] = e.target.value;
-  }
+  };
 
   stateUpdate = (updatedTrades) => {
     this.setState({ trades: updatedTrades });
-  }
+  };
 
-  filterCurrent = trade => {
+  filterCurrent = (trade) => {
     return !trade.done;
-  }
+  };
 
-  filterPast = trade => {
+  filterPast = (trade) => {
     return trade.done;
-  }
+  };
 
-  filterUser = trade => {
+  filterUser = (trade) => {
     return trade.owner.username === this.props.currentUser;
-  }
+  };
 
-  handleClick = e => {
+  handleClick = (e) => {
     e.preventDefault();
     this.setState({ filter: e.target.getAttribute("name") });
-  }
+  };
 
   resizeTextarea = (initialRows, event) => {
     const textarea = event.target;
@@ -73,16 +73,16 @@ class Trades extends React.Component {
     const num_rows = Math.max(
       initialRows,
       1 + (textarea.value.match(/\n/g) || []).length
-    )
+    );
     textarea.rows = num_rows;
   };
 
   render() {
     const filters = {
-      "current": this.filterCurrent,
-      "past": this.filterPast,
-      "user": this.filterUser,
-    }
+      current: this.filterCurrent,
+      past: this.filterPast,
+      user: this.filterUser,
+    };
 
     // Filter list of trades based on set filter
     let filteredTrades = this.state.trades.filter(filters[this.state.filter]);
@@ -90,12 +90,12 @@ class Trades extends React.Component {
     return (
       <div className="posts">
         <div className="trade-header">
-          <img src={pup} className="tradepup" />
+          <img src={pup} className="tradepup" alt={"decorative"} />
           <h2>Trade pet supplies!</h2>
           <h4>Need some extra toys?</h4>
           <h4>See what your other pet owners are trading!</h4>
           <h4>Click on "CREATE TRADE" to move forward with an exchange!</h4>
-          {this.state.toggle ?
+          {this.state.toggle ? (
             <form className="createPost" onSubmit={this.handleSubmit}>
               <textarea
                 className="createPostTextarea"
@@ -112,17 +112,32 @@ class Trades extends React.Component {
                 className="createPostSubmitButton"
               />
             </form>
-            :
+          ) : (
             <button onClick={this.handleToggle}>Create trade</button>
-          }
+          )}
           <ul>
-            <Link to="" className={this.state.filter === "current" ? "active" : ""} onClick={this.handleClick} name="current">
+            <Link
+              to=""
+              className={this.state.filter === "current" ? "active" : ""}
+              onClick={this.handleClick}
+              name="current"
+            >
               <li name="current">Current trades</li>
             </Link>
-            <Link to="" className={this.state.filter === "past" ? "active" : ""} onClick={this.handleClick} name="past">
+            <Link
+              to=""
+              className={this.state.filter === "past" ? "active" : ""}
+              onClick={this.handleClick}
+              name="past"
+            >
               <li name="past">Past trades</li>
             </Link>
-            <Link to="" className={this.state.filter === "user" ? "active" : ""} onClick={this.handleClick} name="user">
+            <Link
+              to=""
+              className={this.state.filter === "user" ? "active" : ""}
+              onClick={this.handleClick}
+              name="user"
+            >
               <li name="user">My trades</li>
             </Link>
           </ul>

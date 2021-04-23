@@ -10,33 +10,39 @@ class Trade extends React.Component {
     super(props);
     this.state = {
       toggle: false,
-      contactToggle: false
-    }
+      contactToggle: false,
+    };
   }
 
   stateUpdate = (updatedTrade) => {
     const i = this.props.trades.indexOf(this.props.trade);
     this.props.trades[i] = updatedTrade;
     this.props.stateUpdate(this.props.trades);
-  }
+  };
 
   remove = async () => {
     const response = await removeTrade(this.props.trade._id);
     if (response !== undefined) {
-      const i = this.props.trades.findIndex(current_trade => current_trade._id == this.props.trade._id);
+      const i = this.props.trades.findIndex(
+        (current_trade) => current_trade._id === this.props.trade._id
+      );
       this.props.trades.splice(i, 1);
       this.props.stateUpdate(this.props.trades);
       this.handleClick();
     }
-  }
+  };
 
   handleClick = () => {
-    this.state.toggle ? this.setState({ toggle: false }) : this.setState({ toggle: true });
-  }
+    this.state.toggle
+      ? this.setState({ toggle: false })
+      : this.setState({ toggle: true });
+  };
 
   handleContactToggle = () => {
-    this.state.contactToggle ? this.setState({ contactToggle: false }) : this.setState({ contactToggle: true });
-  }
+    this.state.contactToggle
+      ? this.setState({ contactToggle: false })
+      : this.setState({ contactToggle: true });
+  };
 
   render() {
     const { user, currentUser, trade } = this.props;
@@ -49,7 +55,9 @@ class Trade extends React.Component {
 
     return (
       <div className="trade">
-        {this.state.toggle && <Popup confirm={this.remove} cancel={this.handleClick} />}
+        {this.state.toggle && (
+          <Popup confirm={this.remove} cancel={this.handleClick} />
+        )}
         <div className="tradebar">
           <div>
             <CheckButton trade={trade} stateUpdate={this.stateUpdate} />
@@ -67,8 +75,8 @@ class Trade extends React.Component {
             {trade.title}
           </div>
         </div>
-        {this.state.contactToggle ?
-          <div className='tradeinfo'>
+        {this.state.contactToggle ? (
+          <div className="tradeinfo">
             <div>
               <strong>Email:</strong>
             </div>
@@ -77,10 +85,14 @@ class Trade extends React.Component {
             </div>
             <button onClick={this.handleContactToggle}>Close</button>
           </div>
-          :
+        ) : (
           <button onClick={this.handleContactToggle}>Contact user</button>
-        }
-        {user.username === currentUser && <Link className="deletepost" onClick={this.handleClick}>Delete post</Link>}
+        )}
+        {user.username === currentUser && (
+          <Link className="deletepost" onClick={this.handleClick}>
+            Delete post
+          </Link>
+        )}
       </div>
     );
   }

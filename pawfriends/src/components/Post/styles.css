@@ -5,7 +5,7 @@
   margin-bottom: 15px;
 }
 
-.post>img {
+.post > img {
   display: block;
   width: 100%;
 }
@@ -30,7 +30,8 @@
   border-radius: 5em;
 }
 
-.header p, .header h3 {
+.header p,
+.header h3 {
   margin: 0;
 }
 

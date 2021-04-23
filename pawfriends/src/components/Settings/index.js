@@ -1,5 +1,5 @@
-import React from 'react';
-import './styles.css';
+import React from "react";
+import "./styles.css";
 
 import ProfileSettings from "./profile.js";
 import AccountSettings from "./account.js";
@@ -19,19 +19,35 @@ class Settings extends React.Component {
   // }
 
   handleClick = () => {
-    this.state.toggle ? this.setState({ toggle: false }) : this.setState({ toggle: true });
-  }
+    this.state.toggle
+      ? this.setState({ toggle: false })
+      : this.setState({ toggle: true });
+  };
 
   render() {
     const { currentUser } = this.props;
 
     return (
-      <div className='set'>
-        <ul className='set-nav'>
-          <li onClick={this.handleClick} className={this.state.toggle ? 'set-toggle' : ''}>User Profile</li>
-          <li onClick={this.handleClick} className={!this.state.toggle ? 'set-toggle' : ''}>Account</li>
+      <div className="set">
+        <ul className="set-nav">
+          <li
+            onClick={this.handleClick}
+            className={this.state.toggle ? "set-toggle" : ""}
+          >
+            User Profile
+          </li>
+          <li
+            onClick={this.handleClick}
+            className={!this.state.toggle ? "set-toggle" : ""}
+          >
+            Account
+          </li>
         </ul>
-        {this.state.toggle ? <ProfileSettings currentUser={currentUser} /> : <AccountSettings />}
+        {this.state.toggle ? (
+          <ProfileSettings currentUser={currentUser} />
+        ) : (
+          <AccountSettings />
+        )}
       </div>
     );
   }

@@ -12,7 +12,6 @@ class NavBarGuest extends React.Component {
           <li>Pawfriends</li>
         </ul>
       </div>
-
     );
   }
 }

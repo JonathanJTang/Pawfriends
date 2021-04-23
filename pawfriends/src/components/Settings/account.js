@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
 class AccountSettings extends React.Component {
   constructor() {
     super();
-    this.state = { username: 'user', pass: 'user' };
+    this.state = { username: "user", pass: "user" };
   }
 
   render() {
@@ -11,11 +11,7 @@ class AccountSettings extends React.Component {
       <form className="set-form">
         <h2>Account</h2>
         <label>Username</label>
-        <input
-          type="text"
-          value={this.state.username}
-          disabled
-        />
+        <input type="text" value={this.state.username} disabled />
         <label>Password</label>
         <input
           type="password"

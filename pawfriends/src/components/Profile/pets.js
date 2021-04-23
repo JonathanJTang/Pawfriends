@@ -14,21 +14,23 @@ class Pets extends React.Component {
         name: "",
         likes: "",
         dislikes: "",
-      }
-    }
+      },
+    };
   }
 
-  stateUpdate = petData => {
+  stateUpdate = (petData) => {
     this.setState({ pets: petData });
-  }
+  };
 
   handleClick = () => {
-    this.state.addPet ? this.setState({ addPet: false }) : this.setState({ addPet: true });
-  }
+    this.state.addPet
+      ? this.setState({ addPet: false })
+      : this.setState({ addPet: true });
+  };
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.state.newPet[e.target.name] = e.target.value;
-  }
+  };
 
   handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,43 +42,54 @@ class Pets extends React.Component {
         addPet: false,
       });
     }
-  }
+  };
 
   render() {
     const { user, isOwnProfile } = this.props;
 
     return (
       <>
-        {Object.entries(user).length !== 0 && < div className='profile-pet'>
-          {isOwnProfile && <button onClick={this.handleClick}>Add pet</button>}
-          {this.state.addPet &&
-            <form onSubmit={this.handleSubmit}>
-              <img src='http://placekitten.com/g/150/150' alt="pet" />
-              <input
-                name="name"
-                placeholder="Pet's name"
-                onChange={this.handleChange}
-                required
+        {Object.entries(user).length !== 0 && (
+          <div className="profile-pet">
+            {isOwnProfile && (
+              <button onClick={this.handleClick}>Add pet</button>
+            )}
+            {this.state.addPet && (
+              <form onSubmit={this.handleSubmit}>
+                <img src="http://placekitten.com/g/150/150" alt="pet" />
+                <input
+                  name="name"
+                  placeholder="Pet's name"
+                  onChange={this.handleChange}
+                  required
+                />
+                <input
+                  name="likes"
+                  placeholder="Likes"
+                  onChange={this.handleChange}
+                  required
+                />
+                <input
+                  name="dislikes"
+                  placeholder="Dislikes"
+                  onChange={this.handleChange}
+                  required
+                />
+                <input type="submit" value="Save" />
+              </form>
+            )}
+            {this.state.pets.map((pet, index) => (
+              <PetProfile
+                key={index}
+                user={user}
+                pet={pet}
+                petsList={this.state.pets}
+                stateUpdate={this.stateUpdate}
+                isOwnProfile={isOwnProfile}
               />
-              <input
-                name="likes"
-                placeholder="Likes"
-                onChange={this.handleChange}
-                required
-              />
-              <input
-                name="dislikes"
-                placeholder="Dislikes"
-                onChange={this.handleChange}
-                required
-              />
-              <input type="submit" value="Save" />
-            </form>
-          }
-          {this.state.pets.map((pet, index) => (
-            <PetProfile key={index} user={user} pet={pet} petsList={this.state.pets} stateUpdate={this.stateUpdate} isOwnProfile={isOwnProfile} />
-          ))}
-        </div>}
+            ))}
+          </div>
+        )}
       </>
     );
   }

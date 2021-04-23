@@ -48,7 +48,8 @@
   background-color: #c1e2e7;
 }
 
-.trade-header a:hover, .trade-header .active {
+.trade-header a:hover,
+.trade-header .active {
   background-color: #a8d9e4;
 }
 

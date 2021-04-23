@@ -1,4 +1,5 @@
-const baseUrl = process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
+const baseUrl =
+  process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
 
 const fetchRequest = (request) => {
   return fetch(request)
@@ -77,7 +78,6 @@ export const modifyLikePost = (likePost, postId) => {
   return commentPromise;
 };
 
-
 // <--- TRADE API --->
 export const getAllTrades = () => {
   const tradesListPromise = fetchRequest(baseUrl + "/api/trades");
@@ -120,7 +120,6 @@ export const removeTrade = (tradeId) => {
   return tradePromise;
 };
 
-
 // <--- SERVICE API --->
 export const getAllServices = () => {
   const servicesListPromise = fetchRequest(baseUrl + "/api/services");
@@ -162,7 +161,6 @@ export const removeService = (serviceId) => {
   // This promise resolves to an object containing service info
   return servicePromise;
 };
-
 
 // <--- USER PROFILE API --->
 export const getUserByUsername = (username) => {
@@ -249,18 +247,24 @@ export const removePet = (userId, petId) => {
 };
 
 export const addFriend = (userId, friendId) => {
-  const request = new Request(baseUrl + `/api/users/${userId}/friends/${friendId}`, {
-    method: "put",
-  });
+  const request = new Request(
+    baseUrl + `/api/users/${userId}/friends/${friendId}`,
+    {
+      method: "put",
+    }
+  );
 
   const promise = fetchRequest(request);
   return promise;
 };
 
 export const removeFriend = (userId, friendId) => {
-  const request = new Request(baseUrl + `/api/users/${userId}/friends/${friendId}`, {
-    method: "delete",
-  });
+  const request = new Request(
+    baseUrl + `/api/users/${userId}/friends/${friendId}`,
+    {
+      method: "delete",
+    }
+  );
 
   const promise = fetchRequest(request);
   return promise;

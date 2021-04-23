@@ -38,8 +38,8 @@ class App extends React.Component {
           {currentUser ? (
             <NavBar app={this} currentUser={currentUser} />
           ) : (
-              <NavBarGuest />
-            )}
+            <NavBarGuest />
+          )}
           <Switch>
             <Route
               exact
@@ -54,7 +54,9 @@ class App extends React.Component {
             <Route
               exact
               path="/trades"
-              render={(props) => <Trades {...props} currentUser={currentUser} />}
+              render={(props) => (
+                <Trades {...props} currentUser={currentUser} />
+              )}
             />
             <Route
               exact
@@ -87,8 +89,8 @@ class App extends React.Component {
                   {!currentUser ? (
                     <Index />
                   ) : (
-                      <Home {...props} app={this} appState={this.state} />
-                    )}
+                    <Home {...props} app={this} appState={this.state} />
+                  )}
                 </div>
               )}
             />

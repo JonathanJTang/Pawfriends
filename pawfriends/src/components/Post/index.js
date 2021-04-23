@@ -43,7 +43,7 @@ class Post extends React.Component {
     const response = await removePost(this.props.postData._id);
     if (response !== undefined) {
       this.handleClick();
-      this.props.removePost(this.props.postsArrayIndex)
+      this.props.removePost(this.props.postsArrayIndex);
     }
   };
 

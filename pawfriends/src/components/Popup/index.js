@@ -13,7 +13,8 @@ class Popup extends React.Component {
           <p>Warning: Once deleted this can't be recovered!</p>
           <div>
             <button onClick={this.props.confirm}>
-              Confirm<img src={confirm} alt="confirm" />
+              Confirm
+              <img src={confirm} alt="confirm" />
             </button>
             <button onClick={this.props.cancel}>
               Cancel <img src={cancel} alt="cancel" />

@@ -52,7 +52,8 @@
   border: none;
 }
 
-.status:hover, .status:focus {
+.status:hover,
+.status:focus {
   color: #6a6d85;
   background-color: white;
   transition: 0.3s;
@@ -81,7 +82,8 @@
   padding: 5px;
 }
 
-.favpet, .gender {
+.favpet,
+.gender {
   position: absolute;
   top: 20px;
   opacity: 0.5;
@@ -95,17 +97,18 @@
   right: 15px;
 }
 
-.location, .birthday {
+.location,
+.birthday {
   text-align: left;
   margin: 0;
 }
 
 .birthday::before {
-  content: url('../../images/cake.png');
+  content: url("../../images/cake.png");
   margin-right: 10px;
 }
 
 .location::before {
-  content: url('../../images/location2.png');
+  content: url("../../images/location2.png");
   margin-right: 10px;
 }
