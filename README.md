@@ -9,7 +9,7 @@ This was done for a course project at the University of Toronto (CSC309 - Progra
 &nbsp;
 
 
-# Features of Pawfriends
+# Description of Pawfriends Features
 
 The features of our web appliction includes creating posts for your pet, viewing the toys post from other people and creating a trade post, and viewing a list of people for matchmaking pets and pet daycare and making a post for daycare/matchmaking. The main page shows the aggregate of features for the website.
 
