@@ -29,7 +29,7 @@ class Info extends React.Component {
             {!this.state.flip && (
               <div>
                 <img
-                  src={user.profilePicture.image_url}
+                  src={user.profilePicture.imageUrl}
                   alt="profile"
                   className="avatar"
                 />

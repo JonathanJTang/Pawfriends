@@ -1,6 +1,6 @@
 const { mongoose } = require("../../db/mongoose");
 
-// checks for first error returned by promise rejection if Mongo database suddently disconnects
+// Checks whether error is a network issue preventing connection to Mongo database
 const isMongoError = (error) => {
   return (
     typeof error === "object" &&

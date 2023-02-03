@@ -11,7 +11,7 @@ This was done for a course project at the University of Toronto (CSC309 - Progra
 
 # Description of Pawfriends Features
 
-The features of our web appliction includes creating posts for your pet, viewing the toys post from other people and creating a trade post, and viewing a list of people for matchmaking pets and pet daycare and making a post for daycare/matchmaking. The main page shows the aggregate of features for the website.
+The features of our web application includes creating posts for your pet, viewing the toys post from other people and creating a trade post, and viewing a list of people for matchmaking pets and pet daycare and making a post for daycare/matchmaking. The main page shows the aggregate of features for the website.
 
 # User Journeys
 
@@ -19,7 +19,7 @@ The features of our web appliction includes creating posts for your pet, viewing
 
 ## User Journey of Pawfriends - I. Main page
 
-0. After you navigate to the heroke wep page, you would be able to see a login page.
+0. After you navigate to the website landing page, you would be able to see a login page.
 1. You can check functionalities as an user or as an admin.
 2. For ease, we will provide you the credentials admin(ID) - admin(password) and user(ID) - user(password) for checking functionalities. However, we do have a page for login and a page for creating login credentials that are directed from the main page's `Register` button.
 3. You will be able to see three different sections: Posts, Trades, and Services. You can navigate to each section by clicking this header.
@@ -70,7 +70,7 @@ The features of our web appliction includes creating posts for your pet, viewing
 - `GET /trades` Gets array of all trades in the DB
 
 Responses for posts, trades, and services have an "owner" property that represents the user who created the post/trade/service listing; the "owner" object has the following format:
-`{ "_id": the owner's, "username": user's username, "actualName": user's real name, "avatar": { "image_id": the cloudinary public image id "image_url": the cloudinary image url } }`
+`{ "_id": the owner's, "username": user's username, "actualName": user's real name, "avatar": { "imageId": the cloudinary public image id "imageUrl": the cloudinary image url } }`
 
 - `POST /users/login` Route expects a JSON with the following parameters \
    { \

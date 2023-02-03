@@ -50,7 +50,7 @@ class Trade extends React.Component {
     // Only display image if the post has one
     let image = null;
     if (trade.images.length > 0) {
-      image = <img alt="post" src={trade.images[0].image_url} />;
+      image = <img alt="post" src={trade.images[0].imageUrl} />;
     }
 
     return (
@@ -66,7 +66,7 @@ class Trade extends React.Component {
         {image}
         <div className="header">
           <Link to={`/profile/${trade.owner.username}`}>
-            <img src={trade.owner.avatar.image_url} alt="profile avatar" />
+            <img src={trade.owner.avatar.imageUrl} alt="profile avatar" />
           </Link>
           <div className="postText">
             <Link to={`/profile/${trade.owner.username}`}>

@@ -29,7 +29,7 @@ class Service extends React.Component {
           <Link to={`/profile/${user.username}`}>
             <img
               className="avatar-img"
-              src={user.avatar.image_url}
+              src={user.avatar.imageUrl}
               alt="profile avatar"
             />
           </Link>

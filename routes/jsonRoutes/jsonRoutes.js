@@ -1,44 +1,55 @@
-// express
+// Express
 const express = require("express");
 const jsonApiRouter = express.Router(); // Express Router
 
-// multipart middleware: allows you to access uploaded file from req.file
+// Multipart middleware: allows you to access uploaded file from req.file
 const multipart = require("connect-multiparty");
 const multipartMiddleware = multipart();
 
 const fs = require("fs");
+const path = require("path");
 
-// import the mongoose models
+// Import the mongoose models
 const { User, Pet } = require("../../models/user");
 const { Post } = require("../../models/post");
 const { Service } = require("../../models/service");
 const { Trade } = require("../../models/trade");
 
-// to validate object IDs
-const { ObjectID } = require("mongodb");
+// To validate object IDs
+const { isObjectIdOrHexString } = require("mongoose");
 
-// import helpers
+// Import helpers
 const { isMongoError, mongoChecker } = require("../helpers/routeHelpers");
 
-// cloudinary: configure using credentials found on the Cloudinary Dashboard
+// Cloudinary: configure using credentials found on the Cloudinary Dashboard
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({
   cloud_name: "dypmf5kee",
   api_key: "846954122682332",
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-// Global object
+
+/** Global object for constants */
 const globals = {};
-globals.validImageFileTypes = ["png", "jpg", "jpeg", "gif"];
-globals.defaultAvatar = {
-  image_id: "pawfriends/defaultAvatar_sflv0g",
-  image_url:
+globals.CLOUDINARY_IMAGE_FOLDER = "pawfriends/";
+globals.VALID_IMAGE_FILE_TYPES = ["png", "jpg", "jpeg", "gif"];
+globals.DEFAULT_AVATAR = {
+  imageId: "pawfriends/defaultAvatar_sflv0g",
+  imageUrl:
     "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png",
+};
+// Only these fields are needed for display post- or comment-related information
+// on the frontend
+globals.POST_OWNER_PROJECTION = {
+  _id: 1, // 1 to indicate only including these fields
+  username: 1,
+  actualName: 1,
+  profilePicture: 1,
 };
 
 /**************** Middleware ****************/
 
-// Middleware for authentication of resources
+/* Middleware for authentication of resources. */
 const authenticate = (req, res, next) => {
   if (req.session.user) {
     User.findById(req.session.user)
@@ -57,9 +68,12 @@ const authenticate = (req, res, next) => {
     res.status(401).send("Unauthorized");
   }
 };
+jsonApiRouter.use(mongoChecker);
+jsonApiRouter.use(authenticate);
 
 /**************** HELPERS FOR API ROUTES ****************/
-// Send the appropriate error in the response if something fails in a route body
+
+/* Send the appropriate error in response if something fails in a route body. */
 const handleError = (error, res) => {
   if (isMongoError(error)) {
     res.status(500).send("Internal server error");
@@ -68,10 +82,8 @@ const handleError = (error, res) => {
     res.status(400).send("Bad Request");
   }
 };
-jsonApiRouter.use(mongoChecker);
-jsonApiRouter.use(authenticate);
 
-// Return true is obj is not a nonempty string
+/* Return true if obj is not a nonempty string. */
 const notValidString = (obj) => {
   return typeof obj !== "string" || obj === "";
 };
@@ -86,7 +98,8 @@ const addOwnerToResponse = (response, owner) => {
     avatar: owner.profilePicture,
   };
   if (response.owner.avatar === undefined) {
-    response.owner.avatar = globals.defaultAvatar; // set to be the default avatar
+    // not avatar defined, use default
+    response.owner.avatar = globals.DEFAULT_AVATAR;
   }
 };
 
@@ -97,18 +110,15 @@ const modifyPostResponse = async (response, postOwner, curUser) => {
 
   response.numLikes = response.likedUsers.length;
   // Check whether the current user liked this post
-  response.userLiked = false;
-  if (
-    response.likedUsers.some(
-      (userId) => curUser._id.toString() === userId.toString()
-    )
-  ) {
-    response.userLiked = true;
-  }
+  response.userLiked = response.likedUsers.some(
+    (userObjectId) => curUser._id.toString() === userObjectId.toString()
+  );
 
   // Populate comments array
   for (const comment of response.comments) {
-    const commentOwner = await User.findById(comment.owner);
+    const commentOwner = await User.findById(comment.owner).select(
+      globals.POST_OWNER_PROJECTION
+    );
     addOwnerToResponse(comment, commentOwner);
   }
 
@@ -116,20 +126,21 @@ const modifyPostResponse = async (response, postOwner, curUser) => {
   delete response["likedUsers"];
 };
 
-// Image helper functions
+/** Image helper functions */
+/* Attempt to upload the specified image to the Cloudinary server. */
 const uploadImage = (imagePath) => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload(
-      imagePath, // req.files contains uploaded files
-      { folder: "pawfriends/" },
+      imagePath,
+      { folder: globals.CLOUDINARY_IMAGE_FOLDER },
       function (error, result) {
-        console.log(error, result);
         if (error) {
+          console.log(error);
           reject(error);
         } else {
           resolve({
-            image_id: result.public_id,
-            image_url: result.url,
+            imageId: result.public_id,
+            imageUrl: result.url, // TODO: can change url to secure_url for https version
           });
         }
       }
@@ -137,14 +148,15 @@ const uploadImage = (imagePath) => {
   });
 };
 
+/* Attempt to delete the specified image from the Cloudinary server. */
 const deleteImage = (imageInfo) => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.destroy(
-      imageInfo.image_id,
-      { invalidate: true },
+      imageInfo.imageId,
+      { invalidate: true }, // invalidate CDN cached copies of the image
       function (error, result) {
-        console.log(error, result);
         if (error) {
+          console.log(error);
           reject(error);
         } else {
           resolve(result);
@@ -154,12 +166,15 @@ const deleteImage = (imageInfo) => {
   });
 };
 
-// Process the req.files object for a given entry (entry can can a post, trade, or service database entry, as long as it has an array field called "images")
+/* Process the req.files object for a given entry (entry can can a post, trade,
+ * or service database entry, as long as it has an array field called "images")
+ */
 const processFilesForEntry = async (filesObj, entry) => {
+  // Currently only support one uploaded image in filesObj
   if (
     filesObj.image !== undefined &&
-    globals.validImageFileTypes.includes(
-      filesObj.image.name.split(".").pop().toLowerCase()
+    globals.VALID_IMAGE_FILE_TYPES.includes(
+      path.extname(filesObj.image.name).toLowerCase().slice(1)
     )
   ) {
     // There's a valid uploaded image, upload it to the Cloudinary server
@@ -182,7 +197,7 @@ const processFilesForEntry = async (filesObj, entry) => {
 
 /**************** POSTS ROUTES ****************/
 
-/* Create a new post */
+/* Create a new post. */
 jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
@@ -193,12 +208,13 @@ jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
       return;
     }
 
-    // Authentication passed, meaning user is valid
-    const user = await User.findOne({ username: username });
+    const curUserObj = await User.findOne({ username: username })
+      .select(globals.POST_OWNER_PROJECTION)
+      .lean();
 
     // Create a new post
     const post = new Post({
-      owner: user._id,
+      owner: curUserObj._id,
       postTime: new Date(), // use current server time
       title: req.body.title,
       content: req.body.content,
@@ -207,28 +223,28 @@ jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
       comments: [],
     });
     if (req.files) {
+      // req.files contains uploaded files
       await processFilesForEntry(req.files, post);
     }
     const newPost = await post.save();
     // Build the JSON object to respond with
-    const jsonReponse = newPost.toObject();
-    delete jsonReponse["__v"];
-    await modifyPostResponse(jsonReponse, user, user);
-    res.send(jsonReponse);
+    const jsonResponse = newPost.toObject({ versionKey: false });
+    await modifyPostResponse(jsonResponse, curUserObj, curUserObj);
+    res.send(jsonResponse);
   } catch (error) {
     // Return 500 Internal server error if error was from uploadImage?
     handleError(error, res);
   }
 });
 
-/* Add a comment onto a post */
+/* Add a comment onto a post. */
 jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
   const postId = req.params.postId;
   try {
     // Check that postId is valid
-    if (!ObjectID.isValid(postId)) {
+    if (!isObjectIdOrHexString(postId)) {
       res.status(404).send();
       return;
     }
@@ -243,11 +259,13 @@ jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
       return;
     }
 
-    const user = await User.findOne({ username: username });
+    const curUserObj = await User.findOne({ username: username })
+      .select(globals.POST_OWNER_PROJECTION)
+      .lean();
 
     // Create the new comment in the post
     const newLength = post.comments.push({
-      owner: user._id,
+      owner: curUserObj._id,
       content: req.body.content,
     });
     await post.save();
@@ -255,21 +273,21 @@ jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
     const jsonResponse = {
       content: post.comments[newLength - 1].content,
     };
-    addOwnerToResponse(jsonResponse, user);
+    addOwnerToResponse(jsonResponse, curUserObj);
     res.send(jsonResponse);
   } catch (error) {
     handleError(error, res);
   }
 });
 
-// Like or unlike a post
+/* Like or unlike a post. */
 jsonApiRouter.put("/posts/:postId/like", async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
   const postId = req.params.postId;
   try {
     // Check that postId is valid
-    if (!ObjectID.isValid(postId)) {
+    if (!isObjectIdOrHexString(postId)) {
       res.status(404).send();
       return;
     }
@@ -284,20 +302,23 @@ jsonApiRouter.put("/posts/:postId/like", async (req, res) => {
       return;
     }
 
-    const user = await User.findOne({ username: username });
+    const curUserObj = await User.findOne({ username: username })
+      .select(globals.POST_OWNER_PROJECTION)
+      .lean();
 
     const userIndex = post.likedUsers.findIndex(
-      (userId) => userId.toString() === user._id.toString()
+      (userId) => userId.toString() === curUserObj._id.toString()
     );
     // Only 2 of the 4 cases require editing the database
     if (userIndex === -1 && req.body.like) {
       // user previously did not like the post but now likes it
-      post.likedUsers.push(user._id);
+      post.likedUsers.push(curUserObj._id);
+      await post.save();
     } else if (userIndex !== -1 && !req.body.like) {
       // user previously liked the post but now wants to remove the like
       post.likedUsers.splice(userIndex, 1);
+      await post.save();
     }
-    await post.save();
     // Build the JSON object to respond with
     const jsonResponse = {
       numLikes: post.likedUsers.length,
@@ -309,69 +330,75 @@ jsonApiRouter.put("/posts/:postId/like", async (req, res) => {
   }
 });
 
-// Get all posts (limit to the current user + the current user's friends?)
+/* Get all posts.
+ * TODO: limit to the current user + the current user's friends? */
 jsonApiRouter.get("/posts", async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
   try {
-    // Authentication passed, meaning user is valid
-    const curUser = await User.findOne({ username: username });
-
-    // could use .limit() before .lean() to limit the number of items to return
-    const userPosts = await Post.find()
-      .sort({
-        postTime: "descending",
-      })
-      .select("-__v") // remove fields unnecessary for the client
+    const curUserObj = await User.findOne({ username: username })
+      .select(globals.POST_OWNER_PROJECTION)
       .lean();
+
+    const _startTime = Date.now(); // TODO: debug remove
+    const userPostObjs = await Post.find()
+      .sort({ postTime: "descending" })
+      .select("-__v") // remove fields unnecessary for the client
+      .lean(); // Don't need to modify the document so just need the JS object
     // Modify array to send to the client
-    for (const post of userPosts) {
-      const postOwner = await User.findById(post.owner);
-      await modifyPostResponse(post, postOwner, curUser);
+    for (const postObj of userPostObjs) {
+      const postOwnerObj = await User.findById(postObj.owner)
+        .select(globals.POST_OWNER_PROJECTION)
+        .lean();
+      await modifyPostResponse(postObj, postOwnerObj, curUserObj);
     }
-    res.send(userPosts);
+    console.log("Runtime of GET posts/: ", Date.now() - _startTime); // TODO: debug remove
+    res.send(userPostObjs);
   } catch (error) {
     handleError(error, res);
   }
 });
 
-// Get a specific post
+/* Get a specific post. */
 jsonApiRouter.get("/posts/:postId", async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
   const postId = req.params.postId;
   try {
-    if (!ObjectID.isValid(postId)) {
+    if (!isObjectIdOrHexString(postId)) {
       res.status(404).send();
       return;
     }
-    const post = await Post.findById(postId);
-    if (post === null) {
+    const postObj = await Post.findById(postId)
+      .select("-__v") // remove fields unnecessary for the client
+      .lean(); // Don't need to modify the document so just need the JS object
+    if (postObj === null) {
       res.status(404).send();
       return;
     }
 
-    // Authentication passed, meaning user is valid
-    const curUser = await User.findOne({ username: username });
+    const curUserObj = await User.findOne({ username: username })
+      .select(globals.POST_OWNER_PROJECTION)
+      .lean();
 
     // Modify post response to send to the client
-    const postOwner = await User.findById(post.owner);
-    const jsonReponse = post.toObject();
-    delete jsonReponse["__v"];
-    await modifyPostResponse(jsonReponse, postOwner, curUser);
-    res.send(jsonReponse);
+    const postOwnerObj = await User.findById(postObj.owner)
+      .select(globals.POST_OWNER_PROJECTION)
+      .lean();
+    await modifyPostResponse(postObj, postOwnerObj, curUserObj);
+    res.send(postObj);
   } catch (error) {
     handleError(error, res);
   }
 });
 
-// Delete a post
+/* Delete a post. */
 jsonApiRouter.delete("/posts/:postId", async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication
   const postId = req.params.postId;
   try {
-    if (!ObjectID.isValid(postId)) {
+    if (!isObjectIdOrHexString(postId)) {
       res.status(404).send();
       return;
     }
@@ -381,11 +408,12 @@ jsonApiRouter.delete("/posts/:postId", async (req, res) => {
       return;
     }
 
-    // Authentication passed, meaning user is valid
-    const user = await User.findOne({ username: username });
+    const curUserObj = await User.findOne({ username: username })
+      .select(globals.POST_OWNER_PROJECTION)
+      .lean();
 
     // Only the post owner can delete the post
-    if (post.owner.toString() !== user._id.toString()) {
+    if (post.owner.toString() !== curUserObj._id.toString()) {
       res.status(403).send();
       return;
     }
@@ -404,21 +432,17 @@ jsonApiRouter.delete("/posts/:postId", async (req, res) => {
 
 /**************** SERVICE ROUTES ****************/
 
-// get all service postings
+/* Get all service postings. */
 jsonApiRouter.get("/services", async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
   try {
-    // Authentication passed, meaning user is valid
     // const curUser = await User.findOne({ username: username });
 
-    // could use .limit() before .lean() to limit the number of items to return
     const allServices = await Service.find()
-      .sort({
-        postTime: "descending",
-      })
+      .sort({ postTime: "descending" })
       .select("-__v") // remove fields unnecessary for the client
-      .lean();
+      .lean(); // Don't need to modify the document so just need the JS object
     // Modify array to send to the client
     for (const service of allServices) {
       const postOwner = await User.findById(service.owner);
@@ -430,7 +454,7 @@ jsonApiRouter.get("/services", async (req, res) => {
   }
 });
 
-/* Create a new service posting */
+/* Create a new service posting. */
 jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
   // const username = req.session.username;
   const username = "user"; // TODO: remove after authentication is implemented
@@ -447,10 +471,9 @@ jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
       return;
     }
 
-    // Authentication passed, meaning user is valid
     const user = await User.findOne({ username: username });
 
-    // Create a new trade
+    // Create a new service entry
     const service = new Service({
       owner: user._id,
       postTime: new Date(), // use current server time
@@ -465,11 +488,10 @@ jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
     }
     const newService = await service.save();
     // Build the JSON object to respond with
-    const jsonReponse = newService.toObject();
-    delete jsonReponse["__v"];
-    // await modifyServiceReponse(jsonReponse, user, user);
-    addOwnerToResponse(jsonReponse, user);
-    res.send(jsonReponse);
+    const jsonResponse = newService.toObject({ versionKey: false });
+    // await modifyServiceResponse(jsonResponse, user, user);
+    addOwnerToResponse(jsonResponse, user);
+    res.send(jsonResponse);
   } catch (error) {
     // Return 500 Internal server error if error was from uploadImage?
     handleError(error, res);
@@ -478,31 +500,27 @@ jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
 
 /* Modifies the response object into a format with all the information needed by
  * the frontend. */
-const modifyTradeReponse = async (response, postOwner, curUser) => {
+const modifyTradeResponse = async (response, postOwner, curUser) => {
   addOwnerToResponse(response, postOwner);
 };
 
 /**************** TRADE ROUTES ****************/
 
-// Get all trade postings
+/* Get all trade postings. */
 jsonApiRouter.get("/trades", async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
   try {
-    // Authentication passed, meaning user is valid
     const curUser = await User.findOne({ username: username });
 
-    // could use .limit() before .lean() to limit the number of items to return
     const allTrades = await Trade.find()
-      .sort({
-        postTime: "descending",
-      })
+      .sort({ postTime: "descending" })
       .select("-__v") // remove fields unnecessary for the client
-      .lean();
+      .lean(); // Don't need to modify the document so just need the JS object
     // Modify array to send to the client
     for (const trade of allTrades) {
       const postOwner = await User.findById(trade.owner);
-      await modifyTradeReponse(trade, postOwner, curUser);
+      await modifyTradeResponse(trade, postOwner, curUser);
     }
     res.send(allTrades);
   } catch (error) {
@@ -510,13 +528,13 @@ jsonApiRouter.get("/trades", async (req, res) => {
   }
 });
 
-// Get a specific trade posting
+/* Get a specific trade posting. */
 jsonApiRouter.get("/trades/:tradeId", async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
   const tradeId = req.params.tradeId;
   try {
-    if (!ObjectID.isValid(tradeId)) {
+    if (!isObjectIdOrHexString(tradeId)) {
       res.status(404).send();
       return;
     }
@@ -526,21 +544,19 @@ jsonApiRouter.get("/trades/:tradeId", async (req, res) => {
       return;
     }
 
-    // Authentication passed, meaning user is valid
     const curUser = await User.findOne({ username: username });
 
     // Modify trade response to send to the client
     const postOwner = await User.findById(trade.owner);
-    const jsonReponse = trade.toObject();
-    delete jsonReponse["__v"];
-    await modifyTradeReponse(jsonReponse, postOwner, curUser);
-    res.send(jsonReponse);
+    const jsonResponse = trade.toObject({ versionKey: false });
+    await modifyTradeResponse(jsonResponse, postOwner, curUser);
+    res.send(jsonResponse);
   } catch (error) {
     handleError(error, res);
   }
 });
 
-/* Create a new trade */
+/* Create a new trade. */
 jsonApiRouter.post("/trades", multipartMiddleware, async (req, res) => {
   const username = req.session.username;
   // const username = "user"; // TODO: remove after authentication is implemented
@@ -551,7 +567,6 @@ jsonApiRouter.post("/trades", multipartMiddleware, async (req, res) => {
       return;
     }
 
-    // Authentication passed, meaning user is valid
     const user = await User.findOne({ username: username });
 
     // Create a new trade
@@ -567,22 +582,21 @@ jsonApiRouter.post("/trades", multipartMiddleware, async (req, res) => {
     }
     const newTrade = await trade.save();
     // Build the JSON object to respond with
-    const jsonReponse = newTrade.toObject();
-    delete jsonReponse["__v"];
-    await modifyTradeReponse(jsonReponse, user, user);
-    res.send(jsonReponse);
+    const jsonResponse = newTrade.toObject({ versionKey: false });
+    await modifyTradeResponse(jsonResponse, user, user);
+    res.send(jsonResponse);
   } catch (error) {
     // Return 500 Internal server error if error was from uploadImage?
     handleError(error, res);
   }
 });
 
-// Mark a trade as complete
+/* Mark a trade as complete. */
 jsonApiRouter.put("/trades/:tradeId/done", async (req, res) => {
   const tradeId = req.params.tradeId;
   try {
     // Check that id is valid
-    if (!ObjectID.isValid(tradeId)) {
+    if (!isObjectIdOrHexString(tradeId)) {
       res.status(404).send();
       return;
     }
@@ -600,11 +614,11 @@ jsonApiRouter.put("/trades/:tradeId/done", async (req, res) => {
   }
 });
 
-// Delete a trade
+/* Delete a trade. */
 jsonApiRouter.delete("/trades/:tradeId", async (req, res) => {
   const tradeId = req.params.tradeId;
   try {
-    if (!ObjectID.isValid(tradeId)) {
+    if (!isObjectIdOrHexString(tradeId)) {
       res.status(404).send();
       return;
     }
@@ -627,7 +641,7 @@ jsonApiRouter.delete("/trades/:tradeId", async (req, res) => {
 
 /**************** USER PROFILE ROUTES ****************/
 
-/* Return User object that matches username */
+/* Return User object that matches username. */
 jsonApiRouter.get("/users/username/:username", async (req, res) => {
   const username = req.params.username;
   try {
@@ -639,7 +653,7 @@ jsonApiRouter.get("/users/username/:username", async (req, res) => {
     }
 
     if (user.profilePicture === undefined) {
-      user.profilePicture = globals.defaultAvatar;
+      user.profilePicture = globals.DEFAULT_AVATAR;
     }
 
     if (user.status === undefined) {
@@ -656,7 +670,7 @@ jsonApiRouter.get("/users/username/:username", async (req, res) => {
   }
 });
 
-/* Return User object that matches userId */
+/* Return User object that matches userId. */
 jsonApiRouter.get("/users/userId/:userId", async (req, res) => {
   try {
     // Search for user
@@ -667,7 +681,7 @@ jsonApiRouter.get("/users/userId/:userId", async (req, res) => {
     }
 
     if (user.profilePicture === undefined) {
-      user.profilePicture = globals.defaultAvatar;
+      user.profilePicture = globals.DEFAULT_AVATAR;
     }
 
     if (user.status === undefined) {
@@ -684,7 +698,7 @@ jsonApiRouter.get("/users/userId/:userId", async (req, res) => {
   }
 });
 
-// Save user status change
+/* Save user status change. */
 jsonApiRouter.put("/users/:username/status", async (req, res) => {
   const username = req.params.username;
   if (req.session.username !== username) {
@@ -713,7 +727,7 @@ jsonApiRouter.put("/users/:username/status", async (req, res) => {
   }
 });
 
-// Save user status change
+/* Save user settings change. */
 jsonApiRouter.put("/users/:username/settings", async (req, res) => {
   const username = req.params.username;
   if (req.session.username !== username) {
@@ -742,7 +756,7 @@ jsonApiRouter.put("/users/:username/settings", async (req, res) => {
   }
 });
 
-// Add a new pet to user's profile
+/* Add a new pet to user's profile. */
 jsonApiRouter.post("/users/:userId/pets", async (req, res) => {
   if (req.session.user !== req.params.userId) {
     // users can only edit their own profile
@@ -777,7 +791,7 @@ jsonApiRouter.post("/users/:userId/pets", async (req, res) => {
   }
 });
 
-// Save pet information
+/* Save pet information. */
 jsonApiRouter.put("/users/:userId/:petId", async (req, res) => {
   if (req.session.user !== req.params.userId) {
     // users can only edit their own profile
@@ -810,7 +824,7 @@ jsonApiRouter.put("/users/:userId/:petId", async (req, res) => {
   }
 });
 
-// Delete a pet
+/* Delete a pet. */
 jsonApiRouter.delete("/users/:userId/:petId", async (req, res) => {
   if (req.session.user !== req.params.userId) {
     // users can only edit their own profile
@@ -840,7 +854,7 @@ jsonApiRouter.delete("/users/:userId/:petId", async (req, res) => {
   }
 });
 
-/* Add a friend */
+/* Add a friend. */
 jsonApiRouter.put("/users/:userId/friends/:friendId", async (req, res) => {
   if (req.session.user !== req.params.userId) {
     // users can only edit their own profile
@@ -872,7 +886,7 @@ jsonApiRouter.put("/users/:userId/friends/:friendId", async (req, res) => {
   }
 });
 
-/* Remove a friend */
+/* Remove a friend. */
 jsonApiRouter.delete("/users/:userId/friends/:friendId", async (req, res) => {
   if (req.session.user !== req.params.userId) {
     // users can only edit their own profile
@@ -901,5 +915,5 @@ jsonApiRouter.delete("/users/:userId/friends/:friendId", async (req, res) => {
   }
 });
 
-// export the router
+// Export the router
 module.exports = jsonApiRouter;

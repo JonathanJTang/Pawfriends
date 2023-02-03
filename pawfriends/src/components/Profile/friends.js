@@ -13,7 +13,7 @@ class Friends extends React.Component {
             {friends.length > 0 &&
               friends.map((friend) => (
                 <Link to={`/profile/${friend.username}`}>
-                  <img src={friend.profilePicture.image_url} alt="friend" />
+                  <img src={friend.profilePicture.imageUrl} alt="friend" />
                   <p>{friend.actualName}</p>
                 </Link>
               ))}

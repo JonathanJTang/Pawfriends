@@ -1,3 +1,5 @@
+/* Model for posts. Each post contains metadata, a title and text context,
+ * and optionally images, comments, and users who liked the post. */
 "use strict";
 
 const { ObjectId } = require("mongodb");
@@ -11,7 +13,7 @@ const CommentSchema = new mongoose.Schema({
 });
 
 const PostSchema = new mongoose.Schema({
-  owner: { type: ObjectId, required: true }, // user.id
+  owner: { type: ObjectId, required: true }, // user._id
   postTime: { type: Date, required: true },
   title: { type: String, required: true },
   content: { type: String, required: true },

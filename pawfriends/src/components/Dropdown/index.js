@@ -55,7 +55,7 @@ class Dropdown extends React.Component {
     // temporary? set user profile pic to default on registration
     let image;
     if (user.profilePicture) {
-      image = user.profilePicture.image_url;
+      image = user.profilePicture.imageUrl;
     } else {
       image =
         "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png";

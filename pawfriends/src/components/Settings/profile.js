@@ -30,7 +30,7 @@ class ProfileSettings extends React.Component {
       });
     }
     if (user && user.profilePicture) {
-      this.state.user.image = user.profilePicture.image_url;
+      this.state.user.image = user.profilePicture.imageUrl;
       this.setState({ user: this.state.user });
     } else {
       this.state.user.image =

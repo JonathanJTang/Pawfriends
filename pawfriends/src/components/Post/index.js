@@ -63,7 +63,7 @@ class Post extends React.Component {
     // Only display image if the post has any (currently only shows the 1st one)
     let image = null;
     if (postData.images.length > 0) {
-      image = <img alt="post" src={postData.images[0].image_url} />;
+      image = <img alt="post" src={postData.images[0].imageUrl} />;
     }
 
     return (
@@ -75,7 +75,7 @@ class Post extends React.Component {
           <Link to={"/profile/" + user.username}>
             <img
               className="avatar-img"
-              src={user.avatar.image_url}
+              src={user.avatar.imageUrl}
               alt="profile avatar"
             />
           </Link>
