@@ -28,18 +28,19 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 4, // to allow course required passwords
+    select: false, // don't include in query results by default
   },
   actualName: {
     type: String,
     required: true,
   },
   // TODO: do we make some of the fields below required?
+  birthday: { type: String },
   gender: {
     type: String,
     enum: ["Male", "Female", "Secret"],
   },
   location: { type: String },
-  birthday: { type: String },
   profilePicture: ImageSchema,
   status: String,
   pets: [PetSchema],
@@ -66,23 +67,34 @@ UserSchema.pre("save", function (next) {
   }
 });
 
-// Find a User document by comparing the hashed password to a given one,
-// for example when logging in.
-UserSchema.statics.findByUsernamePassword = function (username, password) {
+/* Determine whether the username-password combination is valid,
+   by comparing the stored hashed password to the input one.
+   This method is used when logging in. */
+UserSchema.statics.usernamePasswordValid = function (username, password) {
   const User = this; // binds this to the User model
 
-  // First find the user by their email
-  return User.findOne({ username: username }).then((user) => {
+  // First find the user by their username
+  return User.findOne(
+    { username: username },
+    { username: 1, password: 1 } // Projection to include the password field
+  ).then((user) => {
     if (!user) {
-      return Promise.reject(); // a rejected promise
+      return Promise.reject();
     }
-    // if the user exists, make sure their password is correct
+    // If the user exists, make sure their password is correct
     return new Promise((resolve, reject) => {
       bcrypt.compare(password, user.password, (err, result) => {
         if (result) {
-          resolve(user);
+          resolve(
+            user.toObject({
+              transform: (doc, objRep, options) => {
+                delete objRep.password;  // Don't expose this to other functions
+                return objRep;
+              },
+            })
+          );
         } else {
-          reject();
+          reject("Password did not match");
         }
       });
     });

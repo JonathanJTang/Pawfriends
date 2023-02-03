@@ -19,7 +19,7 @@ const { Trade } = require("../../models/trade");
 const { isObjectIdOrHexString } = require("mongoose");
 
 // Import helpers
-const { isMongoError, mongoChecker } = require("../helpers/routeHelpers");
+const { handleError, mongoChecker } = require("../helpers/routeHelpers");
 
 // Cloudinary: configure using credentials found on the Cloudinary Dashboard
 const cloudinary = require("cloudinary").v2;
@@ -51,13 +51,14 @@ globals.POST_OWNER_PROJECTION = {
 
 /* Middleware for authentication of resources. */
 const authenticate = (req, res, next) => {
-  if (req.session.user) {
-    User.findById(req.session.user)
+  if (req.session.userId) {
+    User.findById(req.session.userId)
       .then((user) => {
         if (!user) {
           return Promise.reject();
         } else {
-          req.user = user;
+          req.curUser = user;
+          // req.curUserObj = user.toObject({ versionKey: false });
           next();
         }
       })
@@ -72,16 +73,6 @@ jsonApiRouter.use(mongoChecker);
 jsonApiRouter.use(authenticate);
 
 /**************** HELPERS FOR API ROUTES ****************/
-
-/* Send the appropriate error in response if something fails in a route body. */
-const handleError = (error, res) => {
-  if (isMongoError(error)) {
-    res.status(500).send("Internal server error");
-  } else {
-    console.log(error);
-    res.status(400).send("Bad Request");
-  }
-};
 
 /* Return true if obj is not a nonempty string. */
 const notValidString = (obj) => {
@@ -199,8 +190,6 @@ const processFilesForEntry = async (filesObj, entry) => {
 
 /* Create a new post. */
 jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
-  const username = req.session.username;
-  // const username = "user"; // TODO: remove after authentication is implemented
   try {
     // Validate user input (title and content must be nonempty strings)
     if (notValidString(req.body.title) || notValidString(req.body.content)) {
@@ -208,13 +197,9 @@ jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
       return;
     }
 
-    const curUserObj = await User.findOne({ username: username })
-      .select(globals.POST_OWNER_PROJECTION)
-      .lean();
-
     // Create a new post
     const post = new Post({
-      owner: curUserObj._id,
+      owner: req.curUser._id,
       postTime: new Date(), // use current server time
       title: req.body.title,
       content: req.body.content,
@@ -229,7 +214,7 @@ jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
     const newPost = await post.save();
     // Build the JSON object to respond with
     const jsonResponse = newPost.toObject({ versionKey: false });
-    await modifyPostResponse(jsonResponse, curUserObj, curUserObj);
+    await modifyPostResponse(jsonResponse, req.curUser, req.curUser);
     res.send(jsonResponse);
   } catch (error) {
     // Return 500 Internal server error if error was from uploadImage?
@@ -239,18 +224,16 @@ jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
 
 /* Add a comment onto a post. */
 jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
-  const username = req.session.username;
-  // const username = "user"; // TODO: remove after authentication is implemented
   const postId = req.params.postId;
   try {
     // Check that postId is valid
     if (!isObjectIdOrHexString(postId)) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
     const post = await Post.findById(postId);
     if (post === null) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
     // Validate user input (content must be an nonempty string)
@@ -259,13 +242,9 @@ jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
       return;
     }
 
-    const curUserObj = await User.findOne({ username: username })
-      .select(globals.POST_OWNER_PROJECTION)
-      .lean();
-
     // Create the new comment in the post
     const newLength = post.comments.push({
-      owner: curUserObj._id,
+      owner: req.curUser._id,
       content: req.body.content,
     });
     await post.save();
@@ -273,7 +252,7 @@ jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
     const jsonResponse = {
       content: post.comments[newLength - 1].content,
     };
-    addOwnerToResponse(jsonResponse, curUserObj);
+    addOwnerToResponse(jsonResponse, req.curUser);
     res.send(jsonResponse);
   } catch (error) {
     handleError(error, res);
@@ -282,18 +261,16 @@ jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
 
 /* Like or unlike a post. */
 jsonApiRouter.put("/posts/:postId/like", async (req, res) => {
-  const username = req.session.username;
-  // const username = "user"; // TODO: remove after authentication is implemented
   const postId = req.params.postId;
   try {
     // Check that postId is valid
     if (!isObjectIdOrHexString(postId)) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
     const post = await Post.findById(postId);
     if (post === null) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
     // Validate user input (content must be an nonempty string)
@@ -302,17 +279,13 @@ jsonApiRouter.put("/posts/:postId/like", async (req, res) => {
       return;
     }
 
-    const curUserObj = await User.findOne({ username: username })
-      .select(globals.POST_OWNER_PROJECTION)
-      .lean();
-
     const userIndex = post.likedUsers.findIndex(
-      (userId) => userId.toString() === curUserObj._id.toString()
+      (userId) => userId.toString() === req.curUser._id.toString()
     );
     // Only 2 of the 4 cases require editing the database
     if (userIndex === -1 && req.body.like) {
       // user previously did not like the post but now likes it
-      post.likedUsers.push(curUserObj._id);
+      post.likedUsers.push(req.curUser._id);
       await post.save();
     } else if (userIndex !== -1 && !req.body.like) {
       // user previously liked the post but now wants to remove the like
@@ -333,13 +306,7 @@ jsonApiRouter.put("/posts/:postId/like", async (req, res) => {
 /* Get all posts.
  * TODO: limit to the current user + the current user's friends? */
 jsonApiRouter.get("/posts", async (req, res) => {
-  const username = req.session.username;
-  // const username = "user"; // TODO: remove after authentication is implemented
   try {
-    const curUserObj = await User.findOne({ username: username })
-      .select(globals.POST_OWNER_PROJECTION)
-      .lean();
-
     const _startTime = Date.now(); // TODO: debug remove
     const userPostObjs = await Post.find()
       .sort({ postTime: "descending" })
@@ -350,7 +317,7 @@ jsonApiRouter.get("/posts", async (req, res) => {
       const postOwnerObj = await User.findById(postObj.owner)
         .select(globals.POST_OWNER_PROJECTION)
         .lean();
-      await modifyPostResponse(postObj, postOwnerObj, curUserObj);
+      await modifyPostResponse(postObj, postOwnerObj, req.curUser);
     }
     console.log("Runtime of GET posts/: ", Date.now() - _startTime); // TODO: debug remove
     res.send(userPostObjs);
@@ -361,31 +328,25 @@ jsonApiRouter.get("/posts", async (req, res) => {
 
 /* Get a specific post. */
 jsonApiRouter.get("/posts/:postId", async (req, res) => {
-  const username = req.session.username;
-  // const username = "user"; // TODO: remove after authentication is implemented
   const postId = req.params.postId;
   try {
     if (!isObjectIdOrHexString(postId)) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
     const postObj = await Post.findById(postId)
       .select("-__v") // remove fields unnecessary for the client
       .lean(); // Don't need to modify the document so just need the JS object
     if (postObj === null) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
-
-    const curUserObj = await User.findOne({ username: username })
-      .select(globals.POST_OWNER_PROJECTION)
-      .lean();
 
     // Modify post response to send to the client
     const postOwnerObj = await User.findById(postObj.owner)
       .select(globals.POST_OWNER_PROJECTION)
       .lean();
-    await modifyPostResponse(postObj, postOwnerObj, curUserObj);
+    await modifyPostResponse(postObj, postOwnerObj, req.curUser);
     res.send(postObj);
   } catch (error) {
     handleError(error, res);
@@ -394,27 +355,21 @@ jsonApiRouter.get("/posts/:postId", async (req, res) => {
 
 /* Delete a post. */
 jsonApiRouter.delete("/posts/:postId", async (req, res) => {
-  const username = req.session.username;
-  // const username = "user"; // TODO: remove after authentication
   const postId = req.params.postId;
   try {
     if (!isObjectIdOrHexString(postId)) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
     const post = await Post.findById(postId);
     if (post === null) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
 
-    const curUserObj = await User.findOne({ username: username })
-      .select(globals.POST_OWNER_PROJECTION)
-      .lean();
-
     // Only the post owner can delete the post
-    if (post.owner.toString() !== curUserObj._id.toString()) {
-      res.status(403).send();
+    if (post.owner.toString() !== req.curUser._id.toString()) {
+      res.status(403).send("Forbidden");
       return;
     }
 
@@ -434,11 +389,7 @@ jsonApiRouter.delete("/posts/:postId", async (req, res) => {
 
 /* Get all service postings. */
 jsonApiRouter.get("/services", async (req, res) => {
-  const username = req.session.username;
-  // const username = "user"; // TODO: remove after authentication is implemented
   try {
-    // const curUser = await User.findOne({ username: username });
-
     const allServices = await Service.find()
       .sort({ postTime: "descending" })
       .select("-__v") // remove fields unnecessary for the client
@@ -456,8 +407,6 @@ jsonApiRouter.get("/services", async (req, res) => {
 
 /* Create a new service posting. */
 jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
-  // const username = req.session.username;
-  const username = "user"; // TODO: remove after authentication is implemented
   try {
     // Validate user input (description, email, phone, and all elements of the tags array must be nonempty strings)
     if (
@@ -471,11 +420,9 @@ jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
       return;
     }
 
-    const user = await User.findOne({ username: username });
-
     // Create a new service entry
     const service = new Service({
-      owner: user._id,
+      owner: req.curUser._id,
       postTime: new Date(), // use current server time
       description: req.body.description,
       email: req.body.email,
@@ -489,8 +436,8 @@ jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
     const newService = await service.save();
     // Build the JSON object to respond with
     const jsonResponse = newService.toObject({ versionKey: false });
-    // await modifyServiceResponse(jsonResponse, user, user);
-    addOwnerToResponse(jsonResponse, user);
+    // await modifyServiceResponse(jsonResponse, req.curUser, req.curUser);
+    addOwnerToResponse(jsonResponse, req.curUser);
     res.send(jsonResponse);
   } catch (error) {
     // Return 500 Internal server error if error was from uploadImage?
@@ -508,11 +455,7 @@ const modifyTradeResponse = async (response, postOwner, curUser) => {
 
 /* Get all trade postings. */
 jsonApiRouter.get("/trades", async (req, res) => {
-  const username = req.session.username;
-  // const username = "user"; // TODO: remove after authentication is implemented
   try {
-    const curUser = await User.findOne({ username: username });
-
     const allTrades = await Trade.find()
       .sort({ postTime: "descending" })
       .select("-__v") // remove fields unnecessary for the client
@@ -520,7 +463,7 @@ jsonApiRouter.get("/trades", async (req, res) => {
     // Modify array to send to the client
     for (const trade of allTrades) {
       const postOwner = await User.findById(trade.owner);
-      await modifyTradeResponse(trade, postOwner, curUser);
+      await modifyTradeResponse(trade, postOwner, req.curUser);
     }
     res.send(allTrades);
   } catch (error) {
@@ -530,26 +473,22 @@ jsonApiRouter.get("/trades", async (req, res) => {
 
 /* Get a specific trade posting. */
 jsonApiRouter.get("/trades/:tradeId", async (req, res) => {
-  const username = req.session.username;
-  // const username = "user"; // TODO: remove after authentication is implemented
   const tradeId = req.params.tradeId;
   try {
     if (!isObjectIdOrHexString(tradeId)) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
     const trade = await Trade.findById(tradeId);
     if (trade === null) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
-
-    const curUser = await User.findOne({ username: username });
 
     // Modify trade response to send to the client
     const postOwner = await User.findById(trade.owner);
     const jsonResponse = trade.toObject({ versionKey: false });
-    await modifyTradeResponse(jsonResponse, postOwner, curUser);
+    await modifyTradeResponse(jsonResponse, postOwner, req.curUser);
     res.send(jsonResponse);
   } catch (error) {
     handleError(error, res);
@@ -558,8 +497,6 @@ jsonApiRouter.get("/trades/:tradeId", async (req, res) => {
 
 /* Create a new trade. */
 jsonApiRouter.post("/trades", multipartMiddleware, async (req, res) => {
-  const username = req.session.username;
-  // const username = "user"; // TODO: remove after authentication is implemented
   try {
     // Validate user input (title and content must be nonempty strings)
     if (notValidString(req.body.title)) {
@@ -567,11 +504,9 @@ jsonApiRouter.post("/trades", multipartMiddleware, async (req, res) => {
       return;
     }
 
-    const user = await User.findOne({ username: username });
-
     // Create a new trade
     const trade = new Trade({
-      owner: user._id,
+      owner: req.curUser._id,
       postTime: new Date(), // use current server time
       title: req.body.title,
       images: [],
@@ -583,7 +518,7 @@ jsonApiRouter.post("/trades", multipartMiddleware, async (req, res) => {
     const newTrade = await trade.save();
     // Build the JSON object to respond with
     const jsonResponse = newTrade.toObject({ versionKey: false });
-    await modifyTradeResponse(jsonResponse, user, user);
+    await modifyTradeResponse(jsonResponse, req.curUser, req.curUser);
     res.send(jsonResponse);
   } catch (error) {
     // Return 500 Internal server error if error was from uploadImage?
@@ -597,14 +532,17 @@ jsonApiRouter.put("/trades/:tradeId/done", async (req, res) => {
   try {
     // Check that id is valid
     if (!isObjectIdOrHexString(tradeId)) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
     const trade = await Trade.findById(tradeId);
     if (trade === null) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
+
+    // TODO: check that curUser is the owner of the trade
+
     trade.done = true;
     await trade.save();
 
@@ -619,14 +557,16 @@ jsonApiRouter.delete("/trades/:tradeId", async (req, res) => {
   const tradeId = req.params.tradeId;
   try {
     if (!isObjectIdOrHexString(tradeId)) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
     const trade = await Trade.findByIdAndDelete(tradeId);
     if (trade === null) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
+
+    // TODO: check that curUser is the owner of the trade
 
     // Delete images from cloudinary server
     for (const image of trade.images) {
@@ -640,59 +580,33 @@ jsonApiRouter.delete("/trades/:tradeId", async (req, res) => {
 });
 
 /**************** USER PROFILE ROUTES ****************/
+// With users, use username as an identifier in routes, instead of user ObjectId
 
-/* Return User object that matches username. */
-jsonApiRouter.get("/users/username/:username", async (req, res) => {
+/* Return the information of the user specified by username. */
+jsonApiRouter.get("/users/:username", async (req, res) => {
   const username = req.params.username;
   try {
     // Search for user
-    const user = await User.findOne({ username: username });
-    if (user === null) {
-      res.status(404).send();
+    const userObj = await User.findOne({ username: username })
+      .select("-__v")
+      .lean();
+    if (userObj === null) {
+      res.status(404).send("User does not exist");
       return;
     }
 
-    if (user.profilePicture === undefined) {
-      user.profilePicture = globals.DEFAULT_AVATAR;
+    // Default values for optional fields
+    if (userObj.profilePicture === undefined) {
+      userObj.profilePicture = globals.DEFAULT_AVATAR;
+    }
+    if (userObj.status === undefined) {
+      userObj.status = "";
+    }
+    if (userObj.location === undefined) {
+      userObj.location = "Somewhere, Earth";
     }
 
-    if (user.status === undefined) {
-      user.status = "Empty status";
-    }
-
-    if (user.location === undefined) {
-      user.location = "Somewhere, Earth";
-    }
-
-    res.send(user);
-  } catch (error) {
-    handleError(error, res);
-  }
-});
-
-/* Return User object that matches userId. */
-jsonApiRouter.get("/users/userId/:userId", async (req, res) => {
-  try {
-    // Search for user
-    const user = await User.findById(req.params.userId);
-    if (user === null) {
-      res.status(404).send();
-      return;
-    }
-
-    if (user.profilePicture === undefined) {
-      user.profilePicture = globals.DEFAULT_AVATAR;
-    }
-
-    if (user.status === undefined) {
-      user.status = "Empty status";
-    }
-
-    if (user.location === undefined) {
-      user.location = "Somewhere, Earth";
-    }
-
-    res.send(user);
+    res.send(userObj);
   } catch (error) {
     handleError(error, res);
   }
@@ -700,26 +614,19 @@ jsonApiRouter.get("/users/userId/:userId", async (req, res) => {
 
 /* Save user status change. */
 jsonApiRouter.put("/users/:username/status", async (req, res) => {
-  const username = req.params.username;
-  if (req.session.username !== username) {
-    // users can only edit their own profile
-    res.status(403).send();
+  if (req.session.username !== req.params.username) {
+    // Users can only edit their own account
+    res.status(403).send("Forbidden");
     return;
   }
   try {
-    const user = await User.findOne({ username: username });
-    // validate
-    if (user === null) {
-      res.status(404).send();
-      return;
-    }
     if (typeof req.body.status !== "string") {
       res.status(400).send("Bad Request");
       return;
     }
-    // save status
-    user.status = req.body.status;
-    user.save();
+    // Save status
+    req.curUser.status = req.body.status;
+    await req.curUser.save();
 
     res.send({});
   } catch (error) {
@@ -729,26 +636,19 @@ jsonApiRouter.put("/users/:username/status", async (req, res) => {
 
 /* Save user settings change. */
 jsonApiRouter.put("/users/:username/settings", async (req, res) => {
-  const username = req.params.username;
-  if (req.session.username !== username) {
-    // users can only edit their own profile
-    res.status(403).send();
+  if (req.session.username !== req.params.username) {
+    // Users can only edit their own account
+    res.status(403).send("Forbidden");
     return;
   }
   try {
-    const user = await User.findOne({ username: username });
-    // validate
-    if (user === null) {
-      res.status(404).send();
-      return;
-    }
-    // save status
-    user.actualName = req.body.actualName;
-    user.gender = req.body.gender;
-    user.birthday = req.body.birthday;
-    user.location = req.body.location;
-    user.email = req.body.email;
-    user.save();
+    // Save settings
+    req.curUser.actualName = req.body.actualName;
+    req.curUser.gender = req.body.gender;
+    req.curUser.birthday = req.body.birthday;
+    req.curUser.location = req.body.location;
+    req.curUser.email = req.body.email;
+    await req.curUser.save();
 
     res.send({});
   } catch (error) {
@@ -758,17 +658,13 @@ jsonApiRouter.put("/users/:username/settings", async (req, res) => {
 
 /* Add a new pet to user's profile. */
 jsonApiRouter.post("/users/:userId/pets", async (req, res) => {
-  if (req.session.user !== req.params.userId) {
-    // users can only edit their own profile
-    res.status(403).send();
+  if (req.session.userId !== req.params.userId) {
+    // Users can only edit their own account
+    res.status(403).send("Forbidden");
     return;
   }
   try {
-    const user = await User.findById(req.params.userId);
-    if (user === null) {
-      res.status(404).send();
-      return;
-    }
+    // Validate input
     if (
       notValidString(req.body.name) ||
       typeof req.body.likes !== "string" ||
@@ -777,15 +673,18 @@ jsonApiRouter.post("/users/:userId/pets", async (req, res) => {
       res.status(400).send("Bad Request");
       return;
     }
+    // Create Pet subdocument
     const newPet = new Pet({
       name: req.body.name,
       likes: req.body.likes,
       dislikes: req.body.dislikes,
       description: "Write anything about your pet here",
+      // TODO: should description be set by the incoming request? If so validate the field in earlier if statement
     });
-    user.pets.push(newPet);
-    user.save();
-    res.send(newPet);
+    req.curUser.pets.push(newPet);
+    await req.curUser.save();
+
+    res.send(newPet.toObject({ versionKey: false }));
   } catch (error) {
     handleError(error, res);
   }
@@ -793,125 +692,96 @@ jsonApiRouter.post("/users/:userId/pets", async (req, res) => {
 
 /* Save pet information. */
 jsonApiRouter.put("/users/:userId/:petId", async (req, res) => {
-  if (req.session.user !== req.params.userId) {
-    // users can only edit their own profile
-    res.status(403).send();
+  if (req.session.userId !== req.params.userId) {
+    // Users can only edit their own account
+    res.status(403).send("Forbidden");
     return;
   }
   try {
-    const user = await User.findById(req.params.userId);
-    if (user === null) {
-      res.status(404).send();
-      return;
-    }
-    const pet = user.pets.id(req.params.petId);
+    const pet = req.curUser.pets.id(req.params.petId);
     if (pet === null) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
-    // save information
-    const i = user.pets.indexOf(pet);
-    user.pets[i].name = req.body.name;
-    user.pets[i].likes = req.body.likes;
-    user.pets[i].dislikes = req.body.dislikes;
-    user.pets[i].description = req.body.description;
-    user.save();
+    // Save information
+    pet.name = req.body.name;
+    pet.likes = req.body.likes;
+    pet.dislikes = req.body.dislikes;
+    pet.description = req.body.description;
+    await req.curUser.save();
 
     res.send({});
   } catch (error) {
     handleError(error, res);
-    console.log("hmm");
   }
 });
 
 /* Delete a pet. */
 jsonApiRouter.delete("/users/:userId/:petId", async (req, res) => {
-  if (req.session.user !== req.params.userId) {
-    // users can only edit their own profile
-    res.status(403).send();
+  if (req.session.userId !== req.params.userId) {
+    // Users can only edit their own account
+    res.status(403).send("Forbidden");
     return;
   }
   try {
-    const user = await User.findById(req.params.userId);
-    if (user === null) {
-      res.status(404).send();
-      return;
-    }
-    const pet = user.pets.id(req.params.petId);
+    const pet = req.curUser.pets.id(req.params.petId);
     if (pet === null) {
-      res.status(404).send();
+      res.status(404).send("Not Found");
       return;
     }
-    // delete pet at index
-    const i = user.pets.indexOf(pet);
-    user.pets.splice(i, 1);
-    user.save();
+    // Delete pet at index
+    const i = req.curUser.pets.indexOf(pet);
+    req.curUser.pets.splice(i, 1);
+    await req.curUser.save();
 
     res.send({});
   } catch (error) {
     handleError(error, res);
-    console.log("hmm");
   }
 });
 
 /* Add a friend. */
 jsonApiRouter.put("/users/:userId/friends/:friendId", async (req, res) => {
-  if (req.session.user !== req.params.userId) {
-    // users can only edit their own profile
-    res.status(403).send();
+  if (req.session.userId !== req.params.userId) {
+    // Users can only edit their own account
+    res.status(403).send("Forbidden");
     return;
   }
   try {
-    const user = await User.findById(req.params.userId);
-    if (user === null) {
-      res.status(404).send();
+    // Don't add if already friends
+    if (req.curUser.friends.includes(req.params.friendId)) {
+      res.send({}); // Don't send error code for no-op
       return;
     }
-    // create friends array if no friends yet
-    if (!user.friends) {
-      user.friends = [];
-    }
-    // don't add if already friends
-    if (user.friends.includes(req.params.friendId)) {
-      res.status(403).send();
-      return;
-    }
-    user.friends.push(req.params.friendId);
-    user.save();
+    req.curUser.friends.push(req.params.friendId);
+    await req.curUser.save();
 
     res.send({});
   } catch (error) {
     handleError(error, res);
-    console.log("hmm");
   }
 });
 
 /* Remove a friend. */
 jsonApiRouter.delete("/users/:userId/friends/:friendId", async (req, res) => {
-  if (req.session.user !== req.params.userId) {
-    // users can only edit their own profile
-    res.status(403).send();
+  if (req.session.userId !== req.params.userId) {
+    // Users can only edit their own account
+    res.status(403).send("Forbidden");
     return;
   }
   try {
-    const user = await User.findById(req.params.userId);
-    if (user === null) {
-      res.status(404).send();
+    // Only remove friend that exists
+    if (!req.curUser.friends.includes(req.params.friendId)) {
+      res.status(404).send("Not Found");
       return;
     }
-    // only remove friend that exists
-    if (!user.friends || !user.friends.includes(req.params.friendId)) {
-      res.status(403).send();
-      return;
-    }
-    const index = user.friends.indexOf(req.params.friendId);
-    user.friends.splice(index, 1);
-    user.save();
+    const index = req.curUser.friends.indexOf(req.params.friendId);
+    req.curUser.friends.splice(index, 1);
+    await req.curUser.save();
 
     res.send({});
   } catch (error) {
     handleError(error, res);
-    console.log("hmm");
   }
 });
 
