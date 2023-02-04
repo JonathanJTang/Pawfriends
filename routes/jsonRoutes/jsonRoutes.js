@@ -79,44 +79,6 @@ const notValidString = (obj) => {
   return typeof obj !== "string" || obj === "";
 };
 
-/* Overwrites the 'owner' key of the response object into a format with all the
- * information needed by the frontend. */
-const addOwnerToResponse = (response, owner) => {
-  response.owner = {
-    _id: owner._id,
-    username: owner.username,
-    actualName: owner.actualName,
-    avatar: owner.profilePicture,
-  };
-  if (response.owner.avatar === undefined) {
-    // not avatar defined, use default
-    response.owner.avatar = globals.DEFAULT_AVATAR;
-  }
-};
-
-/* Modifies the response object into a format with all the information needed by
- * the frontend. */
-const modifyPostResponse = async (response, postOwner, curUser) => {
-  addOwnerToResponse(response, postOwner);
-
-  response.numLikes = response.likedUsers.length;
-  // Check whether the current user liked this post
-  response.userLiked = response.likedUsers.some(
-    (userObjectId) => curUser._id.toString() === userObjectId.toString()
-  );
-
-  // Populate comments array
-  for (const comment of response.comments) {
-    const commentOwner = await User.findById(comment.owner).select(
-      globals.POST_OWNER_PROJECTION
-    );
-    addOwnerToResponse(comment, commentOwner);
-  }
-
-  // Delete fields that are now unnecessary for the client
-  delete response["likedUsers"];
-};
-
 /** Image helper functions */
 /* Attempt to upload the specified image to the Cloudinary server. */
 const uploadImage = (imagePath) => {
@@ -180,6 +142,90 @@ const processFilesForEntry = async (filesObj, entry) => {
       }
     });
   }
+};
+
+/* Generic deletion method for an entry with a owner field that's an ObjectId.
+   Entry currently can be a Post, Service, or Trade.
+   If hasImagesArray is true, attempt to delete all images in the images array.
+   
+   A generic deletion method is possible because of similar Schema structures,
+   and because not much field-specific processing is required.
+ */
+const deleteEntry = async (req, res, Model, entryId, hasImagesArray) => {
+  try {
+    if (!isObjectIdOrHexString(entryId)) {
+      res.status(404).send("Not Found");
+      return;
+    }
+    const entry = await Model.findById(entryId);
+    if (entry === null) {
+      res.status(404).send("Not Found");
+      return;
+    }
+
+    // Only the entry owner can delete the entry
+    if (entry.owner.toString() !== req.curUser._id.toString()) {
+      res.status(403).send("Forbidden");
+      return;
+    }
+
+    // Delete images from cloudinary server
+    if (hasImagesArray) {
+      // Delete images from cloudinary server
+      const success = await Promise.allSettled(entry.images.map(deleteImage));
+      success.forEach((result, i) => {
+        if (result.status === "rejected") {
+          console.log(
+            `For ${entry}, deleting image ${i} failed because of: `,
+            result.reason
+          );
+        }
+      });
+    }
+    entry.remove();
+    res.send({});
+  } catch (error) {
+    // Return 500 Internal server error if error was from deleteImage?
+    handleError(error, res);
+  }
+};
+
+/* Overwrites the 'owner' key of the response object into a format with all the
+ * information needed by the frontend. */
+const addOwnerToResponse = (response, owner) => {
+  response.owner = {
+    _id: owner._id,
+    username: owner.username,
+    actualName: owner.actualName,
+    avatar: owner.profilePicture,
+  };
+  if (response.owner.avatar === undefined) {
+    // not avatar defined, use default
+    response.owner.avatar = globals.DEFAULT_AVATAR;
+  }
+};
+
+/* Modifies the response object into a format with all the information needed by
+ * the frontend. */
+const modifyPostResponse = async (response, postOwner, curUser) => {
+  addOwnerToResponse(response, postOwner);
+
+  response.numLikes = response.likedUsers.length;
+  // Check whether the current user liked this post
+  response.userLiked = response.likedUsers.some(
+    (userObjectId) => curUser._id.toString() === userObjectId.toString()
+  );
+
+  // Populate comments array
+  for (const comment of response.comments) {
+    const commentOwner = await User.findById(comment.owner).select(
+      globals.POST_OWNER_PROJECTION
+    );
+    addOwnerToResponse(comment, commentOwner);
+  }
+
+  // Delete fields that are now unnecessary for the client
+  delete response["likedUsers"];
 };
 
 /**************** API ROUTES for updating various objects in database (Posts, Services, Trades) ****************/
@@ -355,34 +401,8 @@ jsonApiRouter.get("/posts/:postId", async (req, res) => {
 
 /* Delete a post. */
 jsonApiRouter.delete("/posts/:postId", async (req, res) => {
-  const postId = req.params.postId;
-  try {
-    if (!isObjectIdOrHexString(postId)) {
-      res.status(404).send("Not Found");
-      return;
-    }
-    const post = await Post.findById(postId);
-    if (post === null) {
-      res.status(404).send("Not Found");
-      return;
-    }
-
-    // Only the post owner can delete the post
-    if (post.owner.toString() !== req.curUser._id.toString()) {
-      res.status(403).send("Forbidden");
-      return;
-    }
-
-    // Delete images from cloudinary server
-    for (const image of post.images) {
-      await deleteImage(image);
-    }
-    post.remove();
-    res.send({});
-  } catch (error) {
-    // Return 500 Internal server error if error was from deleteImage?
-    handleError(error, res);
-  }
+  // deleteEntry handles all the validation and error handling
+  deleteEntry(req, res, Post, req.params.postId, true);
 });
 
 /**************** SERVICE ROUTES ****************/
@@ -399,7 +419,7 @@ jsonApiRouter.get("/services", async (req, res) => {
       const postOwnerObj = await User.findById(serviceObj.owner)
         .select(globals.POST_OWNER_PROJECTION)
         .lean();
-      addOwnerToResponse(service, postOwnerObj);
+      addOwnerToResponse(serviceObj, postOwnerObj);
     }
     res.send(allServiceObjs);
   } catch (error) {
@@ -447,10 +467,17 @@ jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
   }
 });
 
+/* Delete a service posting. */
+jsonApiRouter.delete("/services/:serviceId", async (req, res) => {
+  // deleteEntry handles all the validation and error handling
+  deleteEntry(req, res, Service, req.params.serviceId, true);
+});
+
+
 /**************** TRADE ROUTES ****************/
 /* Modifies the response object into a format with all the information needed by
  * the frontend. */
-const modifyTradeResponse = async (response, postOwner, curUser) => {
+const modifyTradeResponse = (response, postOwner, curUser) => {
   addOwnerToResponse(response, postOwner);
 
   // Only the post owner can mark completion / delete the post
@@ -495,7 +522,7 @@ jsonApiRouter.get("/trades/:tradeId", async (req, res) => {
     const postOwnerObj = await User.findById(tradeObj.owner)
       .select(globals.POST_OWNER_PROJECTION)
       .lean();
-    await modifyTradeResponse(tradeObj, postOwnerObj, req.curUser);
+    modifyTradeResponse(tradeObj, postOwnerObj, req.curUser);
     res.send(tradeObj);
   } catch (error) {
     handleError(error, res);
@@ -525,7 +552,7 @@ jsonApiRouter.post("/trades", multipartMiddleware, async (req, res) => {
     const newTrade = await trade.save();
     // Build the JSON object to respond with
     const jsonResponse = newTrade.toObject({ versionKey: false });
-    await modifyTradeResponse(jsonResponse, req.curUser, req.curUser);
+    modifyTradeResponse(jsonResponse, req.curUser, req.curUser);
     res.send(jsonResponse);
   } catch (error) {
     // Return 500 Internal server error if error was from uploadImage?
@@ -565,34 +592,8 @@ jsonApiRouter.put("/trades/:tradeId/done", async (req, res) => {
 
 /* Delete a trade. */
 jsonApiRouter.delete("/trades/:tradeId", async (req, res) => {
-  const tradeId = req.params.tradeId;
-  try {
-    if (!isObjectIdOrHexString(tradeId)) {
-      res.status(404).send("Not Found");
-      return;
-    }
-    const trade = await Trade.findById(tradeId);
-    if (trade === null) {
-      res.status(404).send("Not Found");
-      return;
-    }
-
-    // Only the trade owner can modify the trade
-    if (trade.owner.toString() !== req.curUser._id.toString()) {
-      res.status(403).send("Forbidden");
-      return;
-    }
-
-    // Delete images from cloudinary server
-    for (const image of trade.images) {
-      await deleteImage(image);
-    }
-    trade.remove();
-    res.send({});
-  } catch (error) {
-    // Return 500 Internal server error if error was from deleteImage?
-    handleError(error, res);
-  }
+  // deleteEntry handles all the validation and error handling
+  deleteEntry(req, res, Trade, req.params.tradeId, true);
 });
 
 /**************** USER PROFILE ROUTES ****************/
