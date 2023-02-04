@@ -427,6 +427,31 @@ jsonApiRouter.get("/services", async (req, res) => {
   }
 });
 
+/* Get a specific trade posting. */
+jsonApiRouter.get("/services/:serviceId", async (req, res) => {
+  const serviceId = req.params.serviceId;
+  try {
+    if (!isObjectIdOrHexString(serviceId)) {
+      res.status(404).send("Not Found");
+      return;
+    }
+    const serviceObj = await Service.findById(serviceId).select("-__v").lean();
+    if (serviceObj === null) {
+      res.status(404).send("Not Found");
+      return;
+    }
+
+    // Modify trade response to send to the client
+    const postOwnerObj = await User.findById(serviceObj.owner)
+      .select(globals.POST_OWNER_PROJECTION)
+      .lean();
+    modifyTradeResponse(serviceObj, postOwnerObj, req.curUser);
+    res.send(serviceObj);
+  } catch (error) {
+    handleError(error, res);
+  }
+});
+
 /* Create a new service posting. */
 jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
   try {
