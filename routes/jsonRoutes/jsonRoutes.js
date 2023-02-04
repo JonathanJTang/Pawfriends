@@ -390,16 +390,18 @@ jsonApiRouter.delete("/posts/:postId", async (req, res) => {
 /* Get all service postings. */
 jsonApiRouter.get("/services", async (req, res) => {
   try {
-    const allServices = await Service.find()
+    const allServiceObjs = await Service.find()
       .sort({ postTime: "descending" })
       .select("-__v") // remove fields unnecessary for the client
       .lean(); // Don't need to modify the document so just need the JS object
     // Modify array to send to the client
-    for (const service of allServices) {
-      const postOwner = await User.findById(service.owner);
-      addOwnerToResponse(service, postOwner);
+    for (const serviceObj of allServiceObjs) {
+      const postOwnerObj = await User.findById(serviceObj.owner)
+        .select(globals.POST_OWNER_PROJECTION)
+        .lean();
+      addOwnerToResponse(service, postOwnerObj);
     }
-    res.send(allServices);
+    res.send(allServiceObjs);
   } catch (error) {
     handleError(error, res);
   }
@@ -408,7 +410,8 @@ jsonApiRouter.get("/services", async (req, res) => {
 /* Create a new service posting. */
 jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
   try {
-    // Validate user input (description, email, phone, and all elements of the tags array must be nonempty strings)
+    // Validate user input (description, email, phone, and all elements of the
+    // tags array must be nonempty strings)
     if (
       notValidString(req.body.description) ||
       notValidString(req.body.email) ||
@@ -436,7 +439,6 @@ jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
     const newService = await service.save();
     // Build the JSON object to respond with
     const jsonResponse = newService.toObject({ versionKey: false });
-    // await modifyServiceResponse(jsonResponse, req.curUser, req.curUser);
     addOwnerToResponse(jsonResponse, req.curUser);
     res.send(jsonResponse);
   } catch (error) {
@@ -445,27 +447,31 @@ jsonApiRouter.post("/services", multipartMiddleware, async (req, res) => {
   }
 });
 
+/**************** TRADE ROUTES ****************/
 /* Modifies the response object into a format with all the information needed by
  * the frontend. */
 const modifyTradeResponse = async (response, postOwner, curUser) => {
   addOwnerToResponse(response, postOwner);
-};
 
-/**************** TRADE ROUTES ****************/
+  // Only the post owner can mark completion / delete the post
+  response.curUserIsOwner = postOwner._id.toString() === curUser._id.toString();
+};
 
 /* Get all trade postings. */
 jsonApiRouter.get("/trades", async (req, res) => {
   try {
-    const allTrades = await Trade.find()
+    const allTradeObjs = await Trade.find()
       .sort({ postTime: "descending" })
       .select("-__v") // remove fields unnecessary for the client
       .lean(); // Don't need to modify the document so just need the JS object
     // Modify array to send to the client
-    for (const trade of allTrades) {
-      const postOwner = await User.findById(trade.owner);
-      await modifyTradeResponse(trade, postOwner, req.curUser);
+    for (const tradeObj of allTradeObjs) {
+      const postOwnerObj = await User.findById(tradeObj.owner)
+        .select(globals.POST_OWNER_PROJECTION)
+        .lean();
+      modifyTradeResponse(tradeObj, postOwnerObj, req.curUser);
     }
-    res.send(allTrades);
+    res.send(allTradeObjs);
   } catch (error) {
     handleError(error, res);
   }
@@ -479,17 +485,18 @@ jsonApiRouter.get("/trades/:tradeId", async (req, res) => {
       res.status(404).send("Not Found");
       return;
     }
-    const trade = await Trade.findById(tradeId);
-    if (trade === null) {
+    const tradeObj = await Trade.findById(tradeId).select("-__v").lean();
+    if (tradeObj === null) {
       res.status(404).send("Not Found");
       return;
     }
 
     // Modify trade response to send to the client
-    const postOwner = await User.findById(trade.owner);
-    const jsonResponse = trade.toObject({ versionKey: false });
-    await modifyTradeResponse(jsonResponse, postOwner, req.curUser);
-    res.send(jsonResponse);
+    const postOwnerObj = await User.findById(tradeObj.owner)
+      .select(globals.POST_OWNER_PROJECTION)
+      .lean();
+    await modifyTradeResponse(tradeObj, postOwnerObj, req.curUser);
+    res.send(tradeObj);
   } catch (error) {
     handleError(error, res);
   }
@@ -541,7 +548,11 @@ jsonApiRouter.put("/trades/:tradeId/done", async (req, res) => {
       return;
     }
 
-    // TODO: check that curUser is the owner of the trade
+    // Only the trade owner can modify the trade
+    if (trade.owner.toString() !== req.curUser._id.toString()) {
+      res.status(403).send("Forbidden");
+      return;
+    }
 
     trade.done = true;
     await trade.save();
@@ -560,18 +571,23 @@ jsonApiRouter.delete("/trades/:tradeId", async (req, res) => {
       res.status(404).send("Not Found");
       return;
     }
-    const trade = await Trade.findByIdAndDelete(tradeId);
+    const trade = await Trade.findById(tradeId);
     if (trade === null) {
       res.status(404).send("Not Found");
       return;
     }
 
-    // TODO: check that curUser is the owner of the trade
+    // Only the trade owner can modify the trade
+    if (trade.owner.toString() !== req.curUser._id.toString()) {
+      res.status(403).send("Forbidden");
+      return;
+    }
 
     // Delete images from cloudinary server
     for (const image of trade.images) {
       await deleteImage(image);
     }
+    trade.remove();
     res.send({});
   } catch (error) {
     // Return 500 Internal server error if error was from deleteImage?
