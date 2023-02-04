@@ -124,12 +124,11 @@ const deleteImage = (imageInfo) => {
  */
 const processFilesForEntry = async (filesObj, entry) => {
   // Currently only support one uploaded image in filesObj
-  if (
+  const fileExt = path.extname(filesObj.image.name).toLowerCase();
+  const isValidFileType =
     filesObj.image !== undefined &&
-    globals.VALID_IMAGE_FILE_TYPES.includes(
-      path.extname(filesObj.image.name).toLowerCase().slice(1)
-    )
-  ) {
+    globals.VALID_IMAGE_FILE_TYPES.includes(fileExt.slice(1));
+  if (isValidFileType) {
     // There's a valid uploaded image, upload it to the Cloudinary server
     const imageInfo = await uploadImage(filesObj.image.path);
     entry.images.push(imageInfo);
@@ -141,6 +140,10 @@ const processFilesForEntry = async (filesObj, entry) => {
         console.log(error);
       }
     });
+  }
+  if (!isValidFileType) {
+    throw TypeError(`${fileExt} is not one of the valid image file extensions \
+                    in ${globals.VALID_IMAGE_FILE_TYPES}`);
   }
 };
 
@@ -497,7 +500,6 @@ jsonApiRouter.delete("/services/:serviceId", async (req, res) => {
   // deleteEntry handles all the validation and error handling
   deleteEntry(req, res, Service, req.params.serviceId, true);
 });
-
 
 /**************** TRADE ROUTES ****************/
 /* Modifies the response object into a format with all the information needed by
