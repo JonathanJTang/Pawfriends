@@ -37,4 +37,9 @@ const mongoChecker = (req, res, next) => {
   }
 };
 
-module.exports = { isMongoNetworkError, handleError, mongoChecker };
+module.exports = {
+  notValidString,
+  isMongoNetworkError,
+  handleError,
+  mongoChecker,
+};
