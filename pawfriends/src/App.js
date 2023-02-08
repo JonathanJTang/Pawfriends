@@ -25,7 +25,7 @@ class App extends React.Component {
   }
 
   componentDidMount = () => {
-    document.title = "Pawfriends";
+    document.title = "Pawfriends";  // Browser title bar text
     checkSession(this);
     console.log("Checked session");
   };
@@ -82,7 +82,7 @@ class App extends React.Component {
             />
             <Route
               exact
-              path={["/", "/login"] /* any of these URLs are accepted. */}
+              path={["/", "/login"] /* Any of these URLs are accepted. */}
               render={(props) => (
                 <div className="app">
                   {/* Different components rendered depending on if someone is logged in. */}

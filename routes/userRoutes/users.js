@@ -104,7 +104,7 @@ router.get("/users/logout", (req, res) => {
     if (error) {
       res.status(500).send("Internal Server Error");
     } else {
-      res.send("Successfully logged out");
+      res.send();  // Successfully logged out
     }
   });
 });

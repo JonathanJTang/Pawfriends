@@ -67,8 +67,8 @@ class Trades extends React.Component {
     this.setState({ filter: e.target.getAttribute("name") });
   };
 
-  resizeTextarea = (initialRows, event) => {
-    const textarea = event.target;
+  resizeTextarea = (initialRows, e) => {
+    const textarea = e.target;
     // Count rows by counting '\n' characters, but have at least initialRows
     const num_rows = Math.max(
       initialRows,

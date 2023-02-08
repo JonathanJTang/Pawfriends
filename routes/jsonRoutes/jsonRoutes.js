@@ -691,7 +691,7 @@ jsonApiRouter.put("/users/:username/settings", async (req, res) => {
     req.curUser.gender = req.body.gender;
     req.curUser.birthday = req.body.birthday;
     req.curUser.location = req.body.location;
-    req.curUser.email = req.body.email;
+    // req.curUser.email = req.body.email;
     await req.curUser.save();
 
     res.send({});

@@ -8,8 +8,8 @@ import Post from "../Post";
 import { getAllUsersPosts, createPost } from "../../actions/apiRequests";
 
 class CreatePost extends React.Component {
-  resizeTextarea = (initialRows, event) => {
-    const textarea = event.target;
+  resizeTextarea = (initialRows, e) => {
+    const textarea = e.target;
     // Count rows by counting '\n' characters, but have at least initialRows
     const num_rows = Math.max(
       initialRows,

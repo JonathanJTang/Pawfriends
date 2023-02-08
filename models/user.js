@@ -73,6 +73,10 @@ UserSchema.pre("save", function (next) {
 UserSchema.statics.usernamePasswordValid = function (username, password) {
   const User = this; // binds this to the User model
 
+  if (!username || !password) {
+    return Promise.reject();
+  }
+
   // First find the user by their username
   return User.findOne(
     { username: username },

@@ -72,8 +72,8 @@ class Services extends React.Component {
     }
   };
 
-  resizeTextarea = (initialRows, event) => {
-    const textarea = event.target;
+  resizeTextarea = (initialRows, e) => {
+    const textarea = e.target;
     // Count rows by counting '\n' characters, but have at least initialRows
     const num_rows = Math.max(
       initialRows,
@@ -83,7 +83,6 @@ class Services extends React.Component {
   };
 
   render() {
-    // replace with server call to get all services
     let filtered = this.state.servicesList;
 
     // filter by userId

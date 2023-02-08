@@ -18,6 +18,7 @@ class Home extends React.Component {
     this.state = {
       posts: [],
       trades: [],
+      services: [],
     };
   }
 
@@ -52,7 +53,7 @@ class Home extends React.Component {
     if (this.state.services) {
       allServices = this.state.services.map((service, index) => (
         <Service
-          key={index}
+          key={service._id}
           service={service}
           user={service.owner}
           serviceArrayIndex={index}

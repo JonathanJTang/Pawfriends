@@ -164,7 +164,7 @@ export const removeService = (serviceId) => {
 
 // <--- USER PROFILE API --->
 export const getUserByUsername = (username) => {
-  const request = new Request(baseUrl + `/api/users/username/${username}`, {
+  const request = new Request(baseUrl + `/api/users/${username}`, {
     method: "get",
   });
 
@@ -172,6 +172,7 @@ export const getUserByUsername = (username) => {
   return promise;
 };
 
+// TODO: Get by ID removed, need to update
 export const getUserById = (userId) => {
   const request = new Request(baseUrl + `/api/users/userId/${userId}`, {
     method: "get",
@@ -285,6 +286,7 @@ export const createUser = (userInfo) => {
   return createUserPromise;
 };
 
+/* userInfo should contain the string fields 'username' and 'password' */
 export const loginUser = (userInfo) => {
   const request = new Request(baseUrl + `/users/login`, {
     method: "post",

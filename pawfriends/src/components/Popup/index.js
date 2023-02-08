@@ -17,7 +17,8 @@ class Popup extends React.Component {
               <img src={confirm} alt="confirm" />
             </button>
             <button onClick={this.props.cancel}>
-              Cancel <img src={cancel} alt="cancel" />
+              Cancel
+              <img src={cancel} alt="cancel" />
             </button>
           </div>
         </div>

@@ -3,7 +3,7 @@ import React from "react";
 class AccountSettings extends React.Component {
   constructor() {
     super();
-    this.state = { username: "user", pass: "user" };
+    this.state = { username: "user", password: "user" };
   }
 
   render() {
@@ -17,7 +17,7 @@ class AccountSettings extends React.Component {
           type="password"
           name="password"
           //  onChange={this.handleChange}
-          defaultValue={this.state.pass}
+          defaultValue={this.state.password}
           required
         />
         <input type="submit" value="Save changes" />

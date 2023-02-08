@@ -13,13 +13,15 @@ class Dropdown extends React.Component {
   }
 
   componentDidMount = async () => {
-    const user = await getUserByUsername(this.props.currentUser);
-    if (user !== undefined) {
-      this.setState({ user: user });
+    if (this.props.currentUser) {
+      const user = await getUserByUsername(this.props.currentUser);
+      if (user !== undefined) {
+        this.setState({ user: user });
+      }
     }
   };
 
-  show = () => {
+  toggleShow = () => {
     if (this.state.show) {
       this.setState({ show: false });
       document.removeEventListener("mouseup", this.handleClick);
@@ -30,20 +32,21 @@ class Dropdown extends React.Component {
   };
 
   handleClick = (e) => {
+    // For clicks outside the Dropdown component
     if (
       !this.ref1.current.contains(e.target) &&
       !this.ref2.current.contains(e.target)
     ) {
-      this.show();
+      this.toggleShow();
     }
   };
 
   handleLogout = () => {
-    let logoutpromise = logoutUser();
+    logoutUser();
     this.props.app.setState({
       currentUser: null,
     });
-    alert("logout");
+    alert("You have successfully logged out.");
   };
 
   componentWillUnmount() {
@@ -52,19 +55,14 @@ class Dropdown extends React.Component {
 
   render() {
     const { user } = this.state;
-    // temporary? set user profile pic to default on registration
-    let image;
-    if (user.profilePicture) {
-      image = user.profilePicture.imageUrl;
-    } else {
-      image =
-        "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png";
-    }
+    const imageUrl = user && user.profilePicture
+      ? user.profilePicture.imageUrl
+      : undefined;
     return (
       <div>
         <img
-          src={image}
-          onClick={this.show}
+          src={imageUrl}
+          onClick={this.toggleShow}
           className="dropdown"
           ref={this.ref1}
           alt={"dropdown button"}
@@ -72,13 +70,13 @@ class Dropdown extends React.Component {
 
         {this.state.show ? (
           <ul className="dropdown-list" ref={this.ref2}>
-            <li onClick={this.show}>
+            <li onClick={this.toggleShow}>
               <Link to={`/profile/${user.username}`}>Profile</Link>
             </li>
-            <li onClick={this.show}>
+            <li onClick={this.toggleShow}>
               <Link to="/settings">Settings</Link>
             </li>
-            <li onClick={this.show}>
+            <li onClick={this.toggleShow}>
               <Link to="/" onClick={this.handleLogout}>
                 Logout
               </Link>

@@ -26,11 +26,11 @@ class Comment extends React.Component {
 class Post extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { toggle: false };
+    this.state = { showDeletePopup: false };
   }
 
   handleClick = () => {
-    this.state.toggle
+    this.state.showDeletePopup
       ? this.setState({ toggle: false })
       : this.setState({ toggle: true });
   };
@@ -48,7 +48,6 @@ class Post extends React.Component {
   };
 
   render() {
-    // console.log("porpos");
     // console.log(this.props);
     const { user, postData } = this.props;
 
@@ -68,7 +67,7 @@ class Post extends React.Component {
 
     return (
       <div className="post">
-        {this.state.toggle && (
+        {this.state.showDeletePopup && (
           <Popup confirm={this.removePost} cancel={this.handleClick} />
         )}
         <div className="header">

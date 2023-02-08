@@ -44,7 +44,7 @@ class Registration extends React.Component {
       gender: this.state.user.gender,
     });
     if (user !== undefined) {
-      alert("successfully made user " + this.state.user.username);
+      alert(`Successfully registered user ${this.state.user.username}`);
       // Log in the user and redirect to the home page
       user = await loginUser({
         username: this.state.user.username,
