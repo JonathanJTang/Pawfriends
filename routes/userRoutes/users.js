@@ -9,6 +9,7 @@ const { User } = require("../../models/user");
 
 // Import helpers and types
 const {
+  notValidString,
   isMongoNetworkError,
   handleError,
   mongoChecker,
@@ -27,7 +28,7 @@ router.post("/users", mongoChecker, async (req, res) => {
         );
       return;
     }
-    if (req.body.password.length < 4) {
+    if (typeof obj !== "string" || req.body.password.length < 4) {
       res.status(400).send("Password must be at least 4 characters long");
       return;
     }
@@ -52,10 +53,10 @@ router.post("/users", mongoChecker, async (req, res) => {
       error !== null &&
       error.name === "ValidationError"
     ) {
-      // Username and/or password don't match the schema's requirements
+      // A field doesn't match the schema's requirements
       res
         .status(403)
-        .send("The username and/or password do not meet the requirements");
+        .send("A field does not meet the requirements for user registration");
     } else if (
       typeof error === "object" &&
       error !== null &&
@@ -76,6 +77,15 @@ router.post("/users", mongoChecker, async (req, res) => {
 //A route to login and create a session
 router.post("/users/login", mongoChecker, async (req, res) => {
   try {
+    // Validate user input: username and password must be nonempty strings
+    if (
+      notValidString(req.body.username) ||
+      notValidString(req.body.password)
+    ) {
+      res.status(400).send("Bad Request");
+      return;
+    }
+
     // Use the static method on the User model to find a user
     // by their username and password.
     const user = await User.usernamePasswordValid(
@@ -104,7 +114,7 @@ router.get("/users/logout", (req, res) => {
     if (error) {
       res.status(500).send("Internal Server Error");
     } else {
-      res.send();  // Successfully logged out
+      res.send(); // Successfully logged out
     }
   });
 });
@@ -118,5 +128,5 @@ router.get("/users/check-session", (req, res) => {
   }
 });
 
-// export the router
+// Export the router
 module.exports = router;

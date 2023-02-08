@@ -19,7 +19,11 @@ const { Trade } = require("../../models/trade");
 const { isObjectIdOrHexString } = require("mongoose");
 
 // Import helpers
-const { handleError, mongoChecker } = require("../helpers/routeHelpers");
+const {
+  notValidString,
+  handleError,
+  mongoChecker,
+} = require("../helpers/routeHelpers");
 
 // Cloudinary: configure using credentials found on the Cloudinary Dashboard
 const cloudinary = require("cloudinary").v2;
@@ -73,11 +77,6 @@ jsonApiRouter.use(mongoChecker);
 jsonApiRouter.use(authenticate);
 
 /**************** HELPERS FOR API ROUTES ****************/
-
-/* Return true if obj is not a nonempty string. */
-const notValidString = (obj) => {
-  return typeof obj !== "string" || obj === "";
-};
 
 /** Image helper functions */
 /* Attempt to upload the specified image to the Cloudinary server. */
@@ -275,6 +274,11 @@ jsonApiRouter.post("/posts", multipartMiddleware, async (req, res) => {
 jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
   const postId = req.params.postId;
   try {
+    // Validate user input (content must be an nonempty string)
+    if (notValidString(req.body.content)) {
+      res.status(400).send("Bad Request");
+      return;
+    }
     // Check that postId is valid
     if (!isObjectIdOrHexString(postId)) {
       res.status(404).send("Not Found");
@@ -285,11 +289,6 @@ jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
       res.status(404).send("Not Found");
       return;
     }
-    // Validate user input (content must be an nonempty string)
-    if (notValidString(req.body.content)) {
-      res.status(400).send("Bad Request");
-      return;
-    }
 
     // Create the new comment in the post
     const newLength = post.comments.push({
@@ -298,9 +297,7 @@ jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
     });
     await post.save();
     // Build the JSON object to respond with
-    const jsonResponse = {
-      content: post.comments[newLength - 1].content,
-    };
+    const jsonResponse = { content: post.comments[newLength - 1].content };
     addOwnerToResponse(jsonResponse, req.curUser);
     res.send(jsonResponse);
   } catch (error) {
@@ -312,6 +309,11 @@ jsonApiRouter.post("/posts/:postId/comment", async (req, res) => {
 jsonApiRouter.put("/posts/:postId/like", async (req, res) => {
   const postId = req.params.postId;
   try {
+    // Validate user input (content must be an nonempty string)
+    if (typeof req.body.like !== "boolean") {
+      res.status(400).send("Bad Request");
+      return;
+    }
     // Check that postId is valid
     if (!isObjectIdOrHexString(postId)) {
       res.status(404).send("Not Found");
@@ -320,11 +322,6 @@ jsonApiRouter.put("/posts/:postId/like", async (req, res) => {
     const post = await Post.findById(postId);
     if (post === null) {
       res.status(404).send("Not Found");
-      return;
-    }
-    // Validate user input (content must be an nonempty string)
-    if (typeof req.body.like !== "boolean") {
-      res.status(400).send("Bad Request");
       return;
     }
 
@@ -628,10 +625,14 @@ jsonApiRouter.delete("/trades/:tradeId", async (req, res) => {
 
 /* Return the information of the user specified by username. */
 jsonApiRouter.get("/users/:username", async (req, res) => {
-  const username = req.params.username;
   try {
+    // Validate user input (content must be an nonempty string)
+    if (notValidString(req.params.username)) {
+      res.status(400).send("Bad Request");
+      return;
+    }
     // Search for user
-    const userObj = await User.findOne({ username: username })
+    const userObj = await User.findOne({ username: req.params.username })
       .select("-__v")
       .lean();
     if (userObj === null) {
@@ -659,12 +660,14 @@ jsonApiRouter.get("/users/:username", async (req, res) => {
 /* Save user status change. */
 jsonApiRouter.put("/users/:username/status", async (req, res) => {
   if (req.session.username !== req.params.username) {
+    // Comparison validates username
     // Users can only edit their own account
     res.status(403).send("Forbidden");
     return;
   }
   try {
     if (typeof req.body.status !== "string") {
+      // Empty string allowed
       res.status(400).send("Bad Request");
       return;
     }
@@ -681,11 +684,22 @@ jsonApiRouter.put("/users/:username/status", async (req, res) => {
 /* Save user settings change. */
 jsonApiRouter.put("/users/:username/settings", async (req, res) => {
   if (req.session.username !== req.params.username) {
+    // Comparison validates username
     // Users can only edit their own account
     res.status(403).send("Forbidden");
     return;
   }
   try {
+    // Validate user input
+    if (
+      notValidString(req.params.actualName) ||
+      !["Male", "Female", "Secret"].includes(req.body.gender) ||
+      typeof req.body.birthday !== "string" ||
+      typeof req.body.location !== "string"
+    ) {
+      res.status(400).send("Bad Request");
+      return;
+    }
     // Save settings
     req.curUser.actualName = req.body.actualName;
     req.curUser.gender = req.body.gender;
@@ -742,6 +756,16 @@ jsonApiRouter.put("/users/:userId/:petId", async (req, res) => {
     return;
   }
   try {
+    // Validate input
+    if (
+      notValidString(req.body.name) ||
+      typeof req.body.likes !== "string" ||
+      typeof req.body.dislikes !== "string" ||
+      typeof req.body.description !== "string"
+    ) {
+      res.status(400).send("Bad Request");
+      return;
+    }
     const pet = req.curUser.pets.id(req.params.petId);
     if (pet === null) {
       res.status(404).send("Not Found");
@@ -792,6 +816,10 @@ jsonApiRouter.put("/users/:userId/friends/:friendId", async (req, res) => {
     return;
   }
   try {
+    if (!isObjectIdOrHexString(req.params.friendId)) {
+      res.status(404).send("Not Found");
+      return;
+    }
     // Don't add if already friends
     if (req.curUser.friends.includes(req.params.friendId)) {
       res.send({}); // Don't send error code for no-op
@@ -814,6 +842,10 @@ jsonApiRouter.delete("/users/:userId/friends/:friendId", async (req, res) => {
     return;
   }
   try {
+    if (!isObjectIdOrHexString(req.params.friendId)) {
+      res.status(404).send("Not Found");
+      return;
+    }
     // Only remove friend that exists
     if (!req.curUser.friends.includes(req.params.friendId)) {
       res.status(404).send("Not Found");

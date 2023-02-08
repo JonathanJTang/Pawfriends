@@ -1,5 +1,10 @@
 const { mongoose } = require("../../db/mongoose");
 
+/* Return true if obj is not a nonempty string. */
+const notValidString = (obj) => {
+  return typeof obj !== "string" || obj === "";
+};
+
 /* Checks whether error is a network issue preventing connection to the Mongo
    database. */
 const isMongoNetworkError = (error) => {
