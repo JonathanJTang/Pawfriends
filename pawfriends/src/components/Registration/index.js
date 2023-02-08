@@ -22,15 +22,11 @@ class Registration extends React.Component {
     };
   }
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    const { user } = this.state;
-    this.setState({
-      user: {
-        ...user,
-        [name]: value,
-      },
-    });
+  handleChange = (e) => {
+    const { name, value } = e.target;
+    this.setState((prevState) => ({
+      user: { ...prevState.user, [name]: value },
+    }));
   };
 
   handleRegistration = async (e) => {

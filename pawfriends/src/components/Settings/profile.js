@@ -29,14 +29,8 @@ class ProfileSettings extends React.Component {
         },
       });
     }
-    if (user && user.profilePicture) {
-      this.state.user.image = user.profilePicture.imageUrl;
-      this.setState({ user: this.state.user });
-    } else {
-      this.state.user.image =
-        "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png";
-      this.setState({ user: this.state.user });
-    }
+    this.state.user.image = user.profilePicture.imageUrl;
+    this.setState({ user: this.state.user });
   };
 
   handleSettingsSubmit = async (e) => {
@@ -101,12 +95,12 @@ class ProfileSettings extends React.Component {
         <input
           type="text"
           name="location"
-          // defaultValue={user.location}
+          defaultValue={user.location}
           onChange={this.handleChange}
           required
         />
-        <label>Email</label>
-        <input type="text" name="email" onChange={this.handleChange} required />
+        {/* <label>Email</label>
+        <input type="text" name="email" onChange={this.handleChange} required /> */}
         <input type="submit" value="Save changes" />
       </form>
     );

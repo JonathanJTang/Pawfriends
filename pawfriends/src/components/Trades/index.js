@@ -43,7 +43,9 @@ class Trades extends React.Component {
   };
 
   handleChange = (e) => {
-    this.state.newTrade[e.target.name] = e.target.value;
+    this.setState((prevState) => ({
+      newTrade: { ...prevState.newTrade, [e.target.name]: e.target.value },
+    }));
   };
 
   stateUpdate = (updatedTrades) => {

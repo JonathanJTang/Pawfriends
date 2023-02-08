@@ -5,14 +5,12 @@ class Service extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      toggle: false,
+      toggleShowContactInfo: false,
     };
   }
 
   handleClick = () => {
-    this.state.toggle
-      ? this.setState({ toggle: false })
-      : this.setState({ toggle: true });
+    this.setState((prevState) => ({ toggleShowContactInfo: !prevState.toggleShowContactInfo }));
   };
 
   handleSelectTag = (e, tag) => {
@@ -48,7 +46,7 @@ class Service extends React.Component {
             </p>
           </div>
         </div>
-        {this.state.toggle ? (
+        {this.state.toggleShowContactInfo ? (
           <div className="tradeinfo">
             <div>
               <strong>Email:</strong>

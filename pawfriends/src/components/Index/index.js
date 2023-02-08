@@ -7,44 +7,26 @@ import { loginUser } from "../../actions/apiRequests";
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { input: { name: "", pass: "" }, error: false };
+    this.state = { username: "", password: "", error: false };
   }
 
   handleChange = (e) => {
-    this.state.input[e.target.name] = e.target.value;
-    this.setState({ input: this.state.input });
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   handleLogin = async (e) => {
     e.preventDefault();
-    let user = await loginUser({
-      username: this.state.input["name"],
-      password: this.state.input["pass"],
+    const user = await loginUser({
+      username: this.state.username,
+      password: this.state.password,
     });
     if (user !== undefined) {
-      alert("succesful login");
+      alert("You've successfully logged in!");
       window.location.reload();
     } else {
-      alert("bad login");
+      alert("Bad login: No such username and password combination");
     }
   };
-
-  // validate = () => {
-  //   const user = this.props.appState.users.find(
-  //     (user) => user.username === this.state.input["name"]
-  //   );
-  //   if (user !== undefined && this.state.input["pass"] === user.password) {
-  //     // Username and password matches one of the registered users
-  //     this.props.appState.curUserId = user.id;
-  //     if (user.type === "user") {
-  //       return 1;
-  //     }
-  //     if (user.type === "admin") {
-  //       return 2;
-  //     }
-  //   }
-  //   this.setState({ error: true }); // Otherwise, an error occurred
-  // };
 
   render() {
     return (
@@ -53,14 +35,14 @@ class Index extends React.Component {
           <h1>Welcome back!</h1>
           <input
             type="text"
-            name="name"
+            name="username"
             placeholder="Username"
             onChange={this.handleChange}
             className={this.state.error ? "login-error" : ""}
           />
           <input
             type="password"
-            name="pass"
+            name="password"
             placeholder="Password"
             onChange={this.handleChange}
             className={this.state.error ? "login-error" : ""}

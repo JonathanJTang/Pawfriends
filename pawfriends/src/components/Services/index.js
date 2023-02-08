@@ -18,7 +18,7 @@ class Services extends React.Component {
       toggle: false,
       filter: "all",
       filterkey: "",
-      newTrade: {
+      newService: {
         description: "",
         email: "n/a",
         phone: "n/a",
@@ -41,7 +41,9 @@ class Services extends React.Component {
   };
 
   handleChange = (e) => {
-    this.state.newTrade[e.target.name] = e.target.value;
+    this.setState((prevState) => ({
+      newService: { ...prevState.newService, [e.target.name]: e.target.value },
+    }));
   };
 
   setFilter = (e) => {
@@ -60,10 +62,10 @@ class Services extends React.Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const service = await createService({
-      description: this.state.newTrade.description,
-      email: this.state.newTrade.email,
-      phone: this.state.newTrade.phone,
-      tags: this.state.newTrade.tags.split(",").map((tag) => tag.trim()),
+      description: this.state.newService.description,
+      email: this.state.newService.email,
+      phone: this.state.newService.phone,
+      tags: this.state.newService.tags.split(",").map((tag) => tag.trim()),
     });
     if (service !== undefined) {
       // Server call succeeded

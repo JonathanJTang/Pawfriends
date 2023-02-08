@@ -29,7 +29,9 @@ class Pets extends React.Component {
   };
 
   handleChange = (e) => {
-    this.state.newPet[e.target.name] = e.target.value;
+    this.state.setState((prevState) => ({
+      newPet: { ...prevState.newPet, [e.target.name]: e.target.value },
+    }));
   };
 
   handleSubmit = async (e) => {
