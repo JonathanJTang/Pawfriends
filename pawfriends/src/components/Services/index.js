@@ -144,7 +144,12 @@ class Services extends React.Component {
               />
             </form>
           ) : (
-            <button onClick={this.handleClick}>Add a service</button>
+            <button
+              className="pawfriends-styled-button"
+              onClick={this.handleClick}
+            >
+              Add a service
+            </button>
           )}
         </div>
         <div className="postsList">

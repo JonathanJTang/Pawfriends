@@ -84,10 +84,19 @@ class Profile extends React.Component {
     let friendButton = null;
     if (!isOwnProfile) {
       if (!this.state.isFriend) {
-        friendButton = <button onClick={this.handleAdd}>Add Friend</button>;
+        friendButton = (
+          <button className="pawfriends-styled-button" onClick={this.handleAdd}>
+            Add Friend
+          </button>
+        );
       } else {
         friendButton = (
-          <button onClick={this.handleRemove}>Remove Friend</button>
+          <button
+            className="pawfriends-styled-button"
+            onClick={this.handleRemove}
+          >
+            Remove Friend
+          </button>
         );
       }
     }
@@ -98,21 +107,30 @@ class Profile extends React.Component {
         <div className="profile-nav">
           <button
             name="info"
-            className={this.state.show === "info" ? "active" : ""}
+            className={
+              "pawfriends-styled-button " +
+              (this.state.show === "info" ? "active" : "")
+            }
             onClick={this.show}
           >
             Info
           </button>
           <button
             name="pets"
-            className={this.state.show === "pets" ? "active" : ""}
+            className={
+              "pawfriends-styled-button " +
+              (this.state.show === "pets" ? "active" : "")
+            }
             onClick={this.show}
           >
             Pets
           </button>
           <button
             name="friends"
-            className={this.state.show === "friends" ? "active" : ""}
+            className={
+              "pawfriends-styled-button " +
+              (this.state.show === "friends" ? "active" : "")
+            }
             onClick={this.show}
           >
             Friends

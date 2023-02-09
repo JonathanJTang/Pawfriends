@@ -3,7 +3,6 @@
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
-  /* grid-auto-columns: 1fr; */
   gap: 10px;
   padding: 20px;
 }
@@ -23,7 +22,8 @@
 }
 
 .post-header-grey,
-.deletepost,
+.tradeinfo p,
+.delete-post,
 .tradebar p {
   opacity: 0.6;
 }
@@ -88,4 +88,15 @@
   height: 80px;
   border: 1px solid #eeeeee;
   border-radius: 5em;
+}
+
+.delete-post {
+  display: block;
+  text-align: right;
+  cursor: pointer;
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }

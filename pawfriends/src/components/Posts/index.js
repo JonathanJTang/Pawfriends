@@ -130,7 +130,12 @@ class Posts extends React.Component {
               />
             ) : (
               <div>
-                <button onClick={this.newPostHandler}>Create post</button>
+                <button
+                  className="pawfriends-styled-button"
+                  onClick={this.newPostHandler}
+                >
+                  Create post
+                </button>
               </div>
             )}
           </div>
@@ -141,7 +146,6 @@ class Posts extends React.Component {
             <Post
               key={post._id}
               postData={post}
-              user={post.owner}
               postsArrayIndex={index}
               removePost={this.removePostHandler}
               parentStateUpdate={this.postsStateUpdate}

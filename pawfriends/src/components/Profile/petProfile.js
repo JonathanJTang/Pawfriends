@@ -89,7 +89,7 @@ class PetProfile extends React.Component {
           />
         </div>
         <button
-          className="deletepet"
+          className="pawfriends-styled-button deletepet"
           onClick={this.handleClick}
           disabled={!isOwnProfile}
         />

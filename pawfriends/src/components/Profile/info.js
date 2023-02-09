@@ -64,7 +64,10 @@ class Info extends React.Component {
               </div>
             )}
 
-            <button onClick={this.handleFlip} className="flip">
+            <button
+              className="pawfriends-styled-button flip"
+              onClick={this.handleFlip}
+            >
               Flip
             </button>
           </div>

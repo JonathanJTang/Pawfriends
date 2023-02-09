@@ -31,8 +31,8 @@ class Post extends React.Component {
 
   handleClick = () => {
     this.state.showDeletePopup
-      ? this.setState({ toggle: false })
-      : this.setState({ toggle: true });
+      ? this.setState({ showDeletePopup: false })
+      : this.setState({ showDeletePopup: true });
   };
 
   stateUpdate = (updatedPostData) => {
@@ -49,7 +49,8 @@ class Post extends React.Component {
 
   render() {
     // console.log(this.props);
-    const { user, postData } = this.props;
+    const { postData } = this.props;
+    const postOwner = postData.owner;
 
     const datetimeElements = new Date(postData.postTime)
       .toString()
@@ -71,27 +72,32 @@ class Post extends React.Component {
           <Popup confirm={this.removePost} cancel={this.handleClick} />
         )}
         <div className="post-header">
-          <Link to={"/profile/" + user.username}>
+          <Link to={"/profile/" + postOwner.username}>
             <img
               className="avatar-img"
-              src={user.avatar.imageUrl}
+              src={postOwner.avatar.imageUrl}
               alt="profile avatar"
             />
           </Link>
           <div className="post-header-info">
-            <Link to={"/profile/" + user.username}>
-              <p className="post-header-grey">@{user.actualName}</p>
+            <Link to={"/profile/" + postOwner.username}>
+              <p className="post-header-grey">@{postOwner.actualName}</p>
             </Link>
             <h3>{postData.title}</h3>
             <p className="post-header-grey">Posted {datetimeStr}</p>
           </div>
+          {postData.curUserIsOwner && (
+            <span
+              className="delete-post post-header-grey"
+              onClick={this.handleClick}
+            >
+              Delete post
+            </span>
+          )}
           <LikeButton
             postData={postData}
             parentStateUpdater={this.stateUpdate}
           />
-          <Link className="deletepost" onClick={this.handleClick}>
-            Delete post
-          </Link>
         </div>
         {image}
         <div>

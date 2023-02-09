@@ -44,7 +44,7 @@ class Home extends React.Component {
 
     if (this.state.posts) {
       allPosts = this.state.posts.map((post, index) => (
-        <Post key={post._id} postData={post} user={post.owner} />
+        <Post key={post._id} postData={post} />
       ));
     }
 
@@ -66,7 +66,6 @@ class Home extends React.Component {
           key={trade._id}
           trade={trade}
           trades={this.state.trades}
-          user={trade.owner}
           stateUpdate={this.stateUpdate}
         />
       ));

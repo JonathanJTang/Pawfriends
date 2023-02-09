@@ -34,6 +34,10 @@ a {
   color: black;
 }
 
+select {
+  text-align-last: center;
+}
+
 input,
 select {
   border: 1px solid #f3f2f2;
@@ -69,12 +73,12 @@ textarea {
   transition: 0.2s ease;
 }
 
-select {
-  text-align-last: center;
+textarea:disabled {
+  background-color: transparent !important;
 }
 
-button {
-  padding: 10px 20px 10px 25px;
+.pawfriends-styled-button {
+  padding: 10px 20px 10px 20px;
   width: 120px;
   outline: none;
   border: none;
@@ -88,7 +92,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.pawfriends-styled-button:hover {
   background-color: #c1bde5;
 }
 
@@ -99,8 +103,4 @@ ul {
 
 ul li {
   list-style: none;
-}
-
-textarea:disabled {
-  background-color: transparent !important;
 }

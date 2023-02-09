@@ -54,7 +54,12 @@ class Pets extends React.Component {
         {Object.entries(user).length !== 0 && (
           <div className="profile-pet">
             {isOwnProfile && (
-              <button onClick={this.handleClick}>Add pet</button>
+              <button
+                className="pawfriends-styled-button"
+                onClick={this.handleClick}
+              >
+                Add pet
+              </button>
             )}
             {this.state.addPet && (
               <form onSubmit={this.handleSubmit}>

@@ -115,7 +115,12 @@ class Trades extends React.Component {
               />
             </form>
           ) : (
-            <button onClick={this.handleToggle}>Create trade</button>
+            <button
+              className="pawfriends-styled-button"
+              onClick={this.handleToggle}
+            >
+              Create trade
+            </button>
           )}
           <ul>
             <Link
@@ -151,8 +156,6 @@ class Trades extends React.Component {
               key={trade._id}
               trade={trade}
               trades={this.state.trades}
-              user={trade.owner}
-              currentUser={this.props.currentUser}
               stateUpdate={this.stateUpdate}
             />
           ))}

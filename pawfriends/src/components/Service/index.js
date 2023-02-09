@@ -12,7 +12,9 @@ class Service extends React.Component {
   }
 
   handleClick = () => {
-    this.setState((prevState) => ({ toggleShowContactInfo: !prevState.toggleShowContactInfo }));
+    this.setState((prevState) => ({
+      toggleShowContactInfo: !prevState.toggleShowContactInfo,
+    }));
   };
 
   handleSelectTag = (e, tag) => {
@@ -58,13 +60,23 @@ class Service extends React.Component {
               <p>{service.email}</p>
               <p>{service.phone}</p>
             </div>
-            <button onClick={this.handleClick}>Close</button>
+            <button
+              className="pawfriends-styled-button"
+              onClick={this.handleClick}
+            >
+              Close
+            </button>
           </div>
         ) : (
           <div>
-            <button onClick={this.handleClick}>Contact user</button>
+            <button
+              className="pawfriends-styled-button"
+              onClick={this.handleClick}
+            >
+              Contact user
+            </button>
             {/* <view style={{ flex: 1, marginLeft: "20px" }}>
-                <button onClick={this.handleClick}>Delete post</button>
+                <button className="pawfriends-styled-button" onClick={this.handleClick}>Delete post</button>
               </view> */}
           </div>
         )}

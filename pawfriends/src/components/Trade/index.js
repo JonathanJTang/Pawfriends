@@ -45,7 +45,8 @@ class Trade extends React.Component {
   };
 
   render() {
-    const { user, currentUser, trade } = this.props;
+    const { trade } = this.props;
+    const tradeOwner = trade.owner;
 
     // Only display image if the post has one
     let image = null;
@@ -65,19 +66,27 @@ class Trade extends React.Component {
         </div>
         {image}
         <div className="post-header">
-          <Link to={`/profile/${trade.owner.username}`}>
+          <Link to={`/profile/${tradeOwner.username}`}>
             <img
               className="avatar-img"
-              src={trade.owner.avatar.imageUrl}
+              src={tradeOwner.avatar.imageUrl}
               alt="profile avatar"
             />
           </Link>
           <div className="post-header-info">
-            <Link to={`/profile/${trade.owner.username}`}>
-              <p className="post-header-grey">@{trade.owner.actualName}</p>
+            <Link to={`/profile/${tradeOwner.username}`}>
+              <p className="post-header-grey">@{tradeOwner.actualName}</p>
             </Link>
             {trade.title}
           </div>
+          {trade.curUserIsOwner && (
+            <span
+              className="delete-post post-header-grey"
+              onClick={this.handleClick}
+            >
+              Delete trade entry
+            </span>
+          )}
         </div>
         {this.state.contactToggle ? (
           <div className="tradeinfo">
@@ -85,17 +94,22 @@ class Trade extends React.Component {
               <strong>Email:</strong>
             </div>
             <div>
-              <p>{trade.owner.username}@email.com</p>
+              <p>{tradeOwner.username}@email.com</p>
             </div>
-            <button onClick={this.handleContactToggle}>Close</button>
+            <button
+              className="pawfriends-styled-button"
+              onClick={this.handleContactToggle}
+            >
+              Close
+            </button>
           </div>
         ) : (
-          <button onClick={this.handleContactToggle}>Contact user</button>
-        )}
-        {user.username === currentUser && (
-          <Link className="deletepost" onClick={this.handleClick}>
-            Delete post
-          </Link>
+          <button
+            className="pawfriends-styled-button"
+            onClick={this.handleContactToggle}
+          >
+            Contact user
+          </button>
         )}
       </div>
     );
