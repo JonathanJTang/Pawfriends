@@ -53,7 +53,6 @@ class Home extends React.Component {
         <Service
           key={service._id}
           service={service}
-          user={service.owner}
           serviceArrayIndex={index}
           setFilterTag={this.setFilterTag}
         />

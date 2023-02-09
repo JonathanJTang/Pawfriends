@@ -154,14 +154,14 @@ class Services extends React.Component {
         </div>
         <div className="postsList">
           <div className="filter">
-            <select onChange={this.setFilter}>
-              <option value="all" selected={this.state.filter === "all"}>
+            <select value={this.state.filter} onChange={this.setFilter}>
+              <option value="all">
                 All
               </option>
-              <option value="user" selected={this.state.filter === "user"}>
+              <option value="user">
                 UserID
               </option>
-              <option value="tag" selected={this.state.filter === "tag"}>
+              <option value="tag">
                 Tag
               </option>
             </select>
@@ -175,9 +175,8 @@ class Services extends React.Component {
           {this.state.servicesList &&
             filtered.map((service, index) => (
               <Service
-                key={index}
+                key={service._id}
                 service={service}
-                user={service.owner}
                 serviceArrayIndex={index}
                 setFilterTag={this.setFilterTag}
               />

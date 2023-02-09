@@ -1,7 +1,10 @@
-.post-tag a {
+.post-tag span {
   color: #7965cf;
+  cursor: pointer;
+  height: fit-content;
+  width: fit-content;
 }
 
-.post-tag a:hover {
+.post-tag span:hover {
   color: #403181;
 }

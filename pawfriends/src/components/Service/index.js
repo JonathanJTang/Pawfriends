@@ -23,29 +23,30 @@ class Service extends React.Component {
   };
 
   render() {
-    const { service, user } = this.props;
+    const { service } = this.props;
+    const servicePostOwner = service.owner;
 
     return (
       <div className="trade">
         <div className="post-header">
-          <Link to={`/profile/${user.username}`}>
+          <Link to={`/profile/${servicePostOwner.username}`}>
             <img
               className="avatar-img"
-              src={user.avatar.imageUrl}
+              src={servicePostOwner.avatar.imageUrl}
               alt="profile avatar"
             />
           </Link>
 
           <div className="post-header-info">
-            <Link to={`/profile/${user.username}`}>
-              <p className="post-header-grey">@{user.actualName}</p>
+            <Link to={`/profile/${servicePostOwner.username}`}>
+              <p className="post-header-grey">@{servicePostOwner.actualName}</p>
             </Link>
             {service.description}
             <p className="post-tag">
-              {service.tags.map((tag) => (
-                <Link
-                  onClick={(e) => this.handleSelectTag(e, tag)}
-                >{`#${tag} `}</Link>
+              {service.tags.map((tag, index) => (
+                <span key={index} onClick={(e) => this.handleSelectTag(e, tag)}>
+                  {`#${tag} `}
+                </span>
               ))}
             </p>
           </div>
