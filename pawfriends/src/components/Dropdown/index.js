@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { logoutUser, getUserByUsername } from "../../actions/apiRequests";
 
 class Dropdown extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = { show: false, user: {} };
     this.ref1 = React.createRef();
     this.ref2 = React.createRef();
@@ -43,9 +43,7 @@ class Dropdown extends React.Component {
 
   handleLogout = () => {
     logoutUser();
-    this.props.app.setState({
-      currentUser: null,
-    });
+    this.props.parentStateUpdater({ currentUser: null });
     alert("You have successfully logged out.");
   };
 
@@ -55,9 +53,9 @@ class Dropdown extends React.Component {
 
   render() {
     const { user } = this.state;
-    const imageUrl = user && user.profilePicture
-      ? user.profilePicture.imageUrl
-      : undefined;
+    const imageUrl =
+      user && user.profilePicture ? user.profilePicture.imageUrl : undefined;
+
     return (
       <div>
         <img

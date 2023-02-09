@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom";
 import { checkSession } from "./actions/authenticationAndSessionCheck";
 
 import Registration from "./components/Registration";
@@ -24,9 +24,13 @@ class App extends React.Component {
     this.state = { currentUser: null };
   }
 
+  stateUpdater = (stateUpdateObj) => {
+    this.setState(stateUpdateObj);
+  };
+
   componentDidMount = () => {
-    document.title = "Pawfriends";  // Browser title bar text
-    checkSession(this);
+    document.title = "Pawfriends"; // Browser title bar text
+    checkSession(this.stateUpdater);
     console.log("Checked session");
   };
 
@@ -36,7 +40,10 @@ class App extends React.Component {
       <div className="App">
         <BrowserRouter>
           {currentUser ? (
-            <NavBar app={this} currentUser={currentUser} />
+            <NavBar
+              parentStateUpdater={this.stateUpdater}
+              currentUser={currentUser}
+            />
           ) : (
             <NavBarGuest />
           )}
@@ -94,6 +101,8 @@ class App extends React.Component {
                 </div>
               )}
             />
+            {/* Redirect any links not recognized to the home/login page
+            <Redirect from="*" to="/" /> */}
           </Switch>
         </BrowserRouter>
       </div>

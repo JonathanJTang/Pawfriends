@@ -80,14 +80,14 @@ class ProfileSettings extends React.Component {
           required
         />
         <label>Gender</label>
-        <select name="gender" onChange={this.handleChange}>
-          <option value="Male" selected={user.gender === "Male"}>
+        <select name="gender" value={user.gender} onChange={this.handleChange}>
+          <option value="Male">
             Male
           </option>
-          <option value="Female" selected={user.gender === "Female"}>
+          <option value="Female">
             Female
           </option>
-          <option value="Secret" selected={user.gender === "Secret"}>
+          <option value="Secret">
             Secret
           </option>
         </select>

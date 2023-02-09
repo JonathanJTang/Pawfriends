@@ -23,7 +23,10 @@ class NavBar extends React.Component {
             <li>Services</li>
           </NavLink>
         </ul>
-        <Dropdown app={this.props.app} currentUser={this.props.currentUser} />
+        <Dropdown
+          parentStateUpdater={this.props.parentStateUpdater}
+          currentUser={this.props.currentUser}
+        />
       </div>
     );
   }

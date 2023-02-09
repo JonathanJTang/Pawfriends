@@ -2,7 +2,6 @@ import React from "react";
 import "./styles.css";
 
 // import { uid } from "react-uid";
-import NavBar from "../NavBar";
 import Post from "../Post";
 
 import { getAllUsersPosts, createPost } from "../../actions/apiRequests";
@@ -117,28 +116,25 @@ class Posts extends React.Component {
   render() {
     return (
       <div className="posts">
-        <div>
-          <NavBar />
-          <div className="trade-header">
-            <h2>Share cute moments with your pet!</h2>
-            <h4>Create, like, or comment on a post!</h4>
+        <div className="trade-header">
+          <h2>Share cute moments with your pet!</h2>
+          <h4>Create, like, or comment on a post!</h4>
 
-            {this.state.showCreatePostBox ? (
-              <CreatePost
-                postsList={this.state.posts}
-                parentStateUpdater={this.createPostHandler}
-              />
-            ) : (
-              <div>
-                <button
-                  className="pawfriends-styled-button"
-                  onClick={this.newPostHandler}
-                >
-                  Create post
-                </button>
-              </div>
-            )}
-          </div>
+          {this.state.showCreatePostBox ? (
+            <CreatePost
+              postsList={this.state.posts}
+              parentStateUpdater={this.createPostHandler}
+            />
+          ) : (
+            <div>
+              <button
+                className="pawfriends-styled-button"
+                onClick={this.newPostHandler}
+              >
+                Create post
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="postsList">

@@ -1,6 +1,7 @@
 const baseUrl =
   process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
-export const checkSession = (app) => {
+
+export const checkSession = (stateUpdater) => {
   const url = baseUrl + "/users/check-session";
   fetch(url)
     .then((res) => {
@@ -10,7 +11,7 @@ export const checkSession = (app) => {
     })
     .then((json) => {
       if (json && json.currentUser) {
-        app.setState({ currentUser: json.currentUser });
+        stateUpdater({ currentUser: json.currentUser });
       }
     })
     .catch((error) => {
@@ -18,4 +19,4 @@ export const checkSession = (app) => {
     });
 };
 
-//todo: auth
+// TODO: move login and logout auth methods here?
