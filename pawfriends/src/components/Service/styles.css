@@ -1,0 +1,7 @@
+.post-tag a {
+  color: #7965cf;
+}
+
+.post-tag a:hover {
+  color: #403181;
+}

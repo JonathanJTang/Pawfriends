@@ -1,4 +1,6 @@
 import React from "react";
+import "./styles.css";
+
 import { Link } from "react-router-dom";
 
 class Service extends React.Component {
@@ -23,7 +25,7 @@ class Service extends React.Component {
 
     return (
       <div className="trade">
-        <div className="header">
+        <div className="post-header">
           <Link to={`/profile/${user.username}`}>
             <img
               className="avatar-img"
@@ -32,12 +34,12 @@ class Service extends React.Component {
             />
           </Link>
 
-          <div className="postText">
+          <div className="post-header-info">
             <Link to={`/profile/${user.username}`}>
-              <p>@{user.actualName}</p>
+              <p className="post-header-grey">@{user.actualName}</p>
             </Link>
             {service.description}
-            <p>
+            <p className="post-tag">
               {service.tags.map((tag) => (
                 <Link
                   onClick={(e) => this.handleSelectTag(e, tag)}
@@ -60,14 +62,10 @@ class Service extends React.Component {
           </div>
         ) : (
           <div>
-            <view>
-              <view style={{ flex: 1 }}>
-                <button onClick={this.handleClick}>Contact user</button>
-              </view>
-              {/* {<view style={{ flex: 1, marginLeft: "20px" }}>
+            <button onClick={this.handleClick}>Contact user</button>
+            {/* <view style={{ flex: 1, marginLeft: "20px" }}>
                 <button onClick={this.handleClick}>Delete post</button>
-              </view>} */}
-            </view>
+              </view> */}
           </div>
         )}
       </div>

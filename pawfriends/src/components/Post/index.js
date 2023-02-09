@@ -70,7 +70,7 @@ class Post extends React.Component {
         {this.state.showDeletePopup && (
           <Popup confirm={this.removePost} cancel={this.handleClick} />
         )}
-        <div className="header">
+        <div className="post-header">
           <Link to={"/profile/" + user.username}>
             <img
               className="avatar-img"
@@ -78,12 +78,12 @@ class Post extends React.Component {
               alt="profile avatar"
             />
           </Link>
-          <div className="header-info">
+          <div className="post-header-info">
             <Link to={"/profile/" + user.username}>
-              <p>@{user.actualName}</p>
+              <p className="post-header-grey">@{user.actualName}</p>
             </Link>
             <h3>{postData.title}</h3>
-            <p>Posted {datetimeStr}</p>
+            <p className="post-header-grey">Posted {datetimeStr}</p>
           </div>
           <LikeButton
             postData={postData}

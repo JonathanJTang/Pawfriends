@@ -14,14 +14,6 @@
   margin: 0;
 }
 
-.postText p a {
-  color: #a49acf;
-}
-
-.postText p a:hover {
-  color: black;
-}
-
 .filter {
   display: flex;
   gap: 20px;

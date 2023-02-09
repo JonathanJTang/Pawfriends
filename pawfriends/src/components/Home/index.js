@@ -44,9 +44,7 @@ class Home extends React.Component {
 
     if (this.state.posts) {
       allPosts = this.state.posts.map((post, index) => (
-        <Link to="/posts/">
-          <Post key={post._id} postData={post} user={post.owner} />
-        </Link>
+        <Post key={post._id} postData={post} user={post.owner} />
       ));
     }
 

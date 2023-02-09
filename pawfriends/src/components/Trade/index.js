@@ -64,13 +64,17 @@ class Trade extends React.Component {
           </div>
         </div>
         {image}
-        <div className="header">
+        <div className="post-header">
           <Link to={`/profile/${trade.owner.username}`}>
-            <img src={trade.owner.avatar.imageUrl} alt="profile avatar" />
+            <img
+              className="avatar-img"
+              src={trade.owner.avatar.imageUrl}
+              alt="profile avatar"
+            />
           </Link>
-          <div className="postText">
+          <div className="post-header-info">
             <Link to={`/profile/${trade.owner.username}`}>
-              <p>@{trade.owner.actualName}</p>
+              <p className="post-header-grey">@{trade.owner.actualName}</p>
             </Link>
             {trade.title}
           </div>
