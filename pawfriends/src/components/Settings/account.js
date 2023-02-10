@@ -5,7 +5,7 @@ class AccountSettings extends React.Component {
   constructor(props) {
     super(props);
     // Currently changing one's username is not supported
-    this.state = { username: this.props.currentUser };
+    this.state = { username: this.props.currentUsername };
   }
 
   handleSubmit = async (e) => {
@@ -23,7 +23,7 @@ class AccountSettings extends React.Component {
     try {
       await changePassword(
         { oldPassword: formData.get("oldPassword"), newPassword: newPassword },
-        this.props.currentUser
+        this.props.currentUsername
       );
     } catch (error) {
       error.res

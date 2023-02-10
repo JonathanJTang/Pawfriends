@@ -22,7 +22,7 @@ class App extends React.Component {
   // Global state passed to all components of the app
   constructor(props) {
     super(props);
-    this.state = { currentUser: null };
+    this.state = { currentUsername: null };
   }
 
   stateUpdater = (stateUpdateObj) => {
@@ -41,16 +41,16 @@ class App extends React.Component {
   };
 
   render() {
-    const { currentUser } = this.state;
+    const { currentUsername, isAdmin } = this.state;
     return (
       <div className="App">
-        {currentUser ? (
-          currentUser.admin ? (
+        {currentUsername ? (
+          isAdmin ? (
             <NavBarAdmin />
           ) : (
             <NavBar
               parentStateUpdater={this.stateUpdater}
-              currentUser={currentUser}
+              currentUsername={currentUsername}
             />
           )
         ) : (
@@ -66,7 +66,7 @@ class App extends React.Component {
           <Route
             exact
             path="/trades"
-            render={(props) => <Trades {...props} currentUser={currentUser} />}
+            render={(props) => <Trades {...props} currentUsername={currentUsername} />}
           />
           <Route
             exact
@@ -76,12 +76,12 @@ class App extends React.Component {
           <Route
             exact
             path="/settings"
-            render={() => <Settings currentUser={currentUser} />}
+            render={() => <Settings currentUsername={currentUsername} />}
           />
           <Route
             exact
             path="/profile/:username"
-            render={(props) => <Profile {...props} currentUser={currentUser} />}
+            render={(props) => <Profile {...props} currentUsername={currentUsername} />}
           />
           <Route
             exact
@@ -94,7 +94,7 @@ class App extends React.Component {
             render={(props) => (
               <div className="app">
                 {/* Different components rendered depending on if someone is logged in. */}
-                {!currentUser ? (
+                {!currentUsername ? (
                   <Login />
                 ) : (
                   <Home {...props} app={this} appState={this.state} />

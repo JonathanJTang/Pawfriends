@@ -16,11 +16,12 @@ class Login extends React.Component {
 
   handleLogin = async (e) => {
     e.preventDefault();
-    const user = await loginUser({
+    const partialUserObj = await loginUser({
       username: this.state.username,
       password: this.state.password,
     });
-    if (user !== undefined) {
+    // partialUserObj only has fields currentUsername, isAdmin
+    if (partialUserObj !== undefined) {
       alert("You've successfully logged in!");
       window.location.reload();
     } else {

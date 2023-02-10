@@ -25,7 +25,7 @@ class NavBar extends React.Component {
         </ul>
         <Dropdown
           parentStateUpdater={this.props.parentStateUpdater}
-          currentUser={this.props.currentUser}
+          currentUsername={this.props.currentUsername}
         />
       </div>
     );

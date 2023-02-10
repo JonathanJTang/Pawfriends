@@ -26,7 +26,7 @@ class PetProfile extends React.Component {
       // this.props.parentStateUpdater(this.props.pet);
       await editPet(
         this.props.pet,
-        this.props.user.username,
+        this.props.username,
         this.props.pet._id
       );
       this.setState({ infoUpdated: false });
@@ -35,7 +35,7 @@ class PetProfile extends React.Component {
 
   remove = async () => {
     const response = await removePet(
-      this.props.user.username,
+      this.props.username,
       this.props.pet._id
     );
     if (response !== undefined) {

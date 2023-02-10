@@ -47,7 +47,7 @@ class Trades extends React.Component {
   };
 
   filterUser = (trade) => {
-    return trade.owner.username === this.props.currentUser;
+    return trade.owner.username === this.props.currentUsername;
   };
 
   handleFilterClick = (e) => {

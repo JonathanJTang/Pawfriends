@@ -63,7 +63,7 @@ class Services extends React.Component {
     let filtered = this.state.servicesList;
 
     // Filter if applicable
-    const filters = { user: this.filterUser, tag: this.filterTag };
+    const filters = { username: this.filterUser, tag: this.filterTag };
     if (this.state.filter !== "all" && this.state.filterkey !== "") {
       filtered = this.state.servicesList.filter(filters[this.state.filter]);
     }
@@ -93,7 +93,7 @@ class Services extends React.Component {
           <div className="filter">
             <select value={this.state.filter} onChange={this.setFilter}>
               <option value="all">All</option>
-              <option value="user">Username</option>
+              <option value="username">Username</option>
               <option value="tag">Tag</option>
             </select>
             {this.state.filter !== "all" && (

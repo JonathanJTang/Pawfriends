@@ -100,7 +100,8 @@ router.post("/users/login", mongoChecker, async (req, res) => {
       // We can check later if the session exists to ensure we are logged in.
       req.session.userId = user._id;
       req.session.username = user.username;
-      res.send({ currentUser: user.username });
+      req.session.isAdmin = user.admin;
+      res.send({ currentUsername: user.username, isAdmin: user.admin });
     }
   } catch (error) {
     if (error instanceof Error && error.message === "Password did not match") {
@@ -126,7 +127,10 @@ router.get("/users/logout", (req, res) => {
 // A route to check if a user is logged in on the session
 router.get("/users/check-session", (req, res) => {
   if (req.session.userId) {
-    res.send({ currentUser: req.session.username });
+    res.send({
+      currentUsername: req.session.username,
+      isAdmin: req.session.isAdmin,
+    });
   } else {
     res.status(401).send("Unauthorized");
   }

@@ -18,7 +18,7 @@ class Settings extends React.Component {
   };
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUsername } = this.props;
 
     return (
       <div className="set">
@@ -37,9 +37,9 @@ class Settings extends React.Component {
           </li>
         </ul>
         {this.state.toggle ? (
-          <ProfileSettings currentUser={currentUser} />
+          <ProfileSettings currentUsername={currentUsername} />
         ) : (
-          <AccountSettings currentUser={currentUser} />
+          <AccountSettings currentUsername={currentUsername} />
         )}
       </div>
     );

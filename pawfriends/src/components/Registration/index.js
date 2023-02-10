@@ -2,7 +2,6 @@ import React from "react";
 import "./styles.css";
 import "../Login/styles.css";
 import { Link } from "react-router-dom";
-import NavBarGuest from "../NavBarGuest";
 import { createUser, loginUser } from "../../actions/apiRequests";
 
 /* Registration component */
@@ -11,7 +10,7 @@ class Registration extends React.Component {
     super(props);
 
     this.state = {
-      user: {
+      userInfo: {
         username: "",
         password: "",
         actualName: "",
@@ -25,28 +24,29 @@ class Registration extends React.Component {
   handleChange = (e) => {
     const { name, value } = e.target;
     this.setState((prevState) => ({
-      user: { ...prevState.user, [name]: value },
+      userInfo: { ...prevState.userInfo, [name]: value },
     }));
   };
 
   handleRegistration = async (e) => {
     e.preventDefault();
 
-    let user = await createUser({
-      username: this.state.user.username,
-      password: this.state.user.password,
-      actualName: this.state.user.actualName,
-      birthday: this.state.user.birthday,
-      gender: this.state.user.gender,
+    const userObj = await createUser({
+      username: this.state.userInfo.username,
+      password: this.state.userInfo.password,
+      actualName: this.state.userInfo.actualName,
+      birthday: this.state.userInfo.birthday,
+      gender: this.state.userInfo.gender,
     });
-    if (user !== undefined) {
-      alert(`Successfully registered user ${this.state.user.username}`);
+    if (userObj !== undefined) {
+      alert(`Successfully registered user ${userObj.username}`);
       // Log in the user and redirect to the home page
-      user = await loginUser({
-        username: this.state.user.username,
-        password: this.state.user.password,
+      // partialUserObj only has fields currentUsername, isAdmin
+      const partialUserObj = await loginUser({
+        username: userObj.username,
+        password: this.state.userInfo.password
       });
-      if (user !== undefined) {
+      if (partialUserObj !== undefined) {
         this.props.history.push("/");
       }
     }

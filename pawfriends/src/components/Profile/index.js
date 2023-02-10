@@ -16,8 +16,8 @@ class Profile extends React.Component {
     super(props);
     this.state = {
       show: "info",
-      user: {},
-      currentUser: {},
+      userObj: {},
+      currentUserObj: {},
       isCurUserFriend: false,
     };
     // this.props.match.params.username is obtains from the URL
@@ -25,10 +25,12 @@ class Profile extends React.Component {
   }
 
   componentDidMount = async () => {
-    if (this.props.currentUser) {
-      const currentUser = await getUserByUsername(this.props.currentUser);
-      if (currentUser !== undefined) {
-        this.setState({ currentUser: currentUser });
+    if (this.props.currentUsername) {
+      const currentUserObj = await getUserByUsername(
+        this.props.currentUsername
+      );
+      if (currentUserObj !== undefined) {
+        this.setState({ currentUserObj: currentUserObj });
         await this.fetchData();
       }
     }
@@ -44,15 +46,17 @@ class Profile extends React.Component {
   };
 
   fetchData = async () => {
-    if (this.props.match.params.username === this.state.currentUser.username) {
-      this.setState((prevState) => ({ user: prevState.currentUser }));
+    if (
+      this.props.match.params.username === this.state.currentUserObj.username
+    ) {
+      this.setState((prevState) => ({ userObj: prevState.currentUserObj }));
     } else {
-      const user = await getUserByUsername(this.props.match.params.username);
-      if (user !== undefined) {
-        this.setState({ user: user });
+      const userObj = await getUserByUsername(this.props.match.params.username);
+      if (userObj !== undefined) {
+        this.setState({ userObj: userObj });
         if (
-          this.state.currentUser.friends.some(
-            (friendUser) => friendUser._id === user._id
+          this.state.currentUserObj.friends.some(
+            (friendUser) => friendUser._id === userObj._id
           )
         ) {
           this.setState({ isCurUserFriend: true });
@@ -68,8 +72,8 @@ class Profile extends React.Component {
 
   handleAdd = async () => {
     const response = await addFriend(
-      this.state.currentUser.username,
-      this.state.user.username
+      this.state.currentUserObj.username,
+      this.state.userObj.username
     );
     if (response !== undefined) {
       this.setState({ isCurUserFriend: true });
@@ -78,8 +82,8 @@ class Profile extends React.Component {
 
   handleRemove = async () => {
     const response = await removeFriend(
-      this.state.currentUser.username,
-      this.state.user.username
+      this.state.currentUserObj.username,
+      this.state.userObj.username
     );
     if (response !== undefined) {
       this.setState({ isCurUserFriend: false });
@@ -87,8 +91,9 @@ class Profile extends React.Component {
   };
 
   render() {
-    const { user, currentUser } = this.state;
-    const isOwnProfile = currentUser.username === this.state.user.username;
+    const { userObj, currentUserObj } = this.state;
+    const isOwnProfile =
+      currentUserObj.username === this.state.userObj.username;
 
     let friendButton = null;
     if (!isOwnProfile) {
@@ -147,23 +152,21 @@ class Profile extends React.Component {
         </div>
         {this.state.show === "info" && (
           <Info
-            user={user}
+          userObj={userObj}
             isOwnProfile={isOwnProfile}
             statusStateUpdater={(newStatusStr) => {
               this.setState((prevState) => ({
-                user: { ...prevState.user, status: newStatusStr },
+                userObj: { ...prevState.userObj, status: newStatusStr },
               }));
             }}
           />
         )}
         {this.state.show === "pets" && (
-          <Pets user={user} isOwnProfile={isOwnProfile} />
+          <Pets userObj={userObj} isOwnProfile={isOwnProfile} />
         )}
         {this.state.show === "friends" && (
           <Friends
-            user={user}
-            isOwnProfile={isOwnProfile}
-            friends={this.state.user.friends}
+            friends={userObj.friends}
           />
         )}
       </div>

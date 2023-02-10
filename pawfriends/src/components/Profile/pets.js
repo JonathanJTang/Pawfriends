@@ -8,7 +8,7 @@ class Pets extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pets: this.props.user.pets,
+      pets: this.props.userObj.pets,
       addPet: false,
       newPet: {
         name: "",
@@ -36,7 +36,7 @@ class Pets extends React.Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const pet = await addPet(this.state.newPet, this.props.user.username);
+    const pet = await addPet(this.state.newPet, this.props.userObj.username);
     if (pet !== undefined) {
       this.state.pets.push(pet);
       this.setState({
@@ -47,11 +47,11 @@ class Pets extends React.Component {
   };
 
   render() {
-    const { user, isOwnProfile } = this.props;
+    const { userObj, isOwnProfile } = this.props;
 
     return (
       <>
-        {Object.entries(user).length !== 0 && (
+        {Object.entries(userObj).length !== 0 && (
           <div className="profile-pet">
             {isOwnProfile && (
               <button
@@ -88,7 +88,7 @@ class Pets extends React.Component {
             {this.state.pets.map((pet, index) => (
               <PetProfile
                 key={index}
-                user={user}
+                username={userObj.username}
                 pet={pet}
                 petsList={this.state.pets}
                 stateUpdate={this.stateUpdate}

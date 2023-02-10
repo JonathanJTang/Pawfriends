@@ -7,16 +7,16 @@ import { logoutUser, getUserByUsername } from "../../actions/apiRequests";
 class Dropdown extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { show: false, user: {} };
+    this.state = { show: false, userObj: {} };
     this.ref1 = React.createRef();
     this.ref2 = React.createRef();
   }
 
   componentDidMount = async () => {
-    if (this.props.currentUser) {
-      const user = await getUserByUsername(this.props.currentUser);
-      if (user !== undefined) {
-        this.setState({ user: user });
+    if (this.props.currentUsername) {
+      const userObj = await getUserByUsername(this.props.currentUsername);
+      if (userObj !== undefined) {
+        this.setState({ userObj: userObj });
       }
     }
   };
@@ -43,7 +43,7 @@ class Dropdown extends React.Component {
 
   handleLogout = () => {
     logoutUser();
-    this.props.parentStateUpdater({ currentUser: null });
+    this.props.parentStateUpdater({ currentUsername: null });
     alert("You have successfully logged out.");
   };
 
@@ -52,9 +52,11 @@ class Dropdown extends React.Component {
   }
 
   render() {
-    const { user } = this.state;
+    const { userObj } = this.state;
     const imageUrl =
-      user && user.profilePicture ? user.profilePicture.imageUrl : undefined;
+      userObj && userObj.profilePicture
+        ? userObj.profilePicture.imageUrl
+        : undefined;
 
     return (
       <div>
@@ -69,7 +71,7 @@ class Dropdown extends React.Component {
         {this.state.show ? (
           <ul className="dropdown-list" ref={this.ref2}>
             <li onClick={this.toggleShow}>
-              <Link to={`/profile/${user.username}`}>Profile</Link>
+              <Link to={`/profile/${userObj.username}`}>Profile</Link>
             </li>
             <li onClick={this.toggleShow}>
               <Link to="/settings">Settings</Link>

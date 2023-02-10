@@ -12,9 +12,13 @@ export const checkSession = (stateUpdater, history) => {
       }
     })
     .then((json) => {
-      if (json && json.currentUser) {
-        stateUpdater({ currentUser: json.currentUser });
-        console.log(`checkSession() set currentUser to ${json.currentUser}`);
+      if (json && typeof json === "object") {
+        stateUpdater({
+          currentUsername: json.currentUsername,
+          isAdmin: json.isAdmin,
+        });
+        console.log(`checkSession() got json obj below:`);
+        console.log(json);
       }
     })
     .catch((error) => {

@@ -15,15 +15,15 @@ class ProfileSettings extends React.Component {
   }
 
   componentDidMount = async () => {
-    const user = await getUserByUsername(this.props.currentUser);
-    if (user !== undefined) {
+    const userObj = await getUserByUsername(this.props.currentUsername);
+    if (userObj !== undefined) {
       this.setState({
-        actualName: user.actualName,
-        gender: user.gender,
-        birthday: user.birthday,
-        location: user.location,
-        // email: user.email,
-        profilePicture: user.profilePicture,
+        actualName: userObj.actualName,
+        gender: userObj.gender,
+        birthday: userObj.birthday,
+        location: userObj.location,
+        // email: userObj.email,
+        profilePicture: userObj.profilePicture,
       });
     }
   };
@@ -38,7 +38,7 @@ class ProfileSettings extends React.Component {
         location: this.state.location,
         // email: this.state.email,
       },
-      this.props.currentUser
+      this.props.currentUsername
     );
     if (done !== undefined) {
       alert("Settings updated");

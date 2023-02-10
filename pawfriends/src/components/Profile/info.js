@@ -17,7 +17,7 @@ class Info extends React.Component {
 
   handleChange = async (e) => {
     const statusStr = e.target.value;
-    if (this.props.isOwnProfile && statusStr !== this.props.user.status) {
+    if (this.props.isOwnProfile && statusStr !== this.props.userObj.status) {
       this.setState({ statusStrUpdated: true, newStatusStr: statusStr });
       // Actually save changed status to server and parent state on mouseout or
       // blur event
@@ -29,41 +29,41 @@ class Info extends React.Component {
       this.props.statusStateUpdater(this.state.newStatusStr);
       await editStatus(
         { status: this.state.newStatusStr },
-        this.props.user.username
+        this.props.userObj.username
       );
       this.setState({ statusStrUpdated: false });
     }
   };
 
   render() {
-    const { user, isOwnProfile } = this.props;
+    const { userObj, isOwnProfile } = this.props;
     return (
       <>
-        {Object.entries(user).length !== 0 && (
+        {Object.entries(userObj).length !== 0 && (
           <div className="card">
             {/* face of card: profile pic, name, status */}
             {!this.state.flip && (
               <div>
                 <img
-                  src={user.profilePicture.imageUrl}
+                  src={userObj.profilePicture.imageUrl}
                   alt="profile"
                   className="avatar"
                 />
 
                 <img
                   src={
-                    require(`../../images/${user.gender.toLowerCase()}.png`)
+                    require(`../../images/${userObj.gender.toLowerCase()}.png`)
                       .default
                   }
                   alt="gender"
                   className="gender"
                 />
 
-                <h1>{user.actualName}</h1>
+                <h1>{userObj.actualName}</h1>
                 <textarea
                   className="status"
                   maxLength="26"
-                  defaultValue={user.status}
+                  defaultValue={userObj.status}
                   onChange={this.handleChange}
                   onMouseLeave={this.saveStatus}
                   onBlur={this.saveStatus}
@@ -75,9 +75,9 @@ class Info extends React.Component {
             {/* back of card: user's information */}
             {this.state.flip && (
               <div className="cardinfo">
-                <h2>{`About ${user.actualName}`}</h2>
-                <p className="location">{user.location}</p>
-                <p className="birthday">{user.birthday}</p>
+                <h2>{`About ${userObj.actualName}`}</h2>
+                <p className="location">{userObj.location}</p>
+                <p className="birthday">{userObj.birthday}</p>
               </div>
             )}
 
