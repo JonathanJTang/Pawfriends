@@ -123,14 +123,18 @@ const deleteImage = (imageInfo) => {
  */
 const processFilesForEntry = async (filesObj, entry) => {
   // Currently only support one uploaded image in filesObj
-  const fileExt = path.extname(filesObj.image.name).toLowerCase();
-  const isValidFileType =
-    filesObj.image !== undefined &&
-    globals.VALID_IMAGE_FILE_TYPES.includes(fileExt.slice(1));
-  if (isValidFileType) {
-    // There's a valid uploaded image, upload it to the Cloudinary server
-    const imageInfo = await uploadImage(filesObj.image.path);
-    entry.images.push(imageInfo);
+  const hasImage = filesObj.image && filesObj.image.name !== "";
+  let fileExt, isValidFileType;
+  if (hasImage) {
+    fileExt = path.extname(filesObj.image.name).toLowerCase();
+    isValidFileType = globals.VALID_IMAGE_FILE_TYPES.includes(
+      fileExt.slice(1)
+    );
+    if (isValidFileType) {
+      // There's a valid uploaded image, upload it to the Cloudinary server
+      const imageInfo = await uploadImage(filesObj.image.path);
+      entry.images.push(imageInfo);
+    }
   }
   // Delete temporary files in filesObj to not take up space on server
   for (const key in filesObj) {
@@ -140,7 +144,7 @@ const processFilesForEntry = async (filesObj, entry) => {
       }
     });
   }
-  if (!isValidFileType) {
+  if (hasImage && !isValidFileType) {
     throw new TypeError(`${fileExt} is not one of the valid image file \
                         extensions in ${globals.VALID_IMAGE_FILE_TYPES}`);
   }

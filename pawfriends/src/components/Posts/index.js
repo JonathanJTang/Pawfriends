@@ -7,6 +7,8 @@ import Post from "../Post";
 import { getAllUsersPosts, createPost } from "../../actions/apiRequests";
 
 class CreatePost extends React.Component {
+  validFileTypes = [".png", ".jpg", ".jpeg", ".gif"];
+
   resizeTextarea = (initialRows, e) => {
     const textarea = e.target;
     // Count rows by counting '\n' characters, but have at least initialRows
@@ -21,17 +23,16 @@ class CreatePost extends React.Component {
     e.preventDefault();
     const images = e.currentTarget.children.namedItem("image").files;
     for (const image of images) {
-      const validFileTypes = ["png", "jpg", "jpeg", "gif"];
       const filenameSegments = image.name.split(".");
       if (
-        !validFileTypes.includes(
-          filenameSegments[filenameSegments.length - 1].toLowerCase()
+        !this.validFileTypes.includes(
+          "." + filenameSegments[filenameSegments.length - 1].toLowerCase()
         )
       ) {
         // One of the uploaded files is not of a valid image type
         alert(
           `File "${image.name}" is not a valid image type (must be one of the ` +
-            `following file types: .png, .jpg, .jpeg, .gif)`
+            `following file types: ${this.validFileTypes.join(", ")})`
         );
         return;
       }
@@ -68,7 +69,7 @@ class CreatePost extends React.Component {
           className="createPostImageUpload"
           type="file"
           name="image"
-          accept=".png, .jpg, .jpeg, .gif"
+          accept={this.validFileTypes.join(", ")}
         />
         <input
           type="submit"
