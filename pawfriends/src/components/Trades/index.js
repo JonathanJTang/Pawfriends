@@ -2,9 +2,10 @@ import React from "react";
 import "./styles.css";
 
 import { Link } from "react-router-dom";
-import { getAllTrades, createTrade } from "../../actions/apiRequests";
+import AutoResizeTextarea from "../AutoResizeTextarea";
 import Trade from "../Trade";
 import pup from "../../images/tradepup.png";
+import { getAllTrades, createTrade } from "../../actions/apiRequests";
 
 class Trades extends React.Component {
   constructor(props) {
@@ -69,16 +70,6 @@ class Trades extends React.Component {
     this.setState({ filter: e.target.getAttribute("name") });
   };
 
-  resizeTextarea = (initialRows, e) => {
-    const textarea = e.target;
-    // Count rows by counting '\n' characters, but have at least initialRows
-    const num_rows = Math.max(
-      initialRows,
-      1 + (textarea.value.match(/\n/g) || []).length
-    );
-    textarea.rows = num_rows;
-  };
-
   render() {
     const filters = {
       current: this.filterCurrent,
@@ -99,13 +90,12 @@ class Trades extends React.Component {
           <h4>Click on "CREATE TRADE" to move forward with an exchange!</h4>
           {this.state.toggle ? (
             <form className="createPost" onSubmit={this.handleSubmit}>
-              <textarea
+              <AutoResizeTextarea
+                minRows={2}
                 className="createPostTextarea"
                 type="text"
                 name="title"
                 placeholder="Description of trade:"
-                onInput={this.resizeTextarea.bind(this, 2)}
-                required
                 onChange={this.handleChange}
               />
               <input

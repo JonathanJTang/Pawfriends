@@ -1,23 +1,13 @@
 import React from "react";
 import "./styles.css";
 
-// import { uid } from "react-uid";
+import AutoResizeTextarea from "../AutoResizeTextarea";
 import Post from "../Post";
 
 import { getAllUsersPosts, createPost } from "../../actions/apiRequests";
 
 class CreatePost extends React.Component {
   validFileTypes = [".png", ".jpg", ".jpeg", ".gif"];
-
-  resizeTextarea = (initialRows, e) => {
-    const textarea = e.target;
-    // Count rows by counting '\n' characters, but have at least initialRows
-    const num_rows = Math.max(
-      initialRows,
-      1 + (textarea.value.match(/\n/g) || []).length
-    );
-    textarea.rows = num_rows;
-  };
 
   handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,12 +47,12 @@ class CreatePost extends React.Component {
           placeholder="Post title:"
           required
         />
-        <textarea
+        <AutoResizeTextarea
+          minRows={2}
           className="createPostBody createPostTextarea"
           type="text"
           name="content"
           placeholder="Write a message:"
-          onInput={this.resizeTextarea.bind(this, 2)}
           required
         />
         <input

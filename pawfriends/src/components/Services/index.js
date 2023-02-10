@@ -1,6 +1,7 @@
 import React from "react";
 import "./styles.css";
 
+import AutoResizeTextarea from "../AutoResizeTextarea";
 import Service from "../Service";
 import {
   createService,
@@ -74,16 +75,6 @@ class Services extends React.Component {
     }
   };
 
-  resizeTextarea = (initialRows, e) => {
-    const textarea = e.target;
-    // Count rows by counting '\n' characters, but have at least initialRows
-    const num_rows = Math.max(
-      initialRows,
-      1 + (textarea.value.match(/\n/g) || []).length
-    );
-    textarea.rows = num_rows;
-  };
-
   render() {
     let filtered = this.state.servicesList;
 
@@ -126,13 +117,12 @@ class Services extends React.Component {
                 placeholder="Phone:"
                 onChange={this.handleChange}
               />
-              <textarea
+              <AutoResizeTextarea
+                minRows={2}
                 className="createPostTextarea"
                 type="text"
                 name="description"
                 placeholder="Description of service:"
-                onInput={this.resizeTextarea.bind(this, 2)}
-                required
                 onChange={this.handleChange}
               />
               <input

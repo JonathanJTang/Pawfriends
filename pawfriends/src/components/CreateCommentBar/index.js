@@ -1,17 +1,19 @@
 import React from "react";
 import "./styles.css";
 
+import AutoResizeTextarea from "../AutoResizeTextarea";
+
 import { createComment } from "../../actions/apiRequests";
 
 class CreateCommentTextarea extends React.Component {
   render() {
     return (
-      <textarea
+      <AutoResizeTextarea
+        minRows={1}
         className={this.props.classNames}
         type="text"
         name="commentText"
         placeholder="Leave a comment:"
-        onInput={this.props.onInputHandler}
         rows="1"
         required
       />
@@ -58,17 +60,6 @@ class CreateCommentBar extends React.Component {
     }
   };
 
-  resizeTextarea = (e) => {
-    const textarea = e.target;
-    const minRows = 1;
-    // Count rows by counting '\n' newline characters, but have at least minRows
-    const num_rows = Math.max(
-      minRows,
-      1 + (textarea.value.match(/\n/g) || []).length
-    );
-    textarea.rows = num_rows;
-  };
-
   render() {
     let displayedElement;
     if (this.state.status === "editComment") {
@@ -81,7 +72,6 @@ class CreateCommentBar extends React.Component {
         >
           <CreateCommentTextarea
             classNames={"commentTextarea editComment"}
-            onInputHandler={this.resizeTextarea}
           />
           <input
             type="submit"
@@ -98,7 +88,6 @@ class CreateCommentBar extends React.Component {
               "commentTextarea" +
               (this.state.status === "editComment" ? " editComment" : "")
             }
-            onInputHandler={this.resizeTextarea}
           />
         </form>
       );
