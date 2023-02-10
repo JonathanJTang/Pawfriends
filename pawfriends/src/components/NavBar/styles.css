@@ -27,14 +27,14 @@
   font-weight: bold;
 }
 
-.inactive {
+.navbar .inactive {
   opacity: 0.6;
   transition: 0.2s ease;
   border-bottom: 3px solid white;
 }
 
-.inactive:hover,
-.active {
+.navbar .inactive:hover,
+.navbar .active {
   opacity: 1;
   border-bottom-color: #bde0e5;
 }

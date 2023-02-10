@@ -16,13 +16,12 @@ import Login from "./components/Login";
 
 import NavBar from "./components/NavBar";
 import NavBarAdmin from "./components/NavBarAdmin";
-import NavBarGuest from "./components/NavBarGuest";
 
 class App extends React.Component {
   // Global state passed to all components of the app
   constructor(props) {
     super(props);
-    this.state = { currentUsername: null };
+    this.state = { currentUsername: null, isAdmin: false };
   }
 
   stateUpdater = (stateUpdateObj) => {
@@ -44,17 +43,13 @@ class App extends React.Component {
     const { currentUsername, isAdmin } = this.state;
     return (
       <div className="App">
-        {currentUsername ? (
-          isAdmin ? (
-            <NavBarAdmin />
-          ) : (
-            <NavBar
-              parentStateUpdater={this.stateUpdater}
-              currentUsername={currentUsername}
-            />
-          )
+        {currentUsername && isAdmin ? (
+          <NavBarAdmin />
         ) : (
-          <NavBarGuest />
+          <NavBar
+            parentStateUpdater={this.stateUpdater}
+            currentUsername={currentUsername}
+          />
         )}
         <Switch>
           <Route
@@ -66,7 +61,9 @@ class App extends React.Component {
           <Route
             exact
             path="/trades"
-            render={(props) => <Trades {...props} currentUsername={currentUsername} />}
+            render={(props) => (
+              <Trades {...props} currentUsername={currentUsername} />
+            )}
           />
           <Route
             exact
@@ -81,7 +78,9 @@ class App extends React.Component {
           <Route
             exact
             path="/profile/:username"
-            render={(props) => <Profile {...props} currentUsername={currentUsername} />}
+            render={(props) => (
+              <Profile {...props} currentUsername={currentUsername} />
+            )}
           />
           <Route
             exact
