@@ -13,18 +13,18 @@ class Popup extends React.Component {
           <p>Warning: Once deleted this can't be recovered!</p>
           <div>
             <button
-              className="pawfriends-styled-button"
+              className="pawfriends-styled-button popup-button"
               onClick={this.props.confirm}
             >
               Confirm
-              <img className="popup-icon" src={confirm} alt="confirm" />
+              <img src={confirm} alt="confirm" />
             </button>
             <button
-              className="pawfriends-styled-button"
+              className="pawfriends-styled-button popup-button"
               onClick={this.props.cancel}
             >
               Cancel
-              <img className="popup-icon" src={cancel} alt="cancel" />
+              <img src={cancel} alt="cancel" />
             </button>
           </div>
         </div>

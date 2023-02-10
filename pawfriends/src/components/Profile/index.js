@@ -95,34 +95,25 @@ class Profile extends React.Component {
     const isOwnProfile =
       currentUserObj.username === this.state.userObj.username;
 
-    let friendButton = null;
-    if (!isOwnProfile) {
-      if (!this.state.isCurUserFriend) {
-        friendButton = (
-          <button className="pawfriends-styled-button" onClick={this.handleAdd}>
-            Add Friend
-          </button>
-        );
-      } else {
-        friendButton = (
-          <button
-            className="pawfriends-styled-button"
-            onClick={this.handleRemove}
-          >
-            Remove Friend
-          </button>
-        );
-      }
-    }
+    const friendButton = isOwnProfile ? null : (
+      <button
+        id="add-remove-friend-button"
+        className="pawfriends-styled-button"
+        onClick={
+          this.state.isCurUserFriend ? this.handleRemove : this.handleAdd
+        }
+      >
+        {this.state.isCurUserFriend ? "Remove Friend" : "Add Friend"}
+      </button>
+    );
 
     return (
       <div className="profile">
-        {friendButton}
         <div className="profile-nav">
           <button
             name="info"
             className={
-              "pawfriends-styled-button " +
+              "pawfriends-styled-button profile-nav-button " +
               (this.state.show === "info" ? "active" : "")
             }
             onClick={this.show}
@@ -132,7 +123,7 @@ class Profile extends React.Component {
           <button
             name="pets"
             className={
-              "pawfriends-styled-button " +
+              "pawfriends-styled-button profile-nav-button " +
               (this.state.show === "pets" ? "active" : "")
             }
             onClick={this.show}
@@ -142,17 +133,18 @@ class Profile extends React.Component {
           <button
             name="friends"
             className={
-              "pawfriends-styled-button " +
+              "pawfriends-styled-button profile-nav-button " +
               (this.state.show === "friends" ? "active" : "")
             }
             onClick={this.show}
           >
             Friends
           </button>
+          {friendButton}
         </div>
         {this.state.show === "info" && (
           <Info
-          userObj={userObj}
+            userObj={userObj}
             isOwnProfile={isOwnProfile}
             statusStateUpdater={(newStatusStr) => {
               this.setState((prevState) => ({
@@ -164,11 +156,7 @@ class Profile extends React.Component {
         {this.state.show === "pets" && (
           <Pets userObj={userObj} isOwnProfile={isOwnProfile} />
         )}
-        {this.state.show === "friends" && (
-          <Friends
-            friends={userObj.friends}
-          />
-        )}
+        {this.state.show === "friends" && <Friends friends={userObj.friends} />}
       </div>
     );
   }

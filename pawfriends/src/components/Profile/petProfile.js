@@ -110,7 +110,7 @@ class PetProfile extends React.Component {
           />
         </div>
         <button
-          className="pawfriends-styled-button deletepet"
+          className="deletepet"
           onClick={this.toggleDeletePopup}
           disabled={!isOwnProfile}
         />

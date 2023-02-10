@@ -156,6 +156,8 @@
 .deletepet {
   right: 10px;
   background-color: #e5bdbd;
+  border: none;
+  cursor: pointer;
 }
 
 .pet::before {

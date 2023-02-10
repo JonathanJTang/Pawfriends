@@ -82,7 +82,11 @@ class Pets extends React.Component {
                   onChange={this.handleChange}
                   required
                 />
-                <input type="submit" value="Save" />
+                <input
+                  type="submit"
+                  value="Save"
+                  className="createPostSubmitButton pawfriends-styled-button"
+                />
               </form>
             )}
             {this.state.pets.map((pet, index) => (
