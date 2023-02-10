@@ -215,7 +215,7 @@ export const addPet = (pet, username) => {
 };
 
 export const editPet = (pet, username, petId) => {
-  const request = new Request(baseUrl + `/api/users/${username}/${petId}`, {
+  const request = new Request(baseUrl + `/api/users/${username}/pets/${petId}`, {
     method: "put",
     body: JSON.stringify(pet),
     headers: {
@@ -229,7 +229,7 @@ export const editPet = (pet, username, petId) => {
 };
 
 export const removePet = (username, petId) => {
-  const request = new Request(baseUrl + `/api/users/${username}/${petId}`, {
+  const request = new Request(baseUrl + `/api/users/${username}/pets/${petId}`, {
     method: "delete",
   });
 

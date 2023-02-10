@@ -765,7 +765,7 @@ jsonApiRouter.post("/users/:username/pets", async (req, res) => {
 });
 
 /* Save pet information. */
-jsonApiRouter.put("/users/:username/:petId", async (req, res) => {
+jsonApiRouter.put("/users/:username/pets/:petId", async (req, res) => {
   if (req.session.username !== req.params.username) {
     // Comparison validates username; users can only edit their own account
     res.status(403).send("Forbidden");
@@ -801,7 +801,7 @@ jsonApiRouter.put("/users/:username/:petId", async (req, res) => {
 });
 
 /* Delete a pet. */
-jsonApiRouter.delete("/users/:username/:petId", async (req, res) => {
+jsonApiRouter.delete("/users/:username/pets/:petId", async (req, res) => {
   if (req.session.username !== req.params.username) {
     // Comparison validates username; users can only edit their own account
     res.status(403).send("Forbidden");
