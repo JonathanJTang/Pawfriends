@@ -39,7 +39,7 @@ class Settings extends React.Component {
         {this.state.toggle ? (
           <ProfileSettings currentUser={currentUser} />
         ) : (
-          <AccountSettings />
+          <AccountSettings currentUser={currentUser} />
         )}
       </div>
     );

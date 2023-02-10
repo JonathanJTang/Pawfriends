@@ -7,15 +7,37 @@ const fetchRequest = (request) => {
       if (res.status === 200) {
         return res.json();
       } else {
-        throw new Error("The request failed, please try again later");
+        const err = new Error("The request failed, please try again later");
+        err.res = res; // Attach to the error object for caller to examine
+        throw err;
       }
     })
     .then((json) => {
       return json;
     })
     .catch((error) => {
+      // Just log the error and ignore it
       console.log("failed fetching @" + request.body);
       console.log(error);
+    });
+};
+
+const fetchRequestThrowError = (request) => {
+  return fetch(request)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json();
+      } else {
+        const err = new Error("The request failed, please try again later");
+        err.res = res; // Attach to the error object for caller to examine
+        throw err;
+      }
+    })
+    .then((json) => {
+      return json;
+    })
+    .catch((error) => {
+      throw error; // Leave it for caller to catch and handle
     });
 };
 
@@ -169,6 +191,20 @@ export const getUserByUsername = (username) => {
   });
 
   const promise = fetchRequest(request);
+  return promise;
+};
+
+export const changePassword = (oldNewPasswords, username) => {
+  const request = new Request(baseUrl + `/api/users/${username}/change-password`, {
+    method: "put",
+    body: JSON.stringify(oldNewPasswords),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+  });
+
+  const promise = fetchRequestThrowError(request);
   return promise;
 };
 

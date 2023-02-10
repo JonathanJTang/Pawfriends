@@ -28,7 +28,7 @@ router.post("/users", mongoChecker, async (req, res) => {
         );
       return;
     }
-    if (typeof obj !== "string" || req.body.password.length < 4) {
+    if (typeof req.body.password !== "string" || req.body.password.length < 4) {
       res.status(400).send("Password must be at least 4 characters long");
       return;
     }
@@ -103,7 +103,11 @@ router.post("/users/login", mongoChecker, async (req, res) => {
       res.send({ currentUser: user.username });
     }
   } catch (error) {
-    handleError(error, res);
+    if (error instanceof Error && error.message === "Password did not match") {
+      res.status(401).send("The entered current password is incorrect");
+    } else {
+      handleError(error, res);
+    }
   }
 });
 

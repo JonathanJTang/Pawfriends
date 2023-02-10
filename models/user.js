@@ -98,7 +98,7 @@ UserSchema.statics.usernamePasswordValid = function (username, password) {
             })
           );
         } else {
-          reject("Password did not match");
+          reject(new Error("Password did not match"));
         }
       });
     });
