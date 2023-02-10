@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { removeTrade } from "../../actions/apiRequests";
 import Popup from "../Popup";
-import CheckButton from "./finish.js";
+import CheckButton from "./checkButton.js";
 
 class Trade extends React.Component {
   constructor(props) {

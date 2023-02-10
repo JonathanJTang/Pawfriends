@@ -1,78 +1,9 @@
 import React from "react";
 import "./styles.css";
 
-import AutoResizeTextarea from "../AutoResizeTextarea";
+import CreateServiceForm from "./createServiceForm";
 import Service from "../Service";
-import {
-  createService,
-  getAllServices,
-  removeService,
-} from "../../actions/apiRequests";
-
-class CreateServicePosting extends React.Component {
-  handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const service = await createService({
-      description: formData.get("description"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      tags: formData
-        .get("tags")
-        .split(",")
-        .reduce((processed, element) => {
-          // Remove empty string tags
-          const trimmedElement = element.trim();
-          if (trimmedElement !== "") {
-            processed.push(trimmedElement);
-          }
-          return processed;
-        }, []),
-    });
-    if (service !== undefined) {
-      // Server call succeeded
-      this.props.servicesList.unshift(service);
-      this.props.parentStateUpdater(this.props.servicesList);
-    }
-  };
-
-  render() {
-    return (
-      <form className="createPost" onSubmit={this.handleSubmit}>
-        <input
-          name="email"
-          className="createPostTextarea"
-          placeholder="Email:"
-          required
-        />
-        <input
-          name="phone"
-          className="createPostTextarea"
-          placeholder="Phone:"
-          required
-        />
-        <AutoResizeTextarea
-          minRows={2}
-          className="createPostTextarea"
-          type="text"
-          name="description"
-          placeholder="Description of service:"
-          required
-        />
-        <input
-          name="tags"
-          className="createPostTextarea"
-          placeholder="Tags (separate by commas):"
-        />
-        <input
-          type="submit"
-          value="Create Service Posting"
-          className="createPostSubmitButton pawfriends-styled-button"
-        />
-      </form>
-    );
-  }
-}
+import { getAllServices, removeService } from "../../actions/apiRequests";
 
 /* Services component */
 class Services extends React.Component {
@@ -145,7 +76,7 @@ class Services extends React.Component {
           </h2>
           <h4>Looking for a specific service? Filter by poster name or tag!</h4>
           {this.state.showCreatePosting ? (
-            <CreateServicePosting
+            <CreateServiceForm
               servicesList={this.state.servicesList}
               parentStateUpdater={this.createPostingHandler}
             />

@@ -22,7 +22,8 @@
   outline: none;
 }
 
-.commentSubmitButton {
+input.commentSubmitButton {
   flex: 0.1;
   font-family: "Karla", sans-serif;
+  letter-spacing: 0em;
 }

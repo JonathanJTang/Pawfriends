@@ -1,25 +1,9 @@
 import React from "react";
 import "./styles.css";
 
-import AutoResizeTextarea from "../AutoResizeTextarea";
+import AutoResizeTextarea from "../../AutoResizeTextarea";
 
-import { createComment } from "../../actions/apiRequests";
-
-class CreateCommentTextarea extends React.Component {
-  render() {
-    return (
-      <AutoResizeTextarea
-        minRows={1}
-        className={this.props.classNames}
-        type="text"
-        name="commentText"
-        placeholder="Leave a comment:"
-        rows="1"
-        required
-      />
-    );
-  }
-}
+import { createComment } from "../../../actions/apiRequests";
 
 class CreateCommentBar extends React.Component {
   constructor(props) {
@@ -61,39 +45,36 @@ class CreateCommentBar extends React.Component {
   };
 
   render() {
-    let displayedElement;
-    if (this.state.status === "editComment") {
-      displayedElement = (
+    return (
+      <div>
         <form
           className="commentForm"
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           onSubmit={this.handleSubmit}
         >
-          <CreateCommentTextarea
-            classNames={"commentTextarea editComment"}
-          />
-          <input
-            type="submit"
-            value="Comment"
-            className="commentSubmitButton"
-          />
-        </form>
-      );
-    } else {
-      displayedElement = (
-        <form className="commentForm" onFocus={this.handleFocus}>
-          <CreateCommentTextarea
-            classNames={
+          <AutoResizeTextarea
+            minRows={1}
+            className={
               "commentTextarea" +
               (this.state.status === "editComment" ? " editComment" : "")
             }
+            type="text"
+            name="commentText"
+            placeholder="Leave a comment:"
+            rows="1"
+            required
           />
+          {this.state.status === "editComment" && (
+            <input
+              type="submit"
+              value="Comment"
+              className="commentSubmitButton"
+            />
+          )}
         </form>
-      );
-    }
-
-    return <div>{displayedElement}</div>;
+      </div>
+    );
   }
 }
 

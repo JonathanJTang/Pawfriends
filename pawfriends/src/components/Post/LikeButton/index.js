@@ -1,10 +1,10 @@
 import React from "react";
 import "./styles.css";
 
-import heart from "./../../images/heart.png";
-import heartFull from "./../../images/heart-full.png";
+import heart from "../../../images/heart.png";
+import heartFull from "../../../images/heart-full.png";
 
-import { modifyLikePost } from "../../actions/apiRequests";
+import { modifyLikePost } from "../../../actions/apiRequests";
 
 class LikeButton extends React.Component {
   constructor(props) {

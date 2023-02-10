@@ -2,26 +2,12 @@ import React from "react";
 import "./styles.css";
 
 import { Link } from "react-router-dom";
-import LikeButton from "../LikeButton";
+import LikeButton from "./LikeButton";
 import Popup from "../Popup";
-import CreateCommentBar from "../CreateCommentBar";
+import CreateCommentBar from "./CreateCommentBar";
+import Comment from "./Comment";
 
 import { removePost } from "../../actions/apiRequests";
-
-class Comment extends React.Component {
-  render() {
-    const { commentData } = this.props;
-
-    // Information from the server will have commentData contain commentAuthor
-    return (
-      <div className="comment">
-        <div className="commentText">
-          <strong>@{this.props.commentAuthor}</strong> {commentData.content}
-        </div>
-      </div>
-    );
-  }
-}
 
 class Post extends React.Component {
   constructor(props) {
@@ -48,7 +34,6 @@ class Post extends React.Component {
   };
 
   render() {
-    // console.log(this.props);
     const { postData } = this.props;
     const postOwner = postData.owner;
 

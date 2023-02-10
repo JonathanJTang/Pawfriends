@@ -1,6 +1,6 @@
 import React from "react";
 import "./styles.css";
-import "../Index/styles.css";
+import "../Login/styles.css";
 import { Link } from "react-router-dom";
 import NavBarGuest from "../NavBarGuest";
 import { createUser, loginUser } from "../../actions/apiRequests";
@@ -55,7 +55,6 @@ class Registration extends React.Component {
   render() {
     return (
       <div className="login">
-        <NavBarGuest />
         <form onSubmit={this.handleRegistration}>
           <h1>Create a Pawfriends account</h1>
           <label>Account</label>

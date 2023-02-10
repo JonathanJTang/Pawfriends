@@ -4,7 +4,7 @@ import "./styles.css";
 import { Link } from "react-router-dom";
 import { loginUser } from "../../actions/apiRequests";
 
-class Index extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = { username: "", password: "", error: false };
@@ -58,4 +58,4 @@ class Index extends React.Component {
   }
 }
 
-export default Index;
+export default Login;

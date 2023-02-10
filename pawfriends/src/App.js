@@ -12,9 +12,10 @@ import Services from "./components/Services";
 import Settings from "./components/Settings";
 import Profile from "./components/Profile";
 import AdminDashboard from "./components/AdminDashboard";
-import Index from "./components/Index";
+import Login from "./components/Login";
 
 import NavBar from "./components/NavBar";
+import NavBarAdmin from "./components/NavBarAdmin";
 import NavBarGuest from "./components/NavBarGuest";
 
 class App extends React.Component {
@@ -37,77 +38,73 @@ class App extends React.Component {
   componentDidUpdate = () => {
     // checkSession(this.stateUpdater, this.props.history);
     // console.log("componentDidUpdate: Checked session");
-  }
+  };
 
   render() {
     const { currentUser } = this.state;
     return (
       <div className="App">
-          {currentUser ? (
+        {currentUser ? (
+          currentUser.admin ? (
+            <NavBarAdmin />
+          ) : (
             <NavBar
               parentStateUpdater={this.stateUpdater}
               currentUser={currentUser}
             />
-          ) : (
-            <NavBarGuest />
-          )}
-          <Switch>
-            <Route
-              exact
-              path="/registration"
-              render={(props) => <Registration {...props} />}
-            />
-            <Route
-              exact
-              path="/posts"
-              render={(props) => <Posts {...props} />}
-            />
-            <Route
-              exact
-              path="/trades"
-              render={(props) => (
-                <Trades {...props} currentUser={currentUser} />
-              )}
-            />
-            <Route
-              exact
-              path="/services"
-              render={(props) => <Services {...props} />}
-            />
-            <Route
-              exact
-              path="/settings"
-              render={() => <Settings currentUser={currentUser} />}
-            />
-            <Route
-              exact
-              path="/profile/:username"
-              render={(props) => (
-                <Profile {...props} currentUser={currentUser} />
-              )}
-            />
-            <Route
-              exact
-              path="/admindashboard"
-              render={() => <AdminDashboard appState={this.state} />}
-            />
-            <Route
-              exact
-              path={["/", "/login"] /* Any of these URLs are accepted. */}
-              render={(props) => (
-                <div className="app">
-                  {/* Different components rendered depending on if someone is logged in. */}
-                  {!currentUser ? (
-                    <Index />
-                  ) : (
-                    <Home {...props} app={this} appState={this.state} />
-                  )}
-                </div>
-              )}
-            />
-            {/* Redirect any links not recognized to the home/login page */}
-            <Redirect from="*" to="/" />
-          </Switch>
+          )
+        ) : (
+          <NavBarGuest />
+        )}
+        <Switch>
+          <Route
+            exact
+            path="/registration"
+            render={(props) => <Registration {...props} />}
+          />
+          <Route exact path="/posts" render={(props) => <Posts {...props} />} />
+          <Route
+            exact
+            path="/trades"
+            render={(props) => <Trades {...props} currentUser={currentUser} />}
+          />
+          <Route
+            exact
+            path="/services"
+            render={(props) => <Services {...props} />}
+          />
+          <Route
+            exact
+            path="/settings"
+            render={() => <Settings currentUser={currentUser} />}
+          />
+          <Route
+            exact
+            path="/profile/:username"
+            render={(props) => <Profile {...props} currentUser={currentUser} />}
+          />
+          <Route
+            exact
+            path="/admindashboard"
+            render={() => <AdminDashboard appState={this.state} />}
+          />
+          <Route
+            exact
+            path={["/", "/login"] /* Any of these URLs are accepted. */}
+            render={(props) => (
+              <div className="app">
+                {/* Different components rendered depending on if someone is logged in. */}
+                {!currentUser ? (
+                  <Login />
+                ) : (
+                  <Home {...props} app={this} appState={this.state} />
+                )}
+              </div>
+            )}
+          />
+          {/* Redirect any links not recognized to the home/login page */}
+          <Redirect from="*" to="/" />
+        </Switch>
       </div>
     );
   }

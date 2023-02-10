@@ -1,7 +1,7 @@
 import React from "react";
-import NavBarAdmin from "../NavBarAdmin";
-import { Link } from "react-router-dom";
 import "./styles.css";
+
+import { Link } from "react-router-dom";
 
 /* Admin dashboard component */
 class AdminDashboard extends React.Component {
@@ -11,7 +11,6 @@ class AdminDashboard extends React.Component {
 
     return (
       <div className="stats">
-        <NavBarAdmin />
         <div className="statsTableContainer">
           <h2>Site Statistics</h2>
           <table className="statsTable">
