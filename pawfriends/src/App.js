@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 
-import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import { checkSession } from "./actions/authenticationAndSessionCheck";
 
 import Registration from "./components/Registration";
@@ -30,15 +30,19 @@ class App extends React.Component {
 
   componentDidMount = () => {
     document.title = "Pawfriends"; // Browser title bar text
-    checkSession(this.stateUpdater);
-    console.log("Checked session");
+    checkSession(this.stateUpdater, this.props.history);
+    console.log("componentDidMount(): Checked session");
   };
+
+  componentDidUpdate = () => {
+    // checkSession(this.stateUpdater, this.props.history);
+    // console.log("componentDidUpdate: Checked session");
+  }
 
   render() {
     const { currentUser } = this.state;
     return (
       <div className="App">
-        <BrowserRouter>
           {currentUser ? (
             <NavBar
               parentStateUpdater={this.stateUpdater}
@@ -101,13 +105,12 @@ class App extends React.Component {
                 </div>
               )}
             />
-            {/* Redirect any links not recognized to the home/login page
-            <Redirect from="*" to="/" /> */}
+            {/* Redirect any links not recognized to the home/login page */}
+            <Redirect from="*" to="/" />
           </Switch>
-        </BrowserRouter>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

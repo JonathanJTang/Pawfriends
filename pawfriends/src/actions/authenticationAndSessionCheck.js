@@ -1,21 +1,24 @@
 const baseUrl =
   process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
 
-export const checkSession = (stateUpdater) => {
+export const checkSession = (stateUpdater, history) => {
   const url = baseUrl + "/users/check-session";
   fetch(url)
     .then((res) => {
       if (res.status === 200) {
         return res.json();
+      } else {
+        throw new Error("User not logged in");
       }
     })
     .then((json) => {
       if (json && json.currentUser) {
         stateUpdater({ currentUser: json.currentUser });
+        console.log(`checkSession() set currentUser to ${json.currentUser}`);
       }
     })
     .catch((error) => {
-      console.log(error);
+      history.replace("/"); // Redirect to login page when not logged in
     });
 };
 
