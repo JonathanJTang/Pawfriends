@@ -47,7 +47,8 @@ select {
 }
 
 input[type="submit"] {
-  letter-spacing: 0.2em;
+  font-size: 13px;
+  letter-spacing: 0.1em;
   color: white;
   background-color: #bde0e5;
   cursor: pointer;
@@ -55,6 +56,12 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
   background-color: #c1bde5;
+}
+
+input.createPostSubmitButton {
+  /* margin-bottom: 15px; */
+  min-height: 40px;
+  background-color: #a8d9e4;
 }
 
 input:focus,
@@ -79,15 +86,16 @@ textarea:disabled {
 
 .pawfriends-styled-button {
   padding: 10px 20px 10px 20px;
-  width: 120px;
+  min-width: 120px;
+  width: fit-content;
   outline: none;
   border: none;
   border-radius: 0.2em;
   color: white;
   background-color: #bde0e5;
-  font-size: 11px;
+  font-size: 13px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
   transition: 0.2s ease;
   cursor: pointer;
 }

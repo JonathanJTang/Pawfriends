@@ -78,7 +78,7 @@ class Trades extends React.Component {
     };
 
     // Filter list of trades based on set filter
-    let filteredTrades = this.state.trades.filter(filters[this.state.filter]);
+    const filteredTrades = this.state.trades.filter(filters[this.state.filter]);
 
     return (
       <div className="posts">
@@ -97,11 +97,12 @@ class Trades extends React.Component {
                 name="title"
                 placeholder="Description of trade:"
                 onChange={this.handleChange}
+                required
               />
               <input
                 type="submit"
-                value="Create Post"
-                className="createPostSubmitButton"
+                value="Create Trade Posting"
+                className="createPostSubmitButton pawfriends-styled-button"
               />
             </form>
           ) : (

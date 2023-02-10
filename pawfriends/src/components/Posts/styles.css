@@ -48,10 +48,3 @@
   background-color: #bde0e5;
   cursor: pointer;
 }
-
-.createPostSubmitButton {
-  width: 30%;
-  /* margin-bottom: 15px; */
-  min-height: 30px;
-  font-family: "Karla", sans-serif;
-}

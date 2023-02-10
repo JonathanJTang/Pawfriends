@@ -9,6 +9,71 @@ import {
   removeService,
 } from "../../actions/apiRequests";
 
+class CreateServicePosting extends React.Component {
+  handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const service = await createService({
+      description: formData.get("description"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      tags: formData
+        .get("tags")
+        .split(",")
+        .reduce((processed, element) => {
+          // Remove empty string tags
+          const trimmedElement = element.trim();
+          if (trimmedElement !== "") {
+            processed.push(trimmedElement);
+          }
+          return processed;
+        }, []),
+    });
+    if (service !== undefined) {
+      // Server call succeeded
+      this.props.servicesList.unshift(service);
+      this.props.parentStateUpdater(this.props.servicesList);
+    }
+  };
+
+  render() {
+    return (
+      <form className="createPost" onSubmit={this.handleSubmit}>
+        <input
+          name="email"
+          className="createPostTextarea"
+          placeholder="Email:"
+          required
+        />
+        <input
+          name="phone"
+          className="createPostTextarea"
+          placeholder="Phone:"
+          required
+        />
+        <AutoResizeTextarea
+          minRows={2}
+          className="createPostTextarea"
+          type="text"
+          name="description"
+          placeholder="Description of service:"
+          required
+        />
+        <input
+          name="tags"
+          className="createPostTextarea"
+          placeholder="Tags (separate by commas):"
+        />
+        <input
+          type="submit"
+          value="Create Service Posting"
+          className="createPostSubmitButton pawfriends-styled-button"
+        />
+      </form>
+    );
+  }
+}
+
 /* Services component */
 class Services extends React.Component {
   constructor(props) {
@@ -16,15 +81,9 @@ class Services extends React.Component {
 
     this.state = {
       servicesList: [],
-      toggle: false,
+      showCreatePosting: false,
       filter: "all",
       filterkey: "",
-      newService: {
-        description: "",
-        email: "n/a",
-        phone: "n/a",
-        tags: "",
-      },
     };
   }
 
@@ -38,62 +97,44 @@ class Services extends React.Component {
   }
 
   handleClick = () => {
-    this.setState({ toggle: true });
+    this.setState({ showCreatePosting: true });
   };
 
-  handleChange = (e) => {
-    this.setState((prevState) => ({
-      newService: { ...prevState.newService, [e.target.name]: e.target.value },
-    }));
+  createPostingHandler = (updatedPostings) => {
+    this.setState({ showCreatePosting: false, servicesList: updatedPostings });
   };
 
   setFilter = (e) => {
-    this.setState({ filter: e.target.value });
-    this.setState({ filterkey: "" });
+    this.setState({ filter: e.target.value, filterkey: "" });
   };
 
   setFilterTag = (tag) => {
     this.setState({ filter: "tag", filterkey: tag });
   };
 
-  handleFilter = (e) => {
+  handleFilterFieldChange = (e) => {
     this.setState({ filterkey: e.target.value });
   };
 
-  handleSubmit = async (e) => {
-    e.preventDefault();
-    const service = await createService({
-      description: this.state.newService.description,
-      email: this.state.newService.email,
-      phone: this.state.newService.phone,
-      tags: this.state.newService.tags.split(",").map((tag) => tag.trim()),
-    });
-    if (service !== undefined) {
-      // Server call succeeded
-      this.state.servicesList.unshift(service);
-      this.setState({ toggle: false });
-    }
+  filterUser = (service) => {
+    return service.owner.actualName
+      .toLowerCase()
+      .includes(this.state.filterkey.toLowerCase());
+  };
+
+  filterTag = (service) => {
+    return service.tags.some((tag) =>
+      tag.toLowerCase().includes(this.state.filterkey.toLowerCase())
+    );
   };
 
   render() {
     let filtered = this.state.servicesList;
 
-    // Filter by username
-    if (this.state.filterkey !== "" && this.state.filter === "user") {
-      filtered = this.state.servicesList.filter((service) =>
-        service.owner.actualName
-          .toLowerCase()
-          .includes(this.state.filterkey.toLowerCase())
-      );
-    }
-
-    // Filter by post tags
-    if (this.state.filterkey !== "" && this.state.filter === "tag") {
-      filtered = this.state.servicesList.filter((service) =>
-        service.tags.some((tag) =>
-          tag.toLowerCase().includes(this.state.filterkey.toLowerCase())
-        )
-      );
+    // Filter if applicable
+    const filters = { user: this.filterUser, tag: this.filterTag };
+    if (this.state.filter !== "all" && this.state.filterkey !== "") {
+      filtered = this.state.servicesList.filter(filters[this.state.filter]);
     }
 
     return (
@@ -103,40 +144,11 @@ class Services extends React.Component {
             Offer or receive services such as pet sitting and matchmaking!
           </h2>
           <h4>Looking for a specific service? Filter by poster name or tag!</h4>
-          {this.state.toggle ? (
-            <form className="createPost" onSubmit={this.handleSubmit}>
-              <input
-                name="email"
-                className="createPostTextarea"
-                placeholder="Email:"
-                onChange={this.handleChange}
-              />
-              <input
-                name="phone"
-                className="createPostTextarea"
-                placeholder="Phone:"
-                onChange={this.handleChange}
-              />
-              <AutoResizeTextarea
-                minRows={2}
-                className="createPostTextarea"
-                type="text"
-                name="description"
-                placeholder="Description of service:"
-                onChange={this.handleChange}
-              />
-              <input
-                name="tags"
-                className="createPostTextarea"
-                placeholder="Tags (separate by commas):"
-                onChange={this.handleChange}
-              />
-              <input
-                type="submit"
-                value="Create Post"
-                className="createPostSubmitButton"
-              />
-            </form>
+          {this.state.showCreatePosting ? (
+            <CreateServicePosting
+              servicesList={this.state.servicesList}
+              parentStateUpdater={this.createPostingHandler}
+            />
           ) : (
             <button
               className="pawfriends-styled-button"
@@ -156,7 +168,7 @@ class Services extends React.Component {
             {this.state.filter !== "all" && (
               <input
                 value={this.state.filterkey}
-                onChange={this.handleFilter}
+                onChange={this.handleFilterFieldChange}
               />
             )}
           </div>

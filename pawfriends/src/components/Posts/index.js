@@ -64,7 +64,7 @@ class CreatePost extends React.Component {
         <input
           type="submit"
           value="Create Post"
-          className="createPostSubmitButton"
+          className="createPostSubmitButton pawfriends-styled-button"
         />
       </form>
     );
