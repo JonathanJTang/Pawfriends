@@ -44,7 +44,7 @@ class Registration extends React.Component {
       // partialUserObj only has fields currentUsername, isAdmin
       const partialUserObj = await loginUser({
         username: userObj.username,
-        password: this.state.userInfo.password
+        password: this.state.userInfo.password,
       });
       if (partialUserObj !== undefined) {
         this.props.history.push("/");

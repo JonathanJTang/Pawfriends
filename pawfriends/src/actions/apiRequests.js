@@ -195,14 +195,17 @@ export const getUserByUsername = (username) => {
 };
 
 export const changePassword = (oldNewPasswords, username) => {
-  const request = new Request(baseUrl + `/api/users/${username}/change-password`, {
-    method: "put",
-    body: JSON.stringify(oldNewPasswords),
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json",
-    },
-  });
+  const request = new Request(
+    baseUrl + `/api/users/${username}/change-password`,
+    {
+      method: "put",
+      body: JSON.stringify(oldNewPasswords),
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   const promise = fetchRequestThrowError(request);
   return promise;
@@ -251,23 +254,29 @@ export const addPet = (pet, username) => {
 };
 
 export const editPet = (pet, username, petId) => {
-  const request = new Request(baseUrl + `/api/users/${username}/pets/${petId}`, {
-    method: "put",
-    body: JSON.stringify(pet),
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json",
-    },
-  });
+  const request = new Request(
+    baseUrl + `/api/users/${username}/pets/${petId}`,
+    {
+      method: "put",
+      body: JSON.stringify(pet),
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   const promise = fetchRequest(request);
   return promise;
 };
 
 export const removePet = (username, petId) => {
-  const request = new Request(baseUrl + `/api/users/${username}/pets/${petId}`, {
-    method: "delete",
-  });
+  const request = new Request(
+    baseUrl + `/api/users/${username}/pets/${petId}`,
+    {
+      method: "delete",
+    }
+  );
 
   const promise = fetchRequest(request);
   return promise;

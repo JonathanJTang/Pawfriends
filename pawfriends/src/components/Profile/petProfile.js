@@ -24,20 +24,13 @@ class PetProfile extends React.Component {
   saveStatus = async () => {
     if (this.state.infoUpdated) {
       // this.props.parentStateUpdater(this.props.pet);
-      await editPet(
-        this.props.pet,
-        this.props.username,
-        this.props.pet._id
-      );
+      await editPet(this.props.pet, this.props.username, this.props.pet._id);
       this.setState({ infoUpdated: false });
     }
   };
 
   remove = async () => {
-    const response = await removePet(
-      this.props.username,
-      this.props.pet._id
-    );
+    const response = await removePet(this.props.username, this.props.pet._id);
     if (response !== undefined) {
       const i = this.props.petsList.indexOf(this.props.pet);
       this.props.petsList.splice(i, 1);
