@@ -9,12 +9,8 @@ class ProfileSettings extends React.Component {
       gender: "",
       birthday: "",
       location: "",
-      email: "",
-      user: {
-        actualName: "",
-        birthday: "",
-        gender: "Secret",
-      },
+      // email: "",
+      profilePicture: {},
     };
   }
 
@@ -22,26 +18,25 @@ class ProfileSettings extends React.Component {
     const user = await getUserByUsername(this.props.currentUser);
     if (user !== undefined) {
       this.setState({
-        user: {
-          actualName: user.actualName,
-          gender: user.gender,
-          birthday: user.birthday,
-        },
+        actualName: user.actualName,
+        gender: user.gender,
+        birthday: user.birthday,
+        location: user.location,
+        // email: user.email,
+        profilePicture: user.profilePicture,
       });
     }
-    this.state.user.image = user.profilePicture.imageUrl;
-    this.setState({ user: this.state.user });
   };
 
   handleSettingsSubmit = async (e) => {
     e.preventDefault();
-    let done = await updateSettings(
+    const done = await updateSettings(
       {
         actualName: this.state.actualName,
         gender: this.state.gender,
         birthday: this.state.birthday,
         location: this.state.location,
-        email: this.state.email,
+        // email: this.state.email,
       },
       this.props.currentUser
     );
@@ -55,19 +50,17 @@ class ProfileSettings extends React.Component {
   };
 
   render() {
-    const { user } = this.state;
-
     return (
       <form className="set-form" onSubmit={this.handleSettingsSubmit}>
         <h2>User Profile</h2>
         <div>
-          <img src={user.image} alt={"user profile"} />
+          <img src={this.state.profilePicture.imageUrl} alt={"user avatar"} />
         </div>
         <label>Name</label>
         <input
           type="text"
           name="actualName"
-          defaultValue={user.actualName}
+          defaultValue={this.state.actualName}
           onChange={this.handleChange}
           required
         />
@@ -75,32 +68,30 @@ class ProfileSettings extends React.Component {
         <input
           type="date"
           name="birthday"
-          defaultValue={user.birthday}
+          defaultValue={this.state.birthday}
           onChange={this.handleChange}
           required
         />
         <label>Gender</label>
-        <select name="gender" value={user.gender} onChange={this.handleChange}>
-          <option value="Male">
-            Male
-          </option>
-          <option value="Female">
-            Female
-          </option>
-          <option value="Secret">
-            Secret
-          </option>
+        <select
+          name="gender"
+          value={this.state.gender}
+          onChange={this.handleChange}
+        >
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Secret">Secret</option>
         </select>
         <label>Location</label>
         <input
           type="text"
           name="location"
-          defaultValue={user.location}
+          defaultValue={this.state.location}
           onChange={this.handleChange}
           required
         />
         {/* <label>Email</label>
-        <input type="text" name="email" onChange={this.handleChange} required /> */}
+        <input type="text" name="email" defaultValue={this.state.email} onChange={this.handleChange} required /> */}
         <input type="submit" value="Save changes" />
       </form>
     );

@@ -75,7 +75,7 @@ class Post extends React.Component {
           <Link to={"/profile/" + postOwner.username}>
             <img
               className="avatar-img"
-              src={postOwner.avatar.imageUrl}
+              src={postOwner.profilePicture.imageUrl}
               alt="profile avatar"
             />
           </Link>

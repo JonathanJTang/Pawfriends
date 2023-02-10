@@ -69,7 +69,7 @@ class Trade extends React.Component {
           <Link to={`/profile/${tradeOwner.username}`}>
             <img
               className="avatar-img"
-              src={tradeOwner.avatar.imageUrl}
+              src={tradeOwner.profilePicture.imageUrl}
               alt="profile avatar"
             />
           </Link>

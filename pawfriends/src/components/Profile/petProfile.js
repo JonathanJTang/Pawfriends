@@ -6,30 +6,42 @@ import Popup from "../Popup";
 class PetProfile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      toggle: false,
-    };
+    this.state = { toggleDeletePopup: false, infoUpdated: false };
   }
+
+  toggleDeletePopup = () => {
+    this.state.toggleDeletePopup
+      ? this.setState({ toggleDeletePopup: false })
+      : this.setState({ toggleDeletePopup: true });
+  };
 
   handleChange = async (e) => {
     const pet = this.props.pet;
     pet[e.target.name] = e.target.value;
-    await editPet(pet, this.props.user.username, this.props.pet._id);
+    this.setState({ infoUpdated: true });
   };
 
-  handleClick = () => {
-    this.state.toggle
-      ? this.setState({ toggle: false })
-      : this.setState({ toggle: true });
+  saveStatus = async () => {
+    if (this.state.infoUpdated) {
+      // this.props.parentStateUpdater(this.props.pet);
+      await editPet(
+        this.props.pet,
+        this.props.user.username,
+        this.props.pet._id
+      );
+      this.setState({ infoUpdated: false });
+    }
   };
 
   remove = async () => {
-    const response = await removePet(this.props.user.username, this.props.pet._id);
+    const response = await removePet(
+      this.props.user.username,
+      this.props.pet._id
+    );
     if (response !== undefined) {
       const i = this.props.petsList.indexOf(this.props.pet);
       this.props.petsList.splice(i, 1);
       this.props.stateUpdate(this.props.petsList);
-      this.handleClick();
     }
   };
 
@@ -49,12 +61,14 @@ class PetProfile extends React.Component {
             className="petname"
             defaultValue={pet.name}
             onChange={this.handleChange}
+            onMouseLeave={this.saveStatus}
+            onBlur={this.saveStatus}
             disabled={!isOwnProfile}
           />
         </div>
         <div className="petcontainer">
-          {this.state.toggle && (
-            <Popup confirm={this.remove} cancel={this.handleClick} />
+          {this.state.toggleDeletePopup && (
+            <Popup confirm={this.remove} cancel={this.toggleDeletePopup} />
           )}
           <span className="petinfo">
             <img src={require("../../images/like.png").default} alt="likes" />
@@ -64,6 +78,8 @@ class PetProfile extends React.Component {
               maxLength="20"
               defaultValue={pet.likes}
               onChange={this.handleChange}
+              onMouseLeave={this.saveStatus}
+              onBlur={this.saveStatus}
               disabled={!isOwnProfile}
             />
             <img
@@ -76,6 +92,8 @@ class PetProfile extends React.Component {
               maxLength="20"
               defaultValue={pet.dislikes}
               onChange={this.handleChange}
+              onMouseLeave={this.saveStatus}
+              onBlur={this.saveStatus}
               disabled={!isOwnProfile}
             />
           </span>
@@ -84,13 +102,16 @@ class PetProfile extends React.Component {
             name="description"
             className="description"
             defaultValue={pet.description}
+            placeholder={"Write anything about your pet here"}
             onChange={this.handleChange}
+            onMouseLeave={this.saveStatus}
+            onBlur={this.saveStatus}
             disabled={!isOwnProfile}
           />
         </div>
         <button
           className="pawfriends-styled-button deletepet"
-          onClick={this.handleClick}
+          onClick={this.toggleDeletePopup}
           disabled={!isOwnProfile}
         />
       </div>

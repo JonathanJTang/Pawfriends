@@ -18,7 +18,6 @@ class Profile extends React.Component {
       show: "info",
       user: {},
       currentUser: {},
-      // friends: {},
       isCurUserFriend: false,
     };
     // this.props.match.params.username is obtains from the URL
@@ -26,33 +25,41 @@ class Profile extends React.Component {
   }
 
   componentDidMount = async () => {
-    const currentUser = await getUserByUsername(this.props.currentUser);
-    if (currentUser !== undefined) {
-      this.setState({ currentUser: currentUser });
+    if (this.props.currentUser) {
+      const currentUser = await getUserByUsername(this.props.currentUser);
+      if (currentUser !== undefined) {
+        this.setState({ currentUser: currentUser });
+        await this.fetchData();
+      }
     }
-    await this.fetchData();
   };
 
   componentDidUpdate = async (prevProps) => {
     if (this.props.match.params.username !== prevProps.match.params.username) {
-      console.log("this.props.match.params.username !== prevProps.match.params.username");
+      console.log(
+        `this.props.match.params new username ${this.props.match.params.username} !== old username ${prevProps.match.params.username}`
+      );
       await this.fetchData();
     }
   };
 
   fetchData = async () => {
-    const user = await getUserByUsername(this.props.match.params.username);
-    if (user !== undefined) {
-      this.setState({ user: user });
+    if (this.props.match.params.username === this.state.currentUser.username) {
+      this.setState((prevState) => ({ user: prevState.currentUser }));
+    } else {
+      const user = await getUserByUsername(this.props.match.params.username);
+      if (user !== undefined) {
+        this.setState({ user: user });
+        if (
+          this.state.currentUser.friends.some(
+            (friendUser) => friendUser._id === user._id
+          )
+        ) {
+          this.setState({ isCurUserFriend: true });
+        }
+        this.setState({ show: "info" });
+      }
     }
-    if (
-      this.state.currentUser.friends.some(
-        (friendUser) => friendUser._id === user._id
-      )
-    ) {
-      this.setState({ isCurUserFriend: true });
-    }
-    this.setState({ show: "info" });
   };
 
   show = (e) => {
@@ -139,7 +146,15 @@ class Profile extends React.Component {
           </button>
         </div>
         {this.state.show === "info" && (
-          <Info user={user} isOwnProfile={isOwnProfile} />
+          <Info
+            user={user}
+            isOwnProfile={isOwnProfile}
+            statusStateUpdater={(newStatusStr) => {
+              this.setState((prevState) => ({
+                user: { ...prevState.user, status: newStatusStr },
+              }));
+            }}
+          />
         )}
         {this.state.show === "pets" && (
           <Pets user={user} isOwnProfile={isOwnProfile} />

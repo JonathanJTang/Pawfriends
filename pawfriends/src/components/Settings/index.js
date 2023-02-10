@@ -11,13 +11,6 @@ class Settings extends React.Component {
     this.state = { toggle: true };
   }
 
-  // componentDidMount = async () => {
-  //   const user = await getUserByUsername(this.props.currentUser);
-  //   if (user !== undefined) {
-  //     this.setState({ user: user });
-  //   }
-  // }
-
   handleClick = () => {
     this.state.toggle
       ? this.setState({ toggle: false })
