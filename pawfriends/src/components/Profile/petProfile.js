@@ -14,7 +14,7 @@ class PetProfile extends React.Component {
   handleChange = async (e) => {
     const pet = this.props.pet;
     pet[e.target.name] = e.target.value;
-    await editPet(pet, this.props.user._id, this.props.pet._id);
+    await editPet(pet, this.props.user.username, this.props.pet._id);
   };
 
   handleClick = () => {
@@ -24,7 +24,7 @@ class PetProfile extends React.Component {
   };
 
   remove = async () => {
-    const response = await removePet(this.props.user._id, this.props.pet._id);
+    const response = await removePet(this.props.user.username, this.props.pet._id);
     if (response !== undefined) {
       const i = this.props.petsList.indexOf(this.props.pet);
       this.props.petsList.splice(i, 1);

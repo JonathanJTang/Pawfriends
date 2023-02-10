@@ -172,16 +172,6 @@ export const getUserByUsername = (username) => {
   return promise;
 };
 
-// TODO: Get by ID removed, need to update
-export const getUserById = (userId) => {
-  const request = new Request(baseUrl + `/api/users/userId/${userId}`, {
-    method: "get",
-  });
-
-  const promise = fetchRequest(request);
-  return promise;
-};
-
 export const editStatus = (status, username) => {
   const request = new Request(baseUrl + `/api/users/${username}/status`, {
     method: "put",
@@ -196,10 +186,10 @@ export const editStatus = (status, username) => {
   return promise;
 };
 
-export const updateSettings = (status, username) => {
+export const updateSettings = (settings, username) => {
   const request = new Request(baseUrl + `/api/users/${username}/settings`, {
     method: "put",
-    body: JSON.stringify(status),
+    body: JSON.stringify(settings),
     headers: {
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json",
@@ -210,8 +200,8 @@ export const updateSettings = (status, username) => {
   return promise;
 };
 
-export const addPet = (pet, userId) => {
-  const request = new Request(baseUrl + `/api/users/${userId}/pets`, {
+export const addPet = (pet, username) => {
+  const request = new Request(baseUrl + `/api/users/${username}/pets`, {
     method: "post",
     body: JSON.stringify(pet),
     headers: {
@@ -224,8 +214,8 @@ export const addPet = (pet, userId) => {
   return promise;
 };
 
-export const editPet = (pet, userId, petId) => {
-  const request = new Request(baseUrl + `/api/users/${userId}/${petId}`, {
+export const editPet = (pet, username, petId) => {
+  const request = new Request(baseUrl + `/api/users/${username}/${petId}`, {
     method: "put",
     body: JSON.stringify(pet),
     headers: {
@@ -238,8 +228,8 @@ export const editPet = (pet, userId, petId) => {
   return promise;
 };
 
-export const removePet = (userId, petId) => {
-  const request = new Request(baseUrl + `/api/users/${userId}/${petId}`, {
+export const removePet = (username, petId) => {
+  const request = new Request(baseUrl + `/api/users/${username}/${petId}`, {
     method: "delete",
   });
 
@@ -247,9 +237,9 @@ export const removePet = (userId, petId) => {
   return promise;
 };
 
-export const addFriend = (userId, friendId) => {
+export const addFriend = (curUsername, friendUsername) => {
   const request = new Request(
-    baseUrl + `/api/users/${userId}/friends/${friendId}`,
+    baseUrl + `/api/users/${curUsername}/friends/${friendUsername}`,
     {
       method: "put",
     }
@@ -259,9 +249,9 @@ export const addFriend = (userId, friendId) => {
   return promise;
 };
 
-export const removeFriend = (userId, friendId) => {
+export const removeFriend = (curUsername, friendUsername) => {
   const request = new Request(
-    baseUrl + `/api/users/${userId}/friends/${friendId}`,
+    baseUrl + `/api/users/${curUsername}/friends/${friendUsername}`,
     {
       method: "delete",
     }

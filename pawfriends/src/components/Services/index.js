@@ -87,17 +87,21 @@ class Services extends React.Component {
   render() {
     let filtered = this.state.servicesList;
 
-    // filter by userId
+    // Filter by username
     if (this.state.filterkey !== "" && this.state.filter === "user") {
       filtered = this.state.servicesList.filter((service) =>
-        service.owner.actualName.startsWith(this.state.filterkey)
+        service.owner.actualName
+          .toLowerCase()
+          .includes(this.state.filterkey.toLowerCase())
       );
     }
 
-    // filter by post tags
+    // Filter by post tags
     if (this.state.filterkey !== "" && this.state.filter === "tag") {
       filtered = this.state.servicesList.filter((service) =>
-        service.tags.some((tag) => tag.startsWith(this.state.filterkey))
+        service.tags.some((tag) =>
+          tag.toLowerCase().includes(this.state.filterkey.toLowerCase())
+        )
       );
     }
 
@@ -155,15 +159,9 @@ class Services extends React.Component {
         <div className="postsList">
           <div className="filter">
             <select value={this.state.filter} onChange={this.setFilter}>
-              <option value="all">
-                All
-              </option>
-              <option value="user">
-                UserID
-              </option>
-              <option value="tag">
-                Tag
-              </option>
+              <option value="all">All</option>
+              <option value="user">Username</option>
+              <option value="tag">Tag</option>
             </select>
             {this.state.filter !== "all" && (
               <input

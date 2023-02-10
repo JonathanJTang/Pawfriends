@@ -7,7 +7,6 @@ import Friends from "./friends.js";
 
 import {
   getUserByUsername,
-  getUserById,
   addFriend,
   removeFriend,
 } from "../../actions/apiRequests";
@@ -19,38 +18,41 @@ class Profile extends React.Component {
       show: "info",
       user: {},
       currentUser: {},
-      friends: {},
-      isFriend: false,
+      // friends: {},
+      isCurUserFriend: false,
     };
+    // this.props.match.params.username is obtains from the URL
+    // /profile/:username
   }
 
   componentDidMount = async () => {
+    const currentUser = await getUserByUsername(this.props.currentUser);
+    if (currentUser !== undefined) {
+      this.setState({ currentUser: currentUser });
+    }
     await this.fetchData();
   };
 
   componentDidUpdate = async (prevProps) => {
-    if (this.props.match.params.id !== prevProps.match.params.id) {
+    if (this.props.match.params.username !== prevProps.match.params.username) {
+      console.log("this.props.match.params.username !== prevProps.match.params.username");
       await this.fetchData();
     }
   };
 
   fetchData = async () => {
-    const user = await getUserByUsername(this.props.match.params.id);
+    const user = await getUserByUsername(this.props.match.params.username);
     if (user !== undefined) {
       this.setState({ user: user });
     }
-    const currentUser = await getUserByUsername(this.props.currentUser);
-    if (currentUser !== undefined) {
-      this.setState({ currentUser: currentUser });
+    if (
+      this.state.currentUser.friends.some(
+        (friendUser) => friendUser._id === user._id
+      )
+    ) {
+      this.setState({ isCurUserFriend: true });
     }
-    if (currentUser.friends && currentUser.friends.includes(user._id)) {
-      this.setState({ isFriend: true });
-    }
-    const friends = user.friends;
-    for (let i = 0; i < friends.length; i++) {
-      friends[i] = await getUserById(friends[i]);
-    }
-    this.setState({ show: "info", friends: friends });
+    this.setState({ show: "info" });
   };
 
   show = (e) => {
@@ -59,21 +61,21 @@ class Profile extends React.Component {
 
   handleAdd = async () => {
     const response = await addFriend(
-      this.state.currentUser._id,
-      this.state.user._id
+      this.state.currentUser.username,
+      this.state.user.username
     );
     if (response !== undefined) {
-      this.setState({ isFriend: true });
+      this.setState({ isCurUserFriend: true });
     }
   };
 
   handleRemove = async () => {
     const response = await removeFriend(
-      this.state.currentUser._id,
-      this.state.user._id
+      this.state.currentUser.username,
+      this.state.user.username
     );
     if (response !== undefined) {
-      this.setState({ isFriend: false });
+      this.setState({ isCurUserFriend: false });
     }
   };
 
@@ -83,7 +85,7 @@ class Profile extends React.Component {
 
     let friendButton = null;
     if (!isOwnProfile) {
-      if (!this.state.isFriend) {
+      if (!this.state.isCurUserFriend) {
         friendButton = (
           <button className="pawfriends-styled-button" onClick={this.handleAdd}>
             Add Friend
@@ -146,7 +148,7 @@ class Profile extends React.Component {
           <Friends
             user={user}
             isOwnProfile={isOwnProfile}
-            friends={this.state.friends}
+            friends={this.state.user.friends}
           />
         )}
       </div>

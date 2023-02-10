@@ -217,6 +217,8 @@ const modifyPostResponse = async (response, postOwner, curUser) => {
   response.userLiked = response.likedUsers.some(
     (userObjectId) => curUser._id.toString() === userObjectId.toString()
   );
+  // Only the post owner can mark completion / delete the post
+  response.curUserIsOwner = postOwner._id.toString() === curUser._id.toString();
 
   // Populate comments array
   for (const comment of response.comments) {
@@ -651,6 +653,15 @@ jsonApiRouter.get("/users/:username", async (req, res) => {
       userObj.location = "Somewhere, Earth";
     }
 
+    // Populate friends array with basic user info
+    for (let i = 0; i < userObj.friends.length; i++) {
+      const friendObj = await User.findById(userObj.friends[i])
+        .select(globals.POST_OWNER_PROJECTION)
+        .lean();
+      userObj.friends[i] = {};
+      addOwnerObjInfo(userObj.friends[i], friendObj);
+    }
+
     res.send(userObj);
   } catch (error) {
     handleError(error, res);
@@ -660,8 +671,7 @@ jsonApiRouter.get("/users/:username", async (req, res) => {
 /* Save user status change. */
 jsonApiRouter.put("/users/:username/status", async (req, res) => {
   if (req.session.username !== req.params.username) {
-    // Comparison validates username
-    // Users can only edit their own account
+    // Comparison validates username; users can only edit their own account
     res.status(403).send("Forbidden");
     return;
   }
@@ -684,15 +694,14 @@ jsonApiRouter.put("/users/:username/status", async (req, res) => {
 /* Save user settings change. */
 jsonApiRouter.put("/users/:username/settings", async (req, res) => {
   if (req.session.username !== req.params.username) {
-    // Comparison validates username
-    // Users can only edit their own account
+    // Comparison validates username; users can only edit their own account
     res.status(403).send("Forbidden");
     return;
   }
   try {
     // Validate user input
     if (
-      notValidString(req.params.actualName) ||
+      notValidString(req.body.actualName) ||
       !["Male", "Female", "Secret"].includes(req.body.gender) ||
       typeof req.body.birthday !== "string" ||
       typeof req.body.location !== "string"
@@ -715,9 +724,9 @@ jsonApiRouter.put("/users/:username/settings", async (req, res) => {
 });
 
 /* Add a new pet to user's profile. */
-jsonApiRouter.post("/users/:userId/pets", async (req, res) => {
-  if (req.session.userId !== req.params.userId) {
-    // Users can only edit their own account
+jsonApiRouter.post("/users/:username/pets", async (req, res) => {
+  if (req.session.username !== req.params.username) {
+    // Comparison validates username; users can only edit their own account
     res.status(403).send("Forbidden");
     return;
   }
@@ -749,9 +758,9 @@ jsonApiRouter.post("/users/:userId/pets", async (req, res) => {
 });
 
 /* Save pet information. */
-jsonApiRouter.put("/users/:userId/:petId", async (req, res) => {
-  if (req.session.userId !== req.params.userId) {
-    // Users can only edit their own account
+jsonApiRouter.put("/users/:username/:petId", async (req, res) => {
+  if (req.session.username !== req.params.username) {
+    // Comparison validates username; users can only edit their own account
     res.status(403).send("Forbidden");
     return;
   }
@@ -785,9 +794,9 @@ jsonApiRouter.put("/users/:userId/:petId", async (req, res) => {
 });
 
 /* Delete a pet. */
-jsonApiRouter.delete("/users/:userId/:petId", async (req, res) => {
-  if (req.session.userId !== req.params.userId) {
-    // Users can only edit their own account
+jsonApiRouter.delete("/users/:username/:petId", async (req, res) => {
+  if (req.session.username !== req.params.username) {
+    // Comparison validates username; users can only edit their own account
     res.status(403).send("Forbidden");
     return;
   }
@@ -809,23 +818,33 @@ jsonApiRouter.delete("/users/:userId/:petId", async (req, res) => {
 });
 
 /* Add a friend. */
-jsonApiRouter.put("/users/:userId/friends/:friendId", async (req, res) => {
-  if (req.session.userId !== req.params.userId) {
-    // Users can only edit their own account
+jsonApiRouter.put("/users/:username/friends/:friendUsername", async (req, res) => {
+  if (req.session.username !== req.params.username) {
+    // Comparison validates username; users can only edit their own account
     res.status(403).send("Forbidden");
     return;
   }
   try {
-    if (!isObjectIdOrHexString(req.params.friendId)) {
+    // Validate input (content must be an nonempty string)
+    if (notValidString(req.params.friendUsername)) {
       res.status(404).send("Not Found");
       return;
     }
+    // Search for user
+    const friendObj = await User.findOne({ username: req.params.friendUsername })
+      .select("_id").lean();
+    if (friendObj === null) {
+      res.status(404).send("Friend username does not exist");
+      return;
+    }
+    const friendId = friendObj._id;
+
     // Don't add if already friends
-    if (req.curUser.friends.includes(req.params.friendId)) {
+    if (req.curUser.friends.includes(friendId)) {
       res.send({}); // Don't send error code for no-op
       return;
     }
-    req.curUser.friends.push(req.params.friendId);
+    req.curUser.friends.push(friendId);
     await req.curUser.save();
 
     res.send({});
@@ -835,23 +854,33 @@ jsonApiRouter.put("/users/:userId/friends/:friendId", async (req, res) => {
 });
 
 /* Remove a friend. */
-jsonApiRouter.delete("/users/:userId/friends/:friendId", async (req, res) => {
-  if (req.session.userId !== req.params.userId) {
-    // Users can only edit their own account
+jsonApiRouter.delete("/users/:username/friends/:friendUsername", async (req, res) => {
+  if (req.session.username !== req.params.username) {
+    // Comparison validates username; users can only edit their own account
     res.status(403).send("Forbidden");
     return;
   }
   try {
-    if (!isObjectIdOrHexString(req.params.friendId)) {
+    // Validate input (content must be an nonempty string)
+    if (notValidString(req.params.friendUsername)) {
       res.status(404).send("Not Found");
       return;
     }
+    // Search for user
+    const friendObj = await User.findOne({ username: req.params.friendUsername })
+      .select("_id").lean();
+    if (friendObj === null) {
+      res.status(404).send("Friend username does not exist");
+      return;
+    }
+    const friendId = friendObj._id;
+
     // Only remove friend that exists
-    if (!req.curUser.friends.includes(req.params.friendId)) {
+    if (!req.curUser.friends.includes(friendId)) {
       res.status(404).send("Not Found");
       return;
     }
-    const index = req.curUser.friends.indexOf(req.params.friendId);
+    const index = req.curUser.friends.indexOf(friendId);
     req.curUser.friends.splice(index, 1);
     await req.curUser.save();
 

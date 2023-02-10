@@ -29,14 +29,14 @@ class Pets extends React.Component {
   };
 
   handleChange = (e) => {
-    this.state.setState((prevState) => ({
+    this.setState((prevState) => ({
       newPet: { ...prevState.newPet, [e.target.name]: e.target.value },
     }));
   };
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const pet = await addPet(this.state.newPet, this.props.user._id);
+    const pet = await addPet(this.state.newPet, this.props.user.username);
     if (pet !== undefined) {
       this.state.pets.push(pet);
       this.setState({

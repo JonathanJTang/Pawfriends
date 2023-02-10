@@ -11,8 +11,8 @@ const { ImageSchema } = require("./image");
 
 const PetSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  likes: { type: String, required: true },
-  dislikes: { type: String, required: true },
+  likes: String,
+  dislikes: String,
   description: String,
 });
 
