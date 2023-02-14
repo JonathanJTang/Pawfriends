@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles.css";
 
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Dropdown from "../Dropdown";
 
 /* NavBar component (used in most pages) */
@@ -9,6 +9,9 @@ class NavBar extends React.Component {
   render() {
     return (
       <div className="navbar">
+        {/* The image is added using a CSS "before" selector on the link for
+            simplicity */}
+        <Link to="/" className="pawfriends-icon" />
         {this.props.currentUsername ? (
           <>
             <ul>

@@ -9,7 +9,7 @@
   background-color: white;
 }
 
-.navbar::after {
+.navbar .pawfriends-icon::before {
   content: url("../../images/logo.png");
   position: absolute;
   top: 10px;
