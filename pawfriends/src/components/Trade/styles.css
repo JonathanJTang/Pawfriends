@@ -6,7 +6,7 @@
 
 .trade-bar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .trade-bar > div {

@@ -127,9 +127,7 @@ const processFilesForEntry = async (filesObj, entry) => {
   let fileExt, isValidFileType;
   if (hasImage) {
     fileExt = path.extname(filesObj.image.name).toLowerCase();
-    isValidFileType = globals.VALID_IMAGE_FILE_TYPES.includes(
-      fileExt.slice(1)
-    );
+    isValidFileType = globals.VALID_IMAGE_FILE_TYPES.includes(fileExt.slice(1));
     if (isValidFileType) {
       // There's a valid uploaded image, upload it to the Cloudinary server
       const imageInfo = await uploadImage(filesObj.image.path);
@@ -572,7 +570,7 @@ jsonApiRouter.get("/trades/:tradeId", async (req, res) => {
 jsonApiRouter.post("/trades", multipartMiddleware, async (req, res) => {
   try {
     // Validate user input (title and content must be nonempty strings)
-    if (notValidString(req.body.title)) {
+    if (notValidString(req.body.title) || notValidString(req.body.location)) {
       res.status(400).send("Bad Request");
       return;
     }
@@ -582,6 +580,7 @@ jsonApiRouter.post("/trades", multipartMiddleware, async (req, res) => {
       owner: req.curUser._id,
       postTime: new Date(), // use current server time
       title: req.body.title,
+      location: req.body.location,
       images: [],
       done: false,
     });

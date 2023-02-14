@@ -10,7 +10,10 @@ class CreateTradeForm extends React.Component {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    const trade = await createTrade({ title: formData.get("title") });
+    const trade = await createTrade({
+      title: formData.get("title"),
+      location: formData.get("location"),
+    });
     if (trade !== undefined) {
       // Server call succeeded
       this.props.tradesList.unshift(trade);
@@ -27,6 +30,13 @@ class CreateTradeForm extends React.Component {
           type="text"
           name="title"
           placeholder="Description of trade:"
+          required
+        />
+        <input
+          name="location"
+          className="create-posting"
+          type="text"
+          placeholder="Your location:"
           required
         />
         <input

@@ -62,6 +62,7 @@ class Trade extends React.Component {
           <Popup confirm={this.remove} cancel={this.handleClick} />
         )}
         <div className="trade-bar">
+          <div className="location">{trade.location}</div>
           <div>
             <CheckButton trade={trade} stateUpdate={this.stateUpdate} />
           </div>
