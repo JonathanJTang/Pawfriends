@@ -47,7 +47,7 @@ class PetProfile extends React.Component {
       <div className="pet">
         <div className="pet-container">
           <img
-            src="http://placekitten.com/g/150/150"
+            src="https://res.cloudinary.com/dypmf5kee/image/upload/v1676417081/pawfriends/defaultPetAvatar.jpg"
             alt="pet"
             className="pet-avatar"
           />

@@ -14,6 +14,7 @@ const PetSchema = new mongoose.Schema({
   likes: String,
   dislikes: String,
   description: String,
+  // profilePicture: ImageSchema,
 });
 
 const UserSchema = new mongoose.Schema({
@@ -92,7 +93,7 @@ UserSchema.statics.usernamePasswordValid = function (username, password) {
           resolve(
             user.toObject({
               transform: (doc, objRep, options) => {
-                delete objRep.password;  // Don't expose this to other functions
+                delete objRep.password; // Don't expose this to other functions
                 return objRep;
               },
             })

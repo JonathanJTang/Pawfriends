@@ -65,7 +65,7 @@ class Pets extends React.Component {
             {this.state.addPet && (
               <form className="add-pet" onSubmit={this.handleSubmit}>
                 <img
-                  src="http://placekitten.com/g/150/150"
+                  src="https://res.cloudinary.com/dypmf5kee/image/upload/v1676417081/pawfriends/defaultPetAvatar.jpg"
                   alt="pet"
                   className="pet-avatar"
                 />
