@@ -9,8 +9,8 @@ class Popup extends React.Component {
     return (
       <div className="popup">
         <div className="popup-content">
-          <h2>Are you sure?</h2>
-          <p>Warning: Once deleted this can't be recovered!</p>
+          <h2>{this.props.title}</h2>
+          <p>{this.props.content}</p>
           <div>
             <button
               className="pawfriends-styled-button popup-button"

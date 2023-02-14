@@ -11,7 +11,7 @@ class Trade extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      toggle: false,
+      showDeletePopup: false,
       contactToggle: false,
     };
   }
@@ -30,14 +30,14 @@ class Trade extends React.Component {
       );
       this.props.trades.splice(i, 1);
       this.props.stateUpdate(this.props.trades);
-      this.handleClick();
+      this.handleDeleteClick();
     }
   };
 
-  handleClick = () => {
-    this.state.toggle
-      ? this.setState({ toggle: false })
-      : this.setState({ toggle: true });
+  handleDeleteClick = () => {
+    this.state.showDeletePopup
+      ? this.setState({ showDeletePopup: false })
+      : this.setState({ showDeletePopup: true });
   };
 
   handleContactToggle = () => {
@@ -58,8 +58,13 @@ class Trade extends React.Component {
 
     return (
       <div className="trade">
-        {this.state.toggle && (
-          <Popup confirm={this.remove} cancel={this.handleClick} />
+        {this.state.showDeletePopup && (
+          <Popup
+            title="Are you sure?"
+            content="Warning: Once deleted this can't be recovered!"
+            confirm={this.remove}
+            cancel={this.handleDeleteClick}
+          />
         )}
         <div className="trade-bar">
           <div className="location">{trade.location}</div>
@@ -85,7 +90,7 @@ class Trade extends React.Component {
           {trade.curUserIsOwner && (
             <span
               className="delete-post post-header-grey"
-              onClick={this.handleClick}
+              onClick={this.handleDeleteClick}
             >
               Delete trade entry
             </span>

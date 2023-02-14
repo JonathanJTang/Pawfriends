@@ -60,7 +60,12 @@ class Post extends React.Component {
     return (
       <div className="post">
         {this.state.showDeletePopup && (
-          <Popup confirm={this.removePost} cancel={this.handleClick} />
+          <Popup
+            title="Are you sure?"
+            content="Warning: Once deleted this can't be recovered!"
+            confirm={this.removePost}
+            cancel={this.handleClick}
+          />
         )}
         <div className="post-header">
           <Link to={"/profile/" + postOwner.username}>
