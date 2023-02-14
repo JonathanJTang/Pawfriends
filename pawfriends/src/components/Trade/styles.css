@@ -4,6 +4,10 @@
   cursor: pointer;
 }
 
+.trade-bar-btn .trade-done {
+  opacity: 0.2;
+}
+
 .trade-bar {
   display: flex;
   justify-content: space-between;
