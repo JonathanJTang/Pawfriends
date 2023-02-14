@@ -1,49 +1,7 @@
 /* Styles for the Posts React component */
 
-.postsList {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin: 50px;
-  width: 500px;
-  min-height: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.createPost {
-  background-color: white;
-  width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 0;
-  border-radius: 0.2em;
-}
-
-.createPostTextarea {
-  padding: 10px;
-  width: 95%;
-  border: 1px solid #bde0e5;
-  border-radius: 0.2em;
-  /* transition: .2s ease; */
-  resize: none;
-  font-family: "Karla", sans-serif;
-  outline: none;
-  box-sizing: border-box;
-  text-align: left;
-}
-
-.createPostTextarea::-webkit-scrollbar {
-  display: none;
-}
-
-.createPostImageUpload {
-  letter-spacing: 0.2em;
+.create-posting-image-upload {
+  letter-spacing: 0.1em;
   color: white;
   background-color: #bde0e5;
   cursor: pointer;

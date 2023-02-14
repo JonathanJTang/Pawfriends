@@ -1,11 +1,11 @@
-.set {
+.settings {
   display: flex;
   margin: auto;
   padding: 0 50px 30px 50px;
   width: 850px;
 }
 
-.set-nav {
+.settings-nav {
   flex: 0.3;
   margin-left: 50px;
   border-radius: 0.2em 0 0 0.2em;
@@ -14,16 +14,7 @@
   border-right: 1px solid #f3f2f2;
 }
 
-.set-form img {
-  margin: auto;
-  width: 120px;
-  height: 120px;
-  border: 2px solid #c1e2e7;
-  padding: 3px;
-  border-radius: 10em;
-}
-
-.set-nav li {
+.settings-nav li {
   padding: 20px;
   border-right: 2px solid transparent;
   border-bottom: 1px solid #f3f2f2;
@@ -31,13 +22,13 @@
   cursor: pointer;
 }
 
-.set-nav li:hover,
-.set-toggle {
+.settings-nav li:hover,
+.settings-toggle {
   background-color: #fafafa;
   border-right-color: #c1e2e7 !important;
 }
 
-.set-form {
+.settings-form {
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -47,49 +38,34 @@
   background-color: white;
 }
 
-.set-form label {
+.settings-form img {
+  margin: auto;
+  width: 120px;
+  height: 120px;
+  border: 2px solid #c1e2e7;
+  padding: 3px;
+  border-radius: 10em;
+}
+
+.settings-form label {
   display: flex;
   font-weight: bold;
   text-transform: uppercase;
 }
 
-.set-form p {
-  flex: 0.5;
-  text-align: left;
-  letter-spacing: 0.2em;
-}
-
-.set-form input,
-.set-form select {
+.settings-form input,
+.settings-form select {
   padding: 10px 0;
+  font-size: 16px;
 }
 
-.set-form input[type="submit"] {
-  margin: auto;
+.settings-form input[type="submit"] {
+  /* The 3 values for margin are: top left-right bottom*/
+  margin: 10px auto 0;
   width: 50%;
   background-color: #b6bbd8;
 }
 
-.set-form input[type="submit"]:hover {
+.settings-form input[type="submit"]:hover {
   background-color: #c1e2e7;
-}
-
-.set-form button {
-  display: inline-block;
-  margin: 0 30px;
-  border: none;
-  background-color: transparent;
-  opacity: 0.5;
-}
-
-.set-form button:hover {
-  opacity: 1;
-}
-
-.btn-cat::after {
-  content: url("../../images/cat.png");
-}
-
-.btn-dog::after {
-  content: url("../../images/dog.png");
 }

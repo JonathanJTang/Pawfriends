@@ -12,11 +12,11 @@ class CreateCommentBar extends React.Component {
   }
 
   handleFocus = () => {
-    this.setState({ status: "editComment" });
+    this.setState({ status: "edit-comment" });
   };
 
   handleBlur = (e) => {
-    if (!e.currentTarget.children.namedItem("commentText").value) {
+    if (!e.currentTarget.children.namedItem("comment-text").value) {
       // Only set status back to "default" if there wasn't any text entered
       this.setState({ status: "default" });
     }
@@ -24,7 +24,7 @@ class CreateCommentBar extends React.Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const textarea = e.currentTarget.children.namedItem("commentText");
+    const textarea = e.currentTarget.children.namedItem("comment-text");
     const commentText = textarea.value;
     if (commentText) {
       const comment = await createComment(
@@ -48,7 +48,7 @@ class CreateCommentBar extends React.Component {
     return (
       <div>
         <form
-          className="commentForm"
+          className="comment-form"
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           onSubmit={this.handleSubmit}
@@ -56,21 +56,17 @@ class CreateCommentBar extends React.Component {
           <AutoResizeTextarea
             minRows={1}
             className={
-              "commentTextarea" +
-              (this.state.status === "editComment" ? " editComment" : "")
+              "comment-textarea" +
+              (this.state.status === "edit-comment" ? " edit-comment" : "")
             }
             type="text"
-            name="commentText"
+            name="comment-text"
             placeholder="Leave a comment:"
             rows="1"
             required
           />
-          {this.state.status === "editComment" && (
-            <input
-              type="submit"
-              value="Comment"
-              className="commentSubmitButton"
-            />
+          {this.state.status === "edit-comment" && (
+            <input type="submit" value="Comment" className="comment-submit" />
           )}
         </form>
       </div>

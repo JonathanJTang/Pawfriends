@@ -27,7 +27,7 @@ class Service extends React.Component {
     const servicePostOwner = service.owner;
 
     return (
-      <div className="trade">
+      <div className="service">
         <div className="post-header">
           <Link to={`/profile/${servicePostOwner.username}`}>
             <img
@@ -52,7 +52,7 @@ class Service extends React.Component {
           </div>
         </div>
         {this.state.toggleShowContactInfo ? (
-          <div className="tradeinfo">
+          <div className="service-contact-info">
             <div>
               <strong>Email:</strong>
               <strong>Phone:</strong>

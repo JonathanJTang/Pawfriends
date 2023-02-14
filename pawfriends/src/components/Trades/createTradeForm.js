@@ -2,6 +2,7 @@ import React from "react";
 import "./styles.css";
 
 import AutoResizeTextarea from "../AutoResizeTextarea";
+
 import { createTrade } from "../../actions/apiRequests";
 
 class CreateTradeForm extends React.Component {
@@ -19,10 +20,10 @@ class CreateTradeForm extends React.Component {
 
   render() {
     return (
-      <form className="createPost" onSubmit={this.handleSubmit}>
+      <form className="create-posting" onSubmit={this.handleSubmit}>
         <AutoResizeTextarea
           minRows={2}
-          className="createPostTextarea"
+          className="create-posting"
           type="text"
           name="title"
           placeholder="Description of trade:"
@@ -31,7 +32,7 @@ class CreateTradeForm extends React.Component {
         <input
           type="submit"
           value="Create Trade Posting"
-          className="createPostSubmitButton pawfriends-styled-button"
+          className="create-posting-submit pawfriends-styled-button"
         />
       </form>
     );

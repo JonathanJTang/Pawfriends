@@ -42,7 +42,7 @@ class App extends React.Component {
   render() {
     const { currentUsername, isAdmin } = this.state;
     return (
-      <div className="App">
+      <div className="app">
         {currentUsername && isAdmin ? (
           <NavBarAdmin />
         ) : (

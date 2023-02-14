@@ -1,23 +1,25 @@
-.tradeinfo {
+.trade-bar-btn {
+  display: inline-block;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.trade-bar {
   display: flex;
-  gap: 10px;
+  justify-content: flex-end;
 }
 
-.tradeinfo div {
+.trade-bar > div {
   display: flex;
-  flex-direction: column;
-  flex: 0.5;
+  align-items: center;
 }
 
-.tradeinfo div p {
-  text-align: left;
-  margin: 0;
+.trade-bar .location {
+  margin: 0px;
+  padding: auto;
+  opacity: 0.6;
 }
 
-.postText p a {
-  color: #a49acf;
-}
-
-.postText p a:hover {
-  color: black;
+.trade-bar .location::before {
+  content: url("../../images/location.png");
 }

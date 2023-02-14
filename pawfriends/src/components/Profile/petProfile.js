@@ -1,7 +1,9 @@
 import React from "react";
+import "./petProfile.css";
+
+import Popup from "../Popup";
 
 import { editPet, removePet } from "../../actions/apiRequests";
-import Popup from "../Popup";
 
 class PetProfile extends React.Component {
   constructor(props) {
@@ -43,15 +45,15 @@ class PetProfile extends React.Component {
 
     return (
       <div className="pet">
-        <div className="petcontainer">
+        <div className="pet-container">
           <img
             src="http://placekitten.com/g/150/150"
             alt="pet"
-            className="petimg"
+            className="pet-avatar"
           />
           <textarea
             name="name"
-            className="petname"
+            className="pet-name sacramento-cursive"
             defaultValue={pet.name}
             onChange={this.handleChange}
             onMouseLeave={this.saveStatus}
@@ -59,12 +61,16 @@ class PetProfile extends React.Component {
             disabled={!isOwnProfile}
           />
         </div>
-        <div className="petcontainer">
+        <div className="pet-container pet-info">
           {this.state.toggleDeletePopup && (
             <Popup confirm={this.remove} cancel={this.toggleDeletePopup} />
           )}
-          <span className="petinfo">
-            <img src={require("../../images/like.png").default} alt="likes" />
+          <span className="pet-info-likes-dislikes">
+            <img
+              src={require("../../images/like.png").default}
+              alt="likes"
+              className="field-icon"
+            />
             <textarea
               name="likes"
               className="likes"
@@ -78,6 +84,7 @@ class PetProfile extends React.Component {
             <img
               src={require("../../images/dislike.png").default}
               alt="dislikes"
+              className="field-icon"
             />
             <textarea
               name="dislikes"
@@ -95,7 +102,9 @@ class PetProfile extends React.Component {
             name="description"
             className="description"
             defaultValue={pet.description}
-            placeholder={"Write anything about your pet here"}
+            placeholder={
+              isOwnProfile ? "Write anything about your pet here" : ""
+            }
             onChange={this.handleChange}
             onMouseLeave={this.saveStatus}
             onBlur={this.saveStatus}
@@ -103,7 +112,7 @@ class PetProfile extends React.Component {
           />
         </div>
         <button
-          className="deletepet"
+          className="delete-pet"
           onClick={this.toggleDeletePopup}
           disabled={!isOwnProfile}
         />

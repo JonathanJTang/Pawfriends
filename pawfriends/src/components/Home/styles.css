@@ -1,102 +1,19 @@
-@import url("https://fonts.googleapis.com/css2?family=Sacramento&display=swap");
 .home {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
-  gap: 10px;
+  gap: 15px;
   padding: 20px;
 }
 
 .home h1 {
   margin: auto;
   margin-top: -50px;
-  font-family: Sacramento, cursive;
-  font-size: 36px;
 }
 
 /* These are the columns on the homepage*/
 .home > div {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-.post-header-grey,
-.tradeinfo p,
-.delete-post,
-.tradebar p {
-  opacity: 0.6;
-}
-
-.trade,
-.service {
-  background-color: white;
-  border-radius: 0.2em;
-  overflow: hidden;
-  position: relative;
-  padding: 10px;
-}
-
-.trade > .post-header,
-.service > .post-header {
-  border-bottom: 1px solid #f3f2f2;
-  margin-bottom: 10px;
-}
-
-.trade > img {
-  display: block;
-  margin: auto;
-  width: 150px;
-  height: 150px;
-  border: 1px solid #eeeeee;
-  border-radius: 5em;
-  margin-top: 10px;
-}
-
-.post-header {
-  position: relative;
-  display: flex;
-  padding: 15px;
-  gap: 20px;
-}
-
-.post-header p,
-.post-header h3 {
-  margin: 0;
-}
-
-.post-header-info {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  white-space: pre-line;
-  gap: 3px;
-}
-
-.trade .post-header,
-.service .post-header {
-  padding: 5px; /* .trade and .service already have 10px of padding */
-}
-
-.trade .post-header-info,
-.service .post-header-info {
-  gap: 7px;
-}
-
-.avatar-img {
-  width: 80px;
-  height: 80px;
-  border: 1px solid #eeeeee;
-  border-radius: 5em;
-}
-
-.delete-post {
-  display: block;
-  text-align: right;
-  cursor: pointer;
-  height: fit-content;
-  width: fit-content;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+  gap: 15px;
 }

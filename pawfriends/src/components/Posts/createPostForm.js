@@ -38,9 +38,9 @@ class CreatePostForm extends React.Component {
 
   render() {
     return (
-      <form className="createPost" onSubmit={this.handleSubmit}>
+      <form className="create-posting" onSubmit={this.handleSubmit}>
         <input
-          className="createPostTitle createPostTextarea"
+          className="create-posting"
           type="text"
           name="title"
           placeholder="Post title:"
@@ -48,14 +48,14 @@ class CreatePostForm extends React.Component {
         />
         <AutoResizeTextarea
           minRows={2}
-          className="createPostBody createPostTextarea"
+          className="create-posting"
           type="text"
           name="content"
           placeholder="Write a message:"
           required
         />
         <input
-          className="createPostImageUpload"
+          className="create-posting-image-upload"
           type="file"
           name="image"
           accept={this.validFileTypes.join(", ")}
@@ -63,7 +63,7 @@ class CreatePostForm extends React.Component {
         <input
           type="submit"
           value="Create Post"
-          className="createPostSubmitButton pawfriends-styled-button"
+          className="create-posting-submit pawfriends-styled-button"
         />
       </form>
     );

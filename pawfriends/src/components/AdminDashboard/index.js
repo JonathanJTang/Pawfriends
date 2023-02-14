@@ -11,29 +11,33 @@ class AdminDashboard extends React.Component {
 
     return (
       <div className="stats">
-        <div className="statsTableContainer">
+        <div className="stats-table-container">
           <h2>Site Statistics</h2>
-          <table className="statsTable">
+          <table className="stats-table">
             <tbody>
-              <tr className="statsTableRow">
-                <td className="statsTableLeftCell">Number of regular users</td>
-                <td className="statsTableRightCell">
+              <tr className="stats-table-row">
+                <td className="stats-table-left-cell">
+                  Number of regular users
+                </td>
+                <td className="stats-table-right-cell">
                   {appState.users.reduce((total, user) => {
                     return user.type === "user" ? total + 1 : total;
                   }, 0)}
                 </td>
               </tr>
-              <tr className="statsTableRow">
-                <td className="statsTableLeftCell">Number of admin users</td>
-                <td className="statsTableRightCell">
+              <tr className="stats-table-row">
+                <td className="stats-table-left-cell">Number of admin users</td>
+                <td className="stats-table-right-cell">
                   {appState.users.reduce((total, user) => {
                     return user.type === "admin" ? total + 1 : total;
                   }, 0)}
                 </td>
               </tr>
-              <tr className="statsTableRow">
-                <td className="statsTableLeftCell">Total number of posts</td>
-                <td className="statsTableRightCell">{appState.posts.length}</td>
+              <tr className="stats-table-row">
+                <td className="stats-table-left-cell">Total number of posts</td>
+                <td className="stats-table-right-cell">
+                  {appState.posts.length}
+                </td>
               </tr>
             </tbody>
           </table>

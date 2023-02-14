@@ -40,14 +40,14 @@ class Info extends React.Component {
     return (
       <>
         {Object.entries(userObj).length !== 0 && (
-          <div className="card">
+          <div className="profile-card">
             {/* face of card: profile pic, name, status */}
             {!this.state.flip && (
               <div>
                 <img
                   src={userObj.profilePicture.imageUrl}
                   alt="profile"
-                  className="avatar"
+                  className="avatar-large"
                 />
 
                 <img
@@ -59,7 +59,7 @@ class Info extends React.Component {
                   className="gender"
                 />
 
-                <h1>{userObj.actualName}</h1>
+                <h1 className="sacramento-cursive">{userObj.actualName}</h1>
                 <textarea
                   className="status"
                   maxLength="26"
@@ -74,7 +74,7 @@ class Info extends React.Component {
 
             {/* back of card: user's information */}
             {this.state.flip && (
-              <div className="cardinfo">
+              <div className="profile-card-info">
                 <h2>{`About ${userObj.actualName}`}</h2>
                 <p className="location">{userObj.location}</p>
                 <p className="birthday">{userObj.birthday}</p>
@@ -82,7 +82,7 @@ class Info extends React.Component {
             )}
 
             <button
-              className="pawfriends-styled-button flip"
+              className="pawfriends-styled-button flip-button"
               onClick={this.handleFlip}
             >
               Flip

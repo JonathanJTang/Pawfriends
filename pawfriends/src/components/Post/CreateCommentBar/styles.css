@@ -1,9 +1,9 @@
-.commentForm {
+.comment-form {
   display: flex;
   flex-direction: row;
 }
 
-.commentTextarea {
+.comment-textarea {
   padding: 10px;
   width: 100%;
   box-sizing: border-box;
@@ -13,16 +13,16 @@
   font-family: "Karla", sans-serif;
 }
 
-.commentTextarea::-webkit-scrollbar {
+.comment-textarea::-webkit-scrollbar {
   display: none;
 }
 
-.commentTextarea.editComment {
+.comment-textarea.edit-comment {
   border-color: #bde0e5;
   outline: none;
 }
 
-input.commentSubmitButton {
+input.comment-submit {
   flex: 0.1;
   font-family: "Karla", sans-serif;
   letter-spacing: 0em;

@@ -1,4 +1,4 @@
-.card {
+.profile-card {
   position: relative;
   padding: 30px 0;
   width: 300px;
@@ -9,17 +9,13 @@
   transition: 0.3s;
 }
 
-/* .flipped {
-  background-color: #9c9fb4;
-} */
-
-.card h1 {
+.profile-card h1 {
   background-color: #c1e2e756;
   width: 100%;
   margin: 10px 0;
 }
 
-.avatar {
+.profile-card .avatar-large {
   margin: 20px;
   width: 150px;
   height: 150px;
@@ -28,21 +24,52 @@
   border-radius: 6em;
 }
 
-.flip {
+.profile-card img.gender {
   position: absolute;
-  left: 90px;
-  bottom: -15px;
-  border: 2px solid white;
-  background-color: #a8d9e4;
-  border-radius: 2.25em;
+  right: 15px;
+  top: 20px;
+  opacity: 0.5;
 }
 
-.flip:hover {
-  color: #a8d9e4;
-  background-color: white;
+.profile-card-info {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  gap: 20px;
+  padding: 30px;
 }
 
-.status {
+.profile-card-info h2 {
+  border-color: #c1e2e756;
+}
+
+.profile-card-info p {
+  background-color: #c1e2e756;
+  padding: 5px;
+}
+
+.profile-card-info .location,
+.profile-card-info .birthday {
+  text-align: left;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.profile-card-info .birthday::before {
+  content: url("../../images/cake.png");
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.profile-card-info .location::before {
+  content: url("../../images/location2.png");
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.profile-card .status {
   font-size: 16px;
   width: 90%;
   margin-top: 10px;
@@ -52,63 +79,23 @@
   border: none;
 }
 
-.status:hover,
-.status:focus {
+.profile-card .status:hover,
+.profile-card .status:focus {
   color: #6a6d85;
   background-color: white;
   transition: 0.3s;
 }
 
-.savestatus {
+.profile-card .flip-button {
   position: absolute;
-  right: -130px;
-  bottom: 30px;
+  left: 90px;
+  bottom: -15px;
+  border: 2px solid white;
+  background-color: #a8d9e4;
+  border-radius: 2.25em;
 }
 
-.cardinfo {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  gap: 20px;
-  padding: 30px;
-}
-
-.cardinfo h2 {
-  border-color: #c1e2e756;
-}
-
-.cardinfo p {
-  background-color: #c1e2e756;
-  padding: 5px;
-}
-
-.favpet,
-.gender {
-  position: absolute;
-  top: 20px;
-  opacity: 0.5;
-}
-
-.favpet {
-  right: 50px;
-}
-
-.gender {
-  right: 15px;
-}
-
-.location,
-.birthday {
-  text-align: left;
-  margin: 0;
-}
-
-.birthday::before {
-  content: url("../../images/cake.png");
-  margin-right: 10px;
-}
-
-.location::before {
-  content: url("../../images/location2.png");
-  margin-right: 10px;
+.profile-card .flip-button:hover {
+  color: #a8d9e4;
+  background-color: white;
 }

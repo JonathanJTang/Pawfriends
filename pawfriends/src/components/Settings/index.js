@@ -21,17 +21,17 @@ class Settings extends React.Component {
     const { currentUsername } = this.props;
 
     return (
-      <div className="set">
-        <ul className="set-nav">
+      <div className="settings">
+        <ul className="settings-nav">
           <li
             onClick={this.handleClick}
-            className={this.state.toggle ? "set-toggle" : ""}
+            className={this.state.toggle ? "settings-toggle" : ""}
           >
             User Profile
           </li>
           <li
             onClick={this.handleClick}
-            className={!this.state.toggle ? "set-toggle" : ""}
+            className={!this.state.toggle ? "settings-toggle" : ""}
           >
             Account
           </li>

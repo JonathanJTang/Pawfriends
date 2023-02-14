@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import CreateTradeForm from "./createTradeForm";
 import Trade from "../Trade";
 import pup from "../../images/tradepup.png";
+
 import { getAllTrades } from "../../actions/apiRequests";
 
 class Trades extends React.Component {
@@ -66,13 +67,17 @@ class Trades extends React.Component {
     const filteredTrades = this.state.trades.filter(filters[this.state.filter]);
 
     return (
-      <div className="posts">
-        <div className="trade-header">
-          <img src={pup} className="tradepup" alt={"decorative"} />
+      <div className="trades">
+        <div className="page-content-header trades-page-header">
+          <img
+            src={pup}
+            className="trades-page-header-pup"
+            alt="decorative puppy"
+          />
           <h2>Trade pet supplies!</h2>
           <h4>Need some extra toys?</h4>
           <h4>See what your other pet owners are trading!</h4>
-          <h4>Click on "CREATE TRADE" to move forward with an exchange!</h4>
+          <h4>Click on "CREATE TRADE" to propose a trade!</h4>
           {this.state.showCreatePosting ? (
             <CreateTradeForm
               tradesList={this.state.trades}
@@ -114,7 +119,7 @@ class Trades extends React.Component {
           </ul>
         </div>
 
-        <div className="postsList">
+        <div className="postings-list">
           {filteredTrades.map((trade, index) => (
             <Trade
               key={trade._id}

@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Sacramento&display=swap");
 .login {
   display: flex;
   align-items: center;
@@ -6,43 +5,10 @@
   height: 100%;
 }
 
-.login h1::before,
-.login h1::after,
-.login form::before {
-  content: "";
-  position: absolute;
-  top: 10px;
-  width: 15px;
-  height: 15px;
-  border-radius: 5em;
-}
-
-.login h1::before {
-  right: 10px;
-  background-color: #e5bdbd;
-}
-
-.login h1::after {
-  right: 35px;
-  background-color: #e5dfbd;
-}
-
-.login form::before {
-  right: 60px;
-  background-color: #cfe5bd;
-}
-
-.login form::after {
-  content: url("../../images/pup.png");
-  position: absolute;
-  right: -100px;
-  bottom: -120px;
-}
-
-.login form {
+.login .login-area {
   position: relative;
-  display: flex;
   flex: 1;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 100px;
@@ -52,36 +18,78 @@
 }
 
 .login h1 {
-  font-family: Sacramento, cursive;
   font-size: 42px;
 }
 
-.login label {
-  margin-bottom: 15px;
-}
-
-.login input,
-.login select {
+.login form input {
   margin-bottom: 15px;
   padding: 10px 0px 10px 0px;
   width: 100%;
 }
 
-.login p {
+.login form input:not([type="submit"]) {
+  font-size: 16px;
+}
+
+.login h1::before,
+.login h1::after,
+.login .login-area::before,
+.register h1::before,
+.register h1::after,
+.register .register-area::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  width: 15px;
+  height: 15px;
+  border-radius: 5em;
+}
+
+.login h1::before,
+.register h1::before {
+  right: 10px;
+  background-color: #e5bdbd;
+}
+
+.login h1::after,
+.register h1::after {
+  right: 35px;
+  background-color: #e5dfbd;
+}
+
+.login .login-area::before,
+.register .register-area::before {
+  right: 60px;
+  background-color: #cfe5bd;
+}
+
+.login .login-area::after,
+.register .register-area::after {
+  content: url("../../images/pup.png");
+  position: absolute;
+  right: -100px;
+  bottom: -120px;
+}
+
+.login .register-bar,
+.register .register-bar {
   position: absolute;
   left: 40px;
   bottom: 15px;
-  letter-spacing: 0.2em;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
 }
 
-.login-error {
-  border-color: #e5bdbd !important;
+.login .register-bar div {
+  letter-spacing: 0.05em;
 }
 
-.btn-reg {
-  position: absolute;
-  left: 300px;
-  bottom: 25px;
+.login .registration-navigation,
+.register .registration-navigation {
+  height: 100%;
   padding: 5px 15px 5px 15px;
   border-radius: 0.2em;
   color: white;
@@ -90,6 +98,11 @@
   cursor: pointer;
 }
 
-.btn-reg:hover {
+.login .registration-navigation:hover,
+.register .registration-navigation:hover {
   background-color: #bde0e5;
+}
+
+.login-error {
+  border-color: #e5bdbd !important;
 }

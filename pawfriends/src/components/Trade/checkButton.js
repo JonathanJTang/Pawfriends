@@ -19,7 +19,7 @@ class CheckButton extends React.Component {
 
   render() {
     return (
-      <div className="tradebar-btn">
+      <div className="trade-bar-btn">
         <img
           src={this.props.trade.done ? checkFill : check}
           onClick={this.handleClick}

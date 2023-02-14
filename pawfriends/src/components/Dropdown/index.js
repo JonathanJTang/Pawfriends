@@ -2,6 +2,7 @@ import React from "react";
 import "./styles.css";
 
 import { Link } from "react-router-dom";
+
 import { logoutUser, getUserByUsername } from "../../actions/apiRequests";
 
 class Dropdown extends React.Component {

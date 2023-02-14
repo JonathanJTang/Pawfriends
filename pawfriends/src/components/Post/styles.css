@@ -2,24 +2,19 @@
   width: 100%;
   background-color: white;
   border-radius: 0.2em 0.2em 0em 0em;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
 }
 
-.post > img {
+.post-content-image {
   display: block;
   width: 100%;
 }
 
-.postImage {
-  max-width: 100%;
-  height: auto;
-}
-
-.postText {
+.post-content-text {
   text-align: left;
   white-space: pre-line;
-  padding: 15px 20px;
   /* 1st value top/bottom, 2nd value left/right */
+  padding: 15px 20px;
   border-bottom: 1px solid #f3f2f2;
   line-height: 1.3;
 }

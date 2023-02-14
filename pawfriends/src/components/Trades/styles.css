@@ -1,46 +1,14 @@
-.trade-header {
-  position: relative;
-  margin: auto;
-  background-color: #c1e2e7;
-  width: 500px;
-}
-
-.trade-header button {
-  background-color: #a8d9e4;
-}
-
-.trade-header button {
-  border: 2px solid white;
-}
-
-.trade-header button:hover {
-  color: #a8d9e4;
-  background-color: white;
-}
-
-.trade-header h2 {
-  padding: 10px;
-  background-color: white;
-  letter-spacing: 0.05em;
-}
-
-.trade-header h4 {
-  color: rgb(112, 143, 170);
-  font-weight: normal;
-}
-
-.trade-header ul {
+div.trades-page-header ul {
   display: flex;
-  margin: auto;
-  margin-top: 20px;
-  margin-bottom: -20px;
+  /* The 3 values for margin are: top left-right bottom*/
+  margin: 20px auto -20px;
   align-content: center;
   justify-content: space-around;
   width: 500px;
   border-radius: 0.2em;
 }
 
-.trade-header a {
+div.trades-page-header a {
   flex: 1;
   padding: 10px;
   transition: 0.2s;
@@ -48,36 +16,13 @@
   background-color: #c1e2e7;
 }
 
-.trade-header a:hover,
-.trade-header .active {
+div.trades-page-header a:hover,
+div.trades-page-header .active {
   background-color: #a8d9e4;
 }
 
-.trade-header form {
-  width: 80%;
-}
-
-.trade-header button {
-  margin-bottom: 10px;
-}
-
-.tradepup {
+.trades-page-header-pup {
   position: absolute;
   top: -50px;
   left: -200px;
-}
-
-.tradebar {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.tradebar .location::before {
-  content: url("../../images/location.png");
-}
-
-.tradebar-btn {
-  display: inline-block;
-  margin-left: 10px;
-  cursor: pointer;
 }

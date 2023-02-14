@@ -1,7 +1,9 @@
 import React from "react";
-import "./styles.css";
 import "../Login/styles.css";
+import "./styles.css";
+
 import { Link } from "react-router-dom";
+
 import { createUser, loginUser } from "../../actions/apiRequests";
 
 /* Registration component */
@@ -54,54 +56,59 @@ class Registration extends React.Component {
 
   render() {
     return (
-      <div className="login">
-        <form onSubmit={this.handleRegistration}>
-          <h1>Create a Pawfriends account</h1>
-          <label>Account</label>
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={this.state.value}
-            onChange={this.handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="password"
-            placeholder="Password (minimum 4 characters)"
-            value={this.state.value}
-            onChange={this.handleChange}
-            required
-          />
-          <label>Name</label>
-          <input
-            type="text"
-            name="actualName"
-            onChange={this.handleChange}
-            required
-          />
-          <label>Birthday</label>
-          <input
-            type="date"
-            name="birthday"
-            onChange={this.handleChange}
-            required
-          />
-          <label>Gender</label>
-          <select name="gender" onChange={this.handleChange}>
-            <option disabled selected value>
-              -- select an option --
-            </option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Secret</option>
-          </select>
-          <input type="submit" value="Register" />
-          <Link to="/" className="btn-reg btn-log">
-            Back to login
-          </Link>
-        </form>
+      <div className="register">
+        <div className="register-area">
+          <h1 className="sacramento-cursive">Create a Pawfriends account</h1>
+          <form onSubmit={this.handleRegistration}>
+            <label>Account</label>
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              value={this.state.value}
+              onChange={this.handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="password"
+              placeholder="Password (minimum 4 characters)"
+              value={this.state.value}
+              onChange={this.handleChange}
+              required
+            />
+            <label>Name</label>
+            <input
+              type="text"
+              name="actualName"
+              onChange={this.handleChange}
+              required
+            />
+            <label>Birthday</label>
+            <input
+              type="date"
+              name="birthday"
+              onChange={this.handleChange}
+              required
+            />
+            <label>Gender</label>
+            <select name="gender" onChange={this.handleChange}>
+              <option disabled selected value>
+                -- select an option --
+              </option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Secret</option>
+            </select>
+            <input type="submit" value="Register" />
+          </form>
+
+          <div className="register-bar">
+            <Link to="/" className="registration-navigation btn-log">
+              Back to login
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }

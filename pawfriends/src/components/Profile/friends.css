@@ -12,6 +12,7 @@
   color: #6a6d85;
 }
 
+/* Overrides some properties of .avatar-img for a larger image */
 .profile-friends img {
   padding: 3px;
   width: 100px;

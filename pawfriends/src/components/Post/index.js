@@ -48,7 +48,13 @@ class Post extends React.Component {
     // Only display image if the post has any (currently only shows the 1st one)
     let image = null;
     if (postData.images.length > 0) {
-      image = <img alt="post" src={postData.images[0].imageUrl} />;
+      image = (
+        <img
+          className="post-content-image"
+          src={postData.images[0].imageUrl}
+          alt="post content"
+        />
+      );
     }
 
     return (
@@ -86,7 +92,7 @@ class Post extends React.Component {
         </div>
         {image}
         <div>
-          <div className="postText">{postData.content}</div>
+          <div className="post-content-text">{postData.content}</div>
         </div>
         <div>
           {postData.comments.map((comment, index) => (

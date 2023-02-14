@@ -32,12 +32,12 @@ class LikeButton extends React.Component {
 
   render() {
     return (
-      <div className="like-button-container-div">
+      <div>
         <div className="like-counter">{this.props.postData.numLikes}</div>
         <img
           className="like-button"
-          alt="like button"
           src={this.state.image}
+          alt="like button"
           onClick={this.handleClick.bind(this)}
         />
       </div>

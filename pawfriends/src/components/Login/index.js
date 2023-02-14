@@ -2,6 +2,7 @@ import React from "react";
 import "./styles.css";
 
 import { Link } from "react-router-dom";
+
 import { loginUser } from "../../actions/apiRequests";
 
 class Login extends React.Component {
@@ -32,28 +33,39 @@ class Login extends React.Component {
   render() {
     return (
       <div className="login">
-        <form>
-          <h1>Welcome back!</h1>
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            onChange={this.handleChange}
-            className={this.state.error ? "login-error" : ""}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={this.handleChange}
-            className={this.state.error ? "login-error" : ""}
-          />
-          <input type="submit" value="Login" onClick={this.handleLogin} />
-          <p>Don't have an account?</p>
-          <Link to="/registration" className="btn-reg">
-            Register
-          </Link>
-        </form>
+        <div className="login-area">
+          <h1 className="sacramento-cursive">Welcome back!</h1>
+          <form onSubmit={this.handleLogin}>
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              onChange={this.handleChange}
+              className={this.state.error ? "login-error" : ""}
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              onChange={this.handleChange}
+              className={this.state.error ? "login-error" : ""}
+              required
+            />
+            <input
+              type="submit"
+              value="Login"
+              // className="pawfriends-styled-button"
+            />
+          </form>
+
+          <div className="register-bar">
+            <div>Don't have an account?</div>
+            <Link to="/registration" className="registration-navigation">
+              Register
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }

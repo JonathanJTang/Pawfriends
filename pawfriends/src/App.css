@@ -1,11 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Karla:ital@0;1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sacramento&display=swap");
+
+/* General styling for elements
+   (many will overridden by more specific selectors ) */
 body {
   background-image: url("./images/bg.png");
   background-repeat: repeat;
   overflow-y: scroll;
 }
 
-.App {
+.app {
   text-align: center;
   font-family: "Karla", sans-serif;
   height: 80vh;
@@ -34,12 +38,22 @@ a {
   color: black;
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul li {
+  list-style: none;
+}
+
 select {
   text-align-last: center;
 }
 
 input,
 select {
+  font-family: "Karla", sans-serif;
   border: 1px solid #f3f2f2;
   border-radius: 0.2em;
   text-align: center;
@@ -47,8 +61,8 @@ select {
 }
 
 input[type="submit"] {
-  font-size: 13px;
-  letter-spacing: 0.1em;
+  font-size: 16px;
+  /* letter-spacing: 0.1em; */
   color: white;
   background-color: #bde0e5;
   cursor: pointer;
@@ -58,10 +72,13 @@ input[type="submit"]:hover {
   background-color: #c1bde5;
 }
 
-input.createPostSubmitButton {
-  /* margin-bottom: 15px; */
+input[type="submit"].create-posting-submit {
   min-height: 40px;
   background-color: #a8d9e4;
+}
+
+input[type="submit"].create-posting-submit:hover {
+  background-color: #a8d3e4;
 }
 
 input:focus,
@@ -71,19 +88,7 @@ textarea:focus {
   outline: none;
 }
 
-textarea {
-  font-family: "Karla", sans-serif;
-  border: 1px solid #f3f2f2;
-  border-radius: 0.2em;
-  outline: none;
-  resize: none;
-  transition: 0.2s ease;
-}
-
-textarea:disabled {
-  background-color: transparent !important;
-}
-
+/* A base style for buttons with all-caps text */
 .pawfriends-styled-button {
   padding: 10px 20px 10px 20px;
   min-width: 120px;
@@ -100,15 +105,215 @@ textarea:disabled {
   cursor: pointer;
 }
 
-.pawfriends-styled-button:hover {
+.pawfriends-styled-button:hover .pawfriends-styled-button:hover {
   background-color: #c1bde5;
 }
 
-ul {
-  margin: 0;
-  padding: 0;
+textarea {
+  font-family: "Karla", sans-serif;
+  border: 1px solid #f3f2f2;
+  border-radius: 0.2em;
+  outline: none;
+  resize: none;
+  transition: 0.2s ease;
 }
 
-ul li {
-  list-style: none;
+textarea:disabled {
+  background-color: transparent !important;
+}
+
+.sacramento-cursive {
+  font-family: Sacramento, cursive;
+  font-size: 36px;
+}
+
+.post-header-grey,
+.trade-contact-info p,
+.service-contact-info p,
+.delete-post {
+  opacity: 0.6; /* To set the color to a gray */
+}
+
+/* .page-content-header is for the header (below the NavBar) on the Posts,
+   Trades, and Services pages */
+.page-content-header {
+  position: relative;
+  margin: auto;
+  padding-bottom: 20px;
+  background-color: #c1e2e7;
+  width: 500px;
+}
+
+.page-content-header button {
+  background-color: #a8d9e4;
+  border: 2px solid white;
+}
+
+.page-content-header button:hover {
+  color: #a8d9e4;
+  background-color: white;
+}
+
+.page-content-header h2 {
+  padding: 10px;
+  background-color: white;
+  letter-spacing: 0.05em;
+}
+
+.page-content-header h4 {
+  color: rgb(112, 143, 170);
+  font-weight: normal;
+}
+
+.page-content-header form {
+  width: 80%;
+}
+
+/* .create-posting currently is contained within the .page-content-header's */
+form.create-posting {
+  background-color: white;
+  /* width: 500px; */
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-radius: 0.2em;
+}
+
+input[type="text"].create-posting,
+textarea.create-posting {
+  padding: 10px;
+  width: 95%;
+  border: 1px solid #bde0e5;
+  border-radius: 0.2em;
+  /* transition: .2s ease; */
+  resize: none;
+  font-family: "Karla", sans-serif;
+  outline: none;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+input[type="text"].create-posting::-webkit-scrollbar,
+textarea.create-posting::-webkit-scrollbar {
+  display: none;
+}
+
+/* .postings-list is the container for postings on the Posts,
+   Trades, and Services pages */
+.postings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 50px;
+  width: 500px;
+  min-height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* .trade and .service are for the Trade and Service components; styling put
+   here because there is a lot of overlap */
+.trade,
+.service {
+  background-color: white;
+  border-radius: 0.2em;
+  overflow: hidden;
+  position: relative;
+  padding: 10px;
+}
+
+.trade > img,
+.service > img {
+  display: block;
+  margin: auto;
+  width: 150px;
+  height: 150px;
+  border: 1px solid #eeeeee;
+  border-radius: 5em;
+  margin-top: 10px;
+}
+
+.trade > .post-header,
+.service > .post-header {
+  border-bottom: 1px solid #f3f2f2;
+  margin-bottom: 10px;
+}
+
+/* .post-header is used in Post, Trade, and Service components, to show the
+   post owner's avatar, username, etc */
+.post-header {
+  position: relative;
+  display: flex;
+  padding: 15px;
+  gap: 20px;
+}
+
+.trade .post-header,
+.service .post-header {
+  padding: 5px; /* .trade and .service already have 10px of padding */
+}
+
+.post-header p,
+.post-header h3 {
+  margin: 0;
+}
+
+/* A vertical flex container, used within .post-header */
+.post-header-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  white-space: pre-line;
+  gap: 3px;
+}
+
+.trade .post-header-info,
+.service .post-header-info {
+  gap: 7px;
+}
+
+/* *-contact-info is for displaying the post owner's contact information on
+   postings */
+.trade-contact-info,
+.service-contact-info {
+  display: flex;
+  gap: 10px;
+}
+
+.trade-contact-info div,
+.service-contact-info div {
+  display: flex;
+  flex-direction: column;
+  flex: 0.5;
+}
+
+.trade-contact-info div p,
+.service-contact-info div p {
+  text-align: left;
+  margin: 0;
+}
+
+/* For formatting the user avatar image on postings */
+.avatar-img {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #eeeeee;
+  border-radius: 5em;
+}
+
+/* A delete post text button */
+.delete-post {
+  display: block;
+  text-align: right;
+  cursor: pointer;
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }

@@ -1,4 +1,5 @@
 import React from "react";
+
 import { getUserByUsername, updateSettings } from "../../actions/apiRequests";
 
 class ProfileSettings extends React.Component {
@@ -51,7 +52,7 @@ class ProfileSettings extends React.Component {
 
   render() {
     return (
-      <form className="set-form" onSubmit={this.handleSettingsSubmit}>
+      <form className="settings-form" onSubmit={this.handleSettingsSubmit}>
         <h2>User Profile</h2>
         <div>
           <img src={this.state.profilePicture.imageUrl} alt={"user avatar"} />

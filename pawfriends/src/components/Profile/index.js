@@ -95,26 +95,14 @@ class Profile extends React.Component {
     const isOwnProfile =
       currentUserObj.username === this.state.userObj.username;
 
-    const friendButton = isOwnProfile ? null : (
-      <button
-        id="add-remove-friend-button"
-        className="pawfriends-styled-button"
-        onClick={
-          this.state.isCurUserFriend ? this.handleRemove : this.handleAdd
-        }
-      >
-        {this.state.isCurUserFriend ? "Remove Friend" : "Add Friend"}
-      </button>
-    );
-
     return (
       <div className="profile">
         <div className="profile-nav">
           <button
             name="info"
             className={
-              "pawfriends-styled-button profile-nav-button " +
-              (this.state.show === "info" ? "active" : "")
+              "pawfriends-styled-button profile-nav" +
+              (this.state.show === "info" ? " active" : "")
             }
             onClick={this.show}
           >
@@ -123,8 +111,8 @@ class Profile extends React.Component {
           <button
             name="pets"
             className={
-              "pawfriends-styled-button profile-nav-button " +
-              (this.state.show === "pets" ? "active" : "")
+              "pawfriends-styled-button profile-nav" +
+              (this.state.show === "pets" ? " active" : "")
             }
             onClick={this.show}
           >
@@ -133,14 +121,23 @@ class Profile extends React.Component {
           <button
             name="friends"
             className={
-              "pawfriends-styled-button profile-nav-button " +
-              (this.state.show === "friends" ? "active" : "")
+              "pawfriends-styled-button profile-nav" +
+              (this.state.show === "friends" ? " active" : "")
             }
             onClick={this.show}
           >
             Friends
           </button>
-          {friendButton}
+          {!isOwnProfile && (
+            <button
+              className="pawfriends-styled-button add-remove-friend-button"
+              onClick={
+                this.state.isCurUserFriend ? this.handleRemove : this.handleAdd
+              }
+            >
+              {this.state.isCurUserFriend ? "Remove Friend" : "Add Friend"}
+            </button>
+          )}
         </div>
         {this.state.show === "info" && (
           <Info

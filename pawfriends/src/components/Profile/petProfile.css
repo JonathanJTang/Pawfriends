@@ -1,0 +1,109 @@
+div.pet {
+  position: relative;
+  display: flex;
+  width: 720px;
+  height: 220px;
+  padding: 25px 15px 15px 15px;
+  border-radius: 0.5em;
+  text-align: left;
+  background-color: #ffffffcc;
+  justify-content: flex-end;
+}
+
+.pet textarea {
+  border: none;
+}
+
+.pet .pet-container {
+  display: flex;
+  flex-direction: column;
+  flex: 0.77;
+}
+
+.pet .pet-container:first-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #c1e2e756;
+  border-radius: 0.5em 0em 0em 0.5em;
+}
+
+.pet .pet-name {
+  text-align: center;
+  padding: 20px 0;
+  margin: auto;
+  width: 150px;
+  color: #6a6d85;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.pet .pet-info textarea {
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  border-radius: 0.5em;
+}
+
+.pet .pet-info textarea:hover,
+.pet .pet-info textarea:focus {
+  background-color: #c1e2e73b;
+}
+
+.pet .pet-info textarea:disabled {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.pet .pet-info-likes-dislikes {
+  display: flex;
+  margin-top: 5px;
+  gap: 10px;
+  height: 30px;
+}
+
+.pet .pet-info-likes-dislikes img.field-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.5;
+}
+
+.pet .likes,
+.pet .dislikes {
+  padding: 5px;
+  width: 50%;
+}
+
+.pet .description {
+  height: 100%;
+  padding: 10px;
+}
+
+.pet .delete-pet,
+.pet::before,
+.pet::after {
+  position: absolute;
+  content: "";
+  top: 10px;
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  border-radius: 5em;
+}
+
+.pet .delete-pet {
+  right: 10px;
+  background-color: #e5bdbd;
+  border: none;
+  cursor: pointer;
+}
+
+.pet::before {
+  right: 35px;
+  background-color: #e5dfbd;
+}
+
+.pet::after {
+  right: 60px;
+  background-color: #cfe5bd;
+}

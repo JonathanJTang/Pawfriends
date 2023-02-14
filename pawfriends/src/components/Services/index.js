@@ -3,6 +3,7 @@ import "./styles.css";
 
 import CreateServiceForm from "./createServiceForm";
 import Service from "../Service";
+
 import { getAllServices, removeService } from "../../actions/apiRequests";
 
 /* Services component */
@@ -69,8 +70,8 @@ class Services extends React.Component {
     }
 
     return (
-      <div className="posts">
-        <div className="trade-header">
+      <div className="services">
+        <div className="page-content-header">
           <h2>
             Offer or receive services such as pet sitting and matchmaking!
           </h2>
@@ -89,7 +90,7 @@ class Services extends React.Component {
             </button>
           )}
         </div>
-        <div className="postsList">
+        <div className="postings-list">
           <div className="filter">
             <select value={this.state.filter} onChange={this.setFilter}>
               <option value="all">All</option>

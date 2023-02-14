@@ -42,7 +42,7 @@ class Posts extends React.Component {
   render() {
     return (
       <div className="posts">
-        <div className="trade-header">
+        <div className="page-content-header">
           <h2>Share cute moments with your pet!</h2>
           <h4>Create, like, or comment on a post!</h4>
 
@@ -63,7 +63,7 @@ class Posts extends React.Component {
           )}
         </div>
 
-        <div className="postsList">
+        <div className="postings-list">
           {this.state.posts.map((post, index) => (
             <Post
               key={post._id}

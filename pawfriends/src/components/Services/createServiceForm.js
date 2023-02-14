@@ -2,6 +2,7 @@ import React from "react";
 import "./styles.css";
 
 import AutoResizeTextarea from "../AutoResizeTextarea";
+
 import { createService } from "../../actions/apiRequests";
 
 class CreateServiceForm extends React.Component {
@@ -33,22 +34,24 @@ class CreateServiceForm extends React.Component {
 
   render() {
     return (
-      <form className="createPost" onSubmit={this.handleSubmit}>
+      <form className="create-posting" onSubmit={this.handleSubmit}>
         <input
           name="email"
-          className="createPostTextarea"
+          className="create-posting"
+          type="text"
           placeholder="Email:"
           required
         />
         <input
           name="phone"
-          className="createPostTextarea"
+          className="create-posting"
+          type="text"
           placeholder="Phone:"
           required
         />
         <AutoResizeTextarea
           minRows={2}
-          className="createPostTextarea"
+          className="create-posting"
           type="text"
           name="description"
           placeholder="Description of service:"
@@ -56,13 +59,14 @@ class CreateServiceForm extends React.Component {
         />
         <input
           name="tags"
-          className="createPostTextarea"
+          className="create-posting"
+          type="text"
           placeholder="Tags (separate by commas):"
         />
         <input
           type="submit"
           value="Create Service Posting"
-          className="createPostSubmitButton pawfriends-styled-button"
+          className="create-posting-submit pawfriends-styled-button"
         />
       </form>
     );

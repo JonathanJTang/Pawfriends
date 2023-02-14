@@ -8,7 +8,7 @@ class Comment extends React.Component {
     // Information from the server will have commentData contain commentAuthor
     return (
       <div className="comment">
-        <div className="commentText">
+        <div className="comment-text">
           <strong>@{this.props.commentAuthor}</strong> {commentData.content}
         </div>
       </div>

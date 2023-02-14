@@ -22,32 +22,32 @@
   border-color: #c1bde5;
 }
 
-.statsTableContainer {
+.stats-table-container {
   margin: auto;
   width: 400px;
   background-color: white;
   border-radius: 2.25em;
 }
 
-.statsTable {
+.stats-table {
   padding: 10px;
   border-spacing: 10px;
   margin: auto;
 }
 
-.statsTableRow {
+.stats-table-row {
   padding-bottom: 10px;
   border-bottom: 10px;
 }
 
-.statsTableLeftCell {
+.stats-table-left-cell {
   text-align: left;
   font-weight: bold;
   padding-right: 20px;
   padding-bottom: 10px;
 }
 
-.statsTableRightCell {
+.stats-table-right-cell {
   text-align: left;
   padding-bottom: 10px;
 }
@@ -76,12 +76,12 @@
   width: 150px;
 }
 
-/* .statsTableLeftCell:last-child {
+/* .stats-table-left-cell:last-child {
   text-align: left;
   font-weight: bold;
   padding-right: 20px;
 }
 
-.statsTableRightCell:last-child {
+.stats-table-right-cell:last-child {
   text-align: left;
 } */

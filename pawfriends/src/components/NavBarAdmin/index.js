@@ -6,7 +6,7 @@ import "./styles.css";
 class NavBarAdmin extends React.Component {
   render() {
     return (
-      <div className="navbar navbar-admin">
+      <div id="navbar-admin" className="navbar">
         <ul>
           <li>Admin Dashboard</li>
         </ul>

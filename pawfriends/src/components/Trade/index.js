@@ -1,9 +1,11 @@
 import React from "react";
+import "./styles.css";
 
 import { Link } from "react-router-dom";
-import { removeTrade } from "../../actions/apiRequests";
 import Popup from "../Popup";
 import CheckButton from "./checkButton.js";
+
+import { removeTrade } from "../../actions/apiRequests";
 
 class Trade extends React.Component {
   constructor(props) {
@@ -59,7 +61,7 @@ class Trade extends React.Component {
         {this.state.toggle && (
           <Popup confirm={this.remove} cancel={this.handleClick} />
         )}
-        <div className="tradebar">
+        <div className="trade-bar">
           <div>
             <CheckButton trade={trade} stateUpdate={this.stateUpdate} />
           </div>
@@ -89,7 +91,7 @@ class Trade extends React.Component {
           )}
         </div>
         {this.state.contactToggle ? (
-          <div className="tradeinfo">
+          <div className="trade-contact-info">
             <div>
               <strong>Email:</strong>
             </div>

@@ -1,4 +1,5 @@
 import React from "react";
+
 import { changePassword } from "../../actions/apiRequests";
 
 class AccountSettings extends React.Component {
@@ -46,7 +47,7 @@ class AccountSettings extends React.Component {
 
   render() {
     return (
-      <form className="set-form" onSubmit={this.handleSubmit}>
+      <form className="settings-form" onSubmit={this.handleSubmit}>
         <h2>Account</h2>
         <label>Username</label>
         <input type="text" value={this.state.username} disabled />

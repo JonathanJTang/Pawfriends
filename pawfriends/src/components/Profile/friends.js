@@ -1,14 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "./friends.css";
+
+import { Link } from "react-router-dom";
 
 class Friends extends React.Component {
   render() {
-    const { friends } = this.props;
-
     return (
       <div className="profile-friends">
-        {friends.map((friend, index) => (
+        {this.props.friends.map((friend, index) => (
           <Link key={index} to={`/profile/${friend.username}`}>
             <img
               className="avatar-img"

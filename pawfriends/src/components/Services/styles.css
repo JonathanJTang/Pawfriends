@@ -1,24 +1,8 @@
-.tradeinfo {
-  display: flex;
-  gap: 10px;
-}
-
-.tradeinfo div {
-  display: flex;
-  flex-direction: column;
-  flex: 0.5;
-}
-
-.tradeinfo div p {
-  text-align: left;
-  margin: 0;
-}
-
-.filter {
+.services .filter {
   display: flex;
   gap: 20px;
 }
 
-.filter select {
+.services .filter select {
   padding: 5px;
 }

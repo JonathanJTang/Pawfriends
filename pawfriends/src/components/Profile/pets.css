@@ -6,34 +6,18 @@
   width: 750px;
 }
 
-.profile-pet h1 {
-  margin: auto;
-}
-
-.profile-pet > div {
-  position: relative;
-  display: flex;
-  width: 720px;
-  height: 220px;
-  padding: 25px 15px 15px 15px;
-  border-radius: 0.5em;
-  text-align: left;
-  background-color: #ffffffcc;
-  justify-content: flex-end;
-}
-
-.profile-pet > button {
+.profile-pet button.add-pet {
   align-self: flex-end;
   background-color: #a8d9e4;
   border: 2px solid white;
 }
 
-.profile-pet > button:hover {
+.profile-pet button.add-pet:hover {
   color: #a8d9e4;
   background-color: white;
 }
 
-.profile-pet form {
+.profile-pet form.add-pet {
   background-color: #ffffffcc;
   margin: auto;
   width: 50%;
@@ -45,132 +29,19 @@
   gap: 10px;
 }
 
-.profile-pet form input[type="submit"] {
-  width: 50%;
+.profile-pet form.add-pet input {
+  padding: 10px;
+  width: 80%;
 }
 
-.profile-pet form img,
-.petimg {
+.profile-pet form.add-pet input[type="submit"] {
+  width: 50%;
+}
+.profile-pet img.pet-avatar {
   width: 120px;
   height: 120px;
   margin: 15px;
   padding: 3px;
   border: 2px solid #9c9fb4;
   border-radius: 5em;
-}
-
-.pet textarea {
-  border: none;
-}
-
-.petinfo {
-  display: flex;
-  margin-top: 5px;
-  gap: 10px;
-  height: 30px;
-}
-
-.petinfo img {
-  width: 24px;
-  height: 24px;
-}
-
-.likes,
-.dislikes {
-  padding: 5px;
-  width: 50%;
-}
-
-.petinfo > img {
-  opacity: 0.5;
-}
-
-.likes:disabled,
-.dislikes:disabled {
-  border-color: transparent;
-  background-color: transparent;
-}
-
-.petcontainer {
-  display: flex;
-  flex-direction: column;
-  flex: 0.77;
-}
-
-.petcontainer:first-child {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background-color: #c1e2e756;
-  border-radius: 0.5em 0em 0em 0.5em;
-}
-
-.petname {
-  text-align: center;
-  padding: 20px 0;
-  margin: auto;
-  width: 150px;
-  color: #6a6d85;
-  background-color: transparent;
-  overflow: hidden;
-}
-
-.description,
-.petinfo textarea {
-  font-size: 14px;
-  letter-spacing: 0.1em;
-}
-
-.description {
-  height: 100%;
-  padding: 10px;
-  border-radius: 0.5em;
-}
-
-.description:hover,
-.description:focus,
-.likes:hover,
-.likes:focus,
-.dislikes:hover,
-.dislikes:focus {
-  background-color: #c1e2e73b;
-}
-
-.petimg {
-  border-color: white;
-}
-
-.deletepet,
-.pet::before,
-.pet::after {
-  position: absolute;
-  content: "";
-  top: 10px;
-  width: 15px;
-  height: 15px;
-  padding: 0;
-  border-radius: 5em;
-}
-
-.deletepet {
-  right: 10px;
-  background-color: #e5bdbd;
-  border: none;
-  cursor: pointer;
-}
-
-.pet::before {
-  right: 35px;
-  background-color: #e5dfbd;
-}
-
-.pet::after {
-  right: 60px;
-  background-color: #cfe5bd;
-}
-
-.pet .popup,
-.pet .popup h2 {
-  border-radius: 0.2em;
 }

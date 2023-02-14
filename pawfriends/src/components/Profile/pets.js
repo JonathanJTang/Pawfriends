@@ -1,6 +1,7 @@
 import React from "react";
-import PetProfile from "./petProfile.js";
 import "./pets.css";
+
+import PetProfile from "./petProfile.js";
 
 import { addPet } from "../../actions/apiRequests";
 
@@ -55,15 +56,19 @@ class Pets extends React.Component {
           <div className="profile-pet">
             {isOwnProfile && (
               <button
-                className="pawfriends-styled-button"
+                className="pawfriends-styled-button add-pet"
                 onClick={this.handleClick}
               >
                 Add pet
               </button>
             )}
             {this.state.addPet && (
-              <form onSubmit={this.handleSubmit}>
-                <img src="http://placekitten.com/g/150/150" alt="pet" />
+              <form className="add-pet" onSubmit={this.handleSubmit}>
+                <img
+                  src="http://placekitten.com/g/150/150"
+                  alt="pet"
+                  className="pet-avatar"
+                />
                 <input
                   name="name"
                   placeholder="Pet's name"
@@ -85,7 +90,7 @@ class Pets extends React.Component {
                 <input
                   type="submit"
                   value="Save"
-                  className="createPostSubmitButton pawfriends-styled-button"
+                  className="create-posting-submit pawfriends-styled-button"
                 />
               </form>
             )}

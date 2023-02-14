@@ -1,10 +1,11 @@
 import React from "react";
 import "./styles.css";
-import { Link } from "react-router-dom";
 
+import { Link } from "react-router-dom";
 import Post from "../Post";
 import Trade from "../Trade";
 import Service from "../Service";
+
 import {
   getAllUsersPosts,
   getAllTrades,
@@ -74,19 +75,19 @@ class Home extends React.Component {
       <div className="home">
         <div>
           <Link to={"/services"}>
-            <h1>Services</h1>
+            <h1 className="sacramento-cursive">Services</h1>
           </Link>
           {allServices}
         </div>
         <div>
           <Link to={"/posts"}>
-            <h1>New posts</h1>
+            <h1 className="sacramento-cursive">New posts</h1>
           </Link>
           {allPosts}
         </div>
         <div>
           <Link to={"/trades"}>
-            <h1>Trade pet supplies</h1>
+            <h1 className="sacramento-cursive">Trade pet supplies</h1>
           </Link>
           {allTrades}
         </div>
