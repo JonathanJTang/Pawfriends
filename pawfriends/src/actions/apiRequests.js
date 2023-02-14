@@ -1,45 +1,47 @@
 const baseUrl =
   process.env.REACT_APP_SERVER_BASE_URL || "http://localhost:5000";
 
-const fetchRequest = (request) => {
-  return fetch(request)
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      } else {
-        const err = new Error("The request failed, please try again later");
-        err.res = res; // Attach to the error object for caller to examine
-        throw err;
-      }
-    })
-    .then((json) => {
-      return json;
-    })
-    .catch((error) => {
-      // Just log the error and ignore it
-      console.log("failed fetching @" + request.body);
-      console.log(error);
-    });
+/* Return an arrow function that is a helper for fetching requests.
+   errorHandler will receive the request object and the error that was caught */
+const createFetchRequestFunc = (errorHandler) => {
+  return (request) => {
+    return fetch(request)
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          const err = new Error("The request failed, please try again later");
+          err.res = res; // Attach to the error object for caller to examine
+          throw err;
+        }
+      })
+      .then((json) => {
+        return json;
+      })
+      .catch(errorHandler.bind(null, request));
+  };
 };
 
-const fetchRequestThrowError = (request) => {
-  return fetch(request)
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      } else {
-        const err = new Error("The request failed, please try again later");
-        err.res = res; // Attach to the error object for caller to examine
-        throw err;
-      }
-    })
-    .then((json) => {
-      return json;
-    })
-    .catch((error) => {
-      throw error; // Leave it for caller to catch and handle
-    });
-};
+/* The default is to use this helper, which ignore errors returned from the
+   backend, and logs them when not in production */
+const fetchRequest =
+  process.env.NODE_ENV === "production"
+    ? createFetchRequestFunc((request, error) => {
+        // Don't show the user the error
+        alert(`Sorry we could not fetch the requested page from the server, \
+               please try again later`);
+      })
+    : createFetchRequestFunc((request, error) => {
+        alert(`Sorry we could not fetch the requested page from the server, \
+               please try again later`);
+        // Just log the error and ignore it
+        console.log("failed fetching " + request);
+        console.log(error);
+      });
+
+const fetchRequestThrowError = createFetchRequestFunc((request, error) => {
+  throw error; // Leave it for caller to catch and handle
+});
 
 // <--- POST API --->
 export const getAllUsersPosts = () => {
