@@ -30,7 +30,7 @@ class AccountSettings extends React.Component {
       error.res
         .text()
         .then((errorMessage) => {
-          alert(errorMessage); // Use server-supplied error message in this case
+          alert("Error: " + errorMessage); // Use server-supplied error message in this case
         })
         .catch((err) => {
           // Fallback to standard error messages
@@ -39,7 +39,7 @@ class AccountSettings extends React.Component {
           } else if (error.res.status === 400) {
             alert("The new password must be at least 4 characters long");
           } else {
-            alert("An error occurred");
+            alert("Sorry, an error occurred");
           }
         });
     }

@@ -33,24 +33,42 @@ class Registration extends React.Component {
   handleRegistration = async (e) => {
     e.preventDefault();
 
-    const userObj = await createUser({
-      username: this.state.userInfo.username,
-      password: this.state.userInfo.password,
-      actualName: this.state.userInfo.actualName,
-      birthday: this.state.userInfo.birthday,
-      gender: this.state.userInfo.gender,
-    });
-    if (userObj !== undefined) {
-      alert(`Successfully registered user ${userObj.username}`);
-      // Log in the user and redirect to the home page
-      // partialUserObj only has fields currentUsername, isAdmin
-      const partialUserObj = await loginUser({
-        username: userObj.username,
+    try {
+      const userObj = await createUser({
+        username: this.state.userInfo.username,
         password: this.state.userInfo.password,
+        actualName: this.state.userInfo.actualName,
+        birthday: this.state.userInfo.birthday,
+        gender: this.state.userInfo.gender,
       });
-      if (partialUserObj !== undefined) {
-        this.props.history.push("/");
+      if (userObj !== undefined) {
+        alert(`Successfully registered user ${userObj.username}`);
+        // Log in the user and redirect to the home page
+        // partialUserObj only has fields currentUsername, isAdmin
+        const partialUserObj = await loginUser({
+          username: userObj.username,
+          password: this.state.userInfo.password,
+        });
+        if (partialUserObj !== undefined) {
+          this.props.history.push("/");
+        }
       }
+    } catch (error) {
+      error.res
+        .text()
+        .then((errorMessage) => {
+          alert("Error: " + errorMessage); // Use server-supplied error message in this case
+        })
+        .catch((err) => {
+          // Fallback to standard error messages
+          if (error.res.status === 403) {
+            alert(
+              "Error: a field does not meet the requirements for registration"
+            );
+          } else {
+            alert("Sorry, an error occurred");
+          }
+        });
     }
   };
 

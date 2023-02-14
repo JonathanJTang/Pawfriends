@@ -317,7 +317,7 @@ export const createUser = (userInfo) => {
     },
   });
 
-  const createUserPromise = fetchRequest(request);
+  const createUserPromise = fetchRequestThrowError(request);
   return createUserPromise;
 };
 
