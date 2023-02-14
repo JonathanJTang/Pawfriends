@@ -35,7 +35,15 @@ class Home extends React.Component {
     });
   }
 
-  // for Trade component, extend to posts and services for post deletion on home page?
+  removePostHandler = (postsArrayIndex) => {
+    this.state.posts.splice(postsArrayIndex, 1);
+    this.setState({ posts: this.state.posts });
+  };
+
+  postsStateUpdate = () => {
+    this.setState({ posts: this.state.posts });
+  };
+
   stateUpdate = (updatedTrades) => {
     this.setState({ trades: updatedTrades });
   };
@@ -45,7 +53,13 @@ class Home extends React.Component {
 
     if (this.state.posts) {
       allPosts = this.state.posts.map((post, index) => (
-        <Post key={post._id} postData={post} />
+        <Post
+          key={post._id}
+          postData={post}
+          postsArrayIndex={index}
+          removePost={this.removePostHandler}
+          parentStateUpdate={this.postsStateUpdate}
+        />
       ));
     }
 
@@ -55,7 +69,7 @@ class Home extends React.Component {
           key={service._id}
           service={service}
           serviceArrayIndex={index}
-          setFilterTag={this.setFilterTag}
+          setFilterTag={() => {}} /* Currently do nothing */
         />
       ));
     }
