@@ -39,9 +39,10 @@ class Profile extends React.Component {
 
   componentDidUpdate = async (prevProps) => {
     if (this.props.match.params.username !== prevProps.match.params.username) {
-      console.log(
-        `this.props.match.params new username ${this.props.match.params.username} !== old username ${prevProps.match.params.username}`
-      );
+      // console.log(
+      //   `this.props.match.params new username ${this.props.match.params.username} !== old username ${prevProps.match.params.username}`
+      // );
+      this.setState({ show: "info" });
       await this.fetchData();
     }
   };
@@ -71,7 +72,7 @@ class Profile extends React.Component {
     this.setState({ show: e.target.name });
   };
 
-  handleAdd = async () => {
+  handleAddFriend = async () => {
     const response = await addFriend(
       this.state.currentUserObj.username,
       this.state.userObj.username
@@ -81,7 +82,7 @@ class Profile extends React.Component {
     }
   };
 
-  handleRemove = async () => {
+  handleRemoveFriend = async () => {
     const response = await removeFriend(
       this.state.currentUserObj.username,
       this.state.userObj.username
@@ -142,7 +143,9 @@ class Profile extends React.Component {
             <button
               className="pawfriends-styled-button add-remove-friend-button"
               onClick={
-                this.state.isCurUserFriend ? this.handleRemove : this.handleAdd
+                this.state.isCurUserFriend
+                  ? this.handleRemoveFriend
+                  : this.handleAddFriend
               }
             >
               {this.state.isCurUserFriend ? "Remove Friend" : "Add Friend"}

@@ -53,7 +53,7 @@ class PetProfile extends React.Component {
           />
           <textarea
             name="name"
-            className="pet-name sacramento-cursive"
+            className="pet-name sacramento-cursive hide-scrollbars"
             defaultValue={pet.name}
             onChange={this.handleChange}
             onMouseLeave={this.saveInfo}

@@ -9,6 +9,13 @@ class Info extends React.Component {
     this.state = { flip: false, statusStrUpdated: false, newStatusStr: "" };
   }
 
+  componentDidUpdate = (prevProps) => {
+    if (this.props.userObj.username !== prevProps.userObj.username) {
+      // Reset state when a different user is being rendered
+      this.setState({ flip: false, statusStrUpdated: false, newStatusStr: "" });
+    }
+  };
+
   handleFlip = () => {
     this.state.flip
       ? this.setState({ flip: false })

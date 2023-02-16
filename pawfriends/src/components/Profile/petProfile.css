@@ -29,14 +29,22 @@ div.pet {
   border-radius: 0.5em 0em 0em 0.5em;
 }
 
-.pet .pet-name {
+.pet textarea.pet-name {
   text-align: center;
-  padding: 20px 0;
-  margin: auto;
+  margin: 20px auto;
   width: 150px;
   color: #6a6d85;
   background-color: transparent;
-  overflow: hidden;
+  background-clip: content-box;
+  border-radius: 0.2em;
+}
+
+.pet .pet-name:hover {
+  background-color: #edf6f7;
+}
+
+.pet .pet-info h3 {
+  cursor: default;
 }
 
 .pet .pet-info textarea {

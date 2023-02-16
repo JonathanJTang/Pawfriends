@@ -13,6 +13,7 @@
   background-color: #c1e2e756;
   width: 100%;
   margin: 10px 0;
+  cursor: default;
 }
 
 .profile-card .avatar-large {
@@ -41,11 +42,13 @@
 
 .profile-card-info h2 {
   border-color: #c1e2e756;
+  cursor: default;
 }
 
 .profile-card-info p {
   background-color: #c1e2e756;
   padding: 5px;
+  cursor: default;
 }
 
 .profile-card-info .location,

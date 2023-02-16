@@ -127,6 +127,15 @@ textarea:disabled {
   font-size: 36px;
 }
 
+.hide-scrollbars {
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+/* Hide scrollbar for Chrome */
+.hide-scrollbars::-webkit-scrollbar {
+  display: none;
+}
+
 .post-header-grey,
 .trade-contact-info p,
 .service-contact-info p,
