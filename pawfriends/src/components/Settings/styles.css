@@ -59,6 +59,11 @@
   font-size: 16px;
 }
 
+.settings-form input:disabled {
+  background-color: rgba(239, 239, 239, 0.6);
+  color: rgb(170, 170, 170);
+}
+
 .settings-form input[type="submit"] {
   /* The 3 values for margin are: top left-right bottom*/
   margin: 10px auto 0;
