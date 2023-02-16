@@ -68,7 +68,7 @@ class Profile extends React.Component {
     }
   };
 
-  show = (e) => {
+  showTab = (e) => {
     this.setState({ show: e.target.name });
   };
 
@@ -115,7 +115,7 @@ class Profile extends React.Component {
               "pawfriends-styled-button profile-nav" +
               (this.state.show === "info" ? " active" : "")
             }
-            onClick={this.show}
+            onClick={this.showTab}
           >
             Info
           </button>
@@ -125,7 +125,7 @@ class Profile extends React.Component {
               "pawfriends-styled-button profile-nav" +
               (this.state.show === "pets" ? " active" : "")
             }
-            onClick={this.show}
+            onClick={this.showTab}
           >
             Pets
           </button>
@@ -135,7 +135,7 @@ class Profile extends React.Component {
               "pawfriends-styled-button profile-nav" +
               (this.state.show === "friends" ? " active" : "")
             }
-            onClick={this.show}
+            onClick={this.showTab}
           >
             Friends
           </button>
@@ -157,9 +157,9 @@ class Profile extends React.Component {
             userObj={userObj}
             isOwnProfile={isOwnProfile}
             statusStateUpdater={(newStatusStr) => {
-              this.setState((prevState) => ({
-                userObj: { ...prevState.userObj, status: newStatusStr },
-              }));
+              this.setState((draft) => {
+                draft.userObj.status = newStatusStr;
+              });
             }}
           />
         )}

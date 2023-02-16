@@ -1,5 +1,6 @@
 import React from "react";
 import "./pets.css";
+import produce from "immer";
 
 import PetProfile from "./petProfile.js";
 
@@ -25,9 +26,9 @@ class Pets extends React.Component {
   };
 
   handleChange = (e) => {
-    this.setState((prevState) => ({
-      newPet: { ...prevState.newPet, [e.target.name]: e.target.value },
-    }));
+    this.setState(produce(draft => {
+      draft.newPet[e.target.name] = e.target.value;
+    }))
   };
 
   handlePetInfoUpdate = (index, recipeFunc) => {

@@ -1,6 +1,7 @@
 import React from "react";
 import "../Login/styles.css";
 import "./styles.css";
+import produce from "immer";
 
 import { Link } from "react-router-dom";
 
@@ -24,9 +25,8 @@ class Registration extends React.Component {
   }
 
   handleChange = (e) => {
-    const { name, value } = e.target;
-    this.setState((prevState) => ({
-      userInfo: { ...prevState.userInfo, [name]: value },
+    this.setState(produce((draft) => {
+      draft.userInfo[e.target.name] = e.target.value;
     }));
   };
 
