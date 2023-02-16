@@ -25,8 +25,7 @@ class CheckButton extends React.Component {
     if (!this.props.trade.done) {
       const response = await finishTrade(this.props.trade._id);
       if (response !== undefined) {
-        this.props.trade.done = true;
-        this.props.stateUpdate(this.props.trade);
+        this.props.parentStateUpdateDone(true);
         this.handleMarkDoneClick();
       }
     }

@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles.css";
+import produce from "immer";
 
 import { Link } from "react-router-dom";
 import Post from "../Post";
@@ -35,17 +36,47 @@ class Home extends React.Component {
     });
   }
 
-  removePostHandler = (postsArrayIndex) => {
-    this.state.posts.splice(postsArrayIndex, 1);
-    this.setState({ posts: this.state.posts });
+  // Post-related handlers
+  handleSetPostLike = (postsIndex, numLikes, userLiked) => {
+    this.setState(
+      produce((draft) => {
+        draft.posts[postsIndex].numLikes = numLikes;
+        draft.posts[postsIndex].userLiked = userLiked;
+      })
+    );
   };
 
-  postsStateUpdate = () => {
-    this.setState({ posts: this.state.posts });
+  handleAddComment = (postsIndex, comment) => {
+    this.setState(
+      produce((draft) => {
+        draft.posts[postsIndex].comments.push(comment);
+      })
+    );
   };
 
-  stateUpdate = (updatedTrades) => {
-    this.setState({ trades: updatedTrades });
+  handleRemovePost = (postsIndex) => {
+    this.setState(
+      produce((draft) => {
+        draft.posts.splice(postsIndex, 1);
+      })
+    );
+  };
+
+  // Trade-related handlers
+  handleSetTradeDone = (tradesIndex, tradeDone) => {
+    this.setState(
+      produce((draft) => {
+        draft.trades[tradesIndex].done = tradeDone;
+      })
+    );
+  };
+
+  handleRemoveTrade = (tradesIndex) => {
+    this.setState(
+      produce((draft) => {
+        draft.trades.splice(tradesIndex, 1);
+      })
+    );
   };
 
   render() {
@@ -56,9 +87,11 @@ class Home extends React.Component {
         <Post
           key={post._id}
           postData={post}
-          postsArrayIndex={index}
-          removePost={this.removePostHandler}
-          parentStateUpdate={this.postsStateUpdate}
+          parentRemovePost={() => this.handleRemovePost(index)}
+          parentSetPostLike={(numLikes, userLiked) =>
+            this.handleSetPostLike(index, numLikes, userLiked)
+          }
+          parentAddComment={(comment) => this.handleAddComment(index, comment)}
         />
       ));
     }
@@ -68,7 +101,6 @@ class Home extends React.Component {
         <Service
           key={service._id}
           service={service}
-          serviceArrayIndex={index}
           setFilterTag={() => {}} /* Currently do nothing */
         />
       ));
@@ -79,8 +111,10 @@ class Home extends React.Component {
         <Trade
           key={trade._id}
           trade={trade}
-          trades={this.state.trades}
-          stateUpdate={this.stateUpdate}
+          parentSetTradeDone={(tradeDone) =>
+            this.handleSetTradeDone(index, tradeDone)
+          }
+          parentRemovePosting={() => this.handleRemoveTrade(index)}
         />
       ));
     }

@@ -11,7 +11,7 @@ class Service extends React.Component {
     };
   }
 
-  handleClick = () => {
+  handleContactToggle = () => {
     this.setState((prevState) => ({
       toggleShowContactInfo: !prevState.toggleShowContactInfo,
     }));
@@ -63,7 +63,7 @@ class Service extends React.Component {
             </div>
             <button
               className="pawfriends-styled-button"
-              onClick={this.handleClick}
+              onClick={this.handleContactToggle}
             >
               Close
             </button>
@@ -72,12 +72,12 @@ class Service extends React.Component {
           <div>
             <button
               className="pawfriends-styled-button"
-              onClick={this.handleClick}
+              onClick={this.handleContactToggle}
             >
               Contact user
             </button>
             {/* <view style={{ flex: 1, marginLeft: "20px" }}>
-                <button className="pawfriends-styled-button" onClick={this.handleClick}>Delete post</button>
+                <button className="pawfriends-styled-button" onClick={this.handleContactToggle}>Delete post</button>
               </view> */}
           </div>
         )}

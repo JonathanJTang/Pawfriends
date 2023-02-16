@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles.css";
+import produce from "immer";
 
 import CreatePostForm from "./createPostForm";
 import Post from "../Post";
@@ -22,21 +23,42 @@ class Posts extends React.Component {
     }
   }
 
-  newPostHandler = () => {
+  showCreatePostForm = () => {
     this.setState({ showCreatePostBox: true });
   };
 
-  createPostHandler = (updatedPosts) => {
-    this.setState({ showCreatePostBox: false, posts: updatedPosts });
+  handleCreatePost = (newPost) => {
+    this.setState(
+      produce((draft) => {
+        draft.showCreatePostBox = false;
+        draft.posts.unshift(newPost);
+      })
+    );
   };
 
-  removePostHandler = (postsArrayIndex) => {
-    this.state.posts.splice(postsArrayIndex, 1);
-    this.setState({ posts: this.state.posts });
+  handleRemovePost = (postsIndex) => {
+    this.setState(
+      produce((draft) => {
+        draft.posts.splice(postsIndex, 1);
+      })
+    );
   };
 
-  postsStateUpdate = () => {
-    this.setState({ posts: this.state.posts });
+  handleSetPostLike = (postsIndex, numLikes, userLiked) => {
+    this.setState(
+      produce((draft) => {
+        draft.posts[postsIndex].numLikes = numLikes;
+        draft.posts[postsIndex].userLiked = userLiked;
+      })
+    );
+  };
+
+  handleAddComment = (postsIndex, comment) => {
+    this.setState(
+      produce((draft) => {
+        draft.posts[postsIndex].comments.push(comment);
+      })
+    );
   };
 
   render() {
@@ -47,15 +69,12 @@ class Posts extends React.Component {
           <h4>Create, like, or comment on a post!</h4>
 
           {this.state.showCreatePostBox ? (
-            <CreatePostForm
-              postsList={this.state.posts}
-              parentStateUpdater={this.createPostHandler}
-            />
+            <CreatePostForm parentAddPosting={this.handleCreatePost} />
           ) : (
             <div>
               <button
                 className="pawfriends-styled-button"
-                onClick={this.newPostHandler}
+                onClick={this.showCreatePostForm}
               >
                 Create post
               </button>
@@ -68,9 +87,13 @@ class Posts extends React.Component {
             <Post
               key={post._id}
               postData={post}
-              postsArrayIndex={index}
-              removePost={this.removePostHandler}
-              parentStateUpdate={this.postsStateUpdate}
+              parentRemovePost={() => this.handleRemovePost(index)}
+              parentSetPostLike={(numLikes, userLiked) =>
+                this.handleSetPostLike(index, numLikes, userLiked)
+              }
+              parentAddComment={(comment) =>
+                this.handleAddComment(index, comment)
+              }
             />
           ))}
         </div>

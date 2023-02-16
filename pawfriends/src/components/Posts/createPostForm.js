@@ -31,8 +31,7 @@ class CreatePostForm extends React.Component {
     const post = await createPost(formData);
     if (post !== undefined) {
       // Server call succeeded
-      this.props.postsList.unshift(post);
-      this.props.parentStateUpdater(this.props.postsList);
+      this.props.parentAddPosting(post);
     }
   };
 

@@ -15,21 +15,17 @@ class Post extends React.Component {
     this.state = { showDeletePopup: false };
   }
 
-  handleClick = () => {
+  toggleShowDeletePopup = () => {
     this.state.showDeletePopup
       ? this.setState({ showDeletePopup: false })
       : this.setState({ showDeletePopup: true });
   };
 
-  stateUpdate = (updatedPostData) => {
-    this.props.parentStateUpdate();
-  };
-
-  removePost = async () => {
+  handleRemovePost = async () => {
     const response = await removePost(this.props.postData._id);
     if (response !== undefined) {
-      this.handleClick();
-      this.props.removePost(this.props.postsArrayIndex);
+      // this.toggleShowDeletePopup();
+      this.props.parentRemovePost();
     }
   };
 
@@ -63,8 +59,8 @@ class Post extends React.Component {
           <Popup
             title="Are you sure?"
             content="Warning: Once deleted this can't be recovered!"
-            confirm={this.removePost}
-            cancel={this.handleClick}
+            confirm={this.handleRemovePost}
+            cancel={this.toggleShowDeletePopup}
           />
         )}
         <div className="post-header">
@@ -85,14 +81,14 @@ class Post extends React.Component {
           {postData.curUserIsOwner && (
             <span
               className="delete-post post-header-grey"
-              onClick={this.handleClick}
+              onClick={this.toggleShowDeletePopup}
             >
               Delete post
             </span>
           )}
           <LikeButton
             postData={postData}
-            parentStateUpdater={this.stateUpdate}
+            parentSetPostLike={this.props.parentSetPostLike}
           />
         </div>
         {image}
@@ -110,7 +106,7 @@ class Post extends React.Component {
         </div>
         <CreateCommentBar
           postData={postData}
-          parentStateUpdater={this.stateUpdate}
+          parentAddComment={this.props.parentAddComment}
         />
       </div>
     );

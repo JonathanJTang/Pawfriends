@@ -25,8 +25,7 @@ class LikeButton extends React.Component {
     );
     if (response !== undefined) {
       // Server call succeeded, update state
-      Object.assign(this.props.postData, response);
-      this.props.parentStateUpdater(this.props.postData);
+      this.props.parentSetPostLike(response.numLikes, response.userLiked);
     }
   }
 

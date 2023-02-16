@@ -27,8 +27,7 @@ class CreateServiceForm extends React.Component {
     });
     if (service !== undefined) {
       // Server call succeeded
-      this.props.servicesList.unshift(service);
-      this.props.parentStateUpdater(this.props.servicesList);
+      this.props.parentAddPosting(service);
     }
   };
 

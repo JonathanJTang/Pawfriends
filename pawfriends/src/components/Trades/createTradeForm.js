@@ -16,8 +16,7 @@ class CreateTradeForm extends React.Component {
     });
     if (trade !== undefined) {
       // Server call succeeded
-      this.props.tradesList.unshift(trade);
-      this.props.parentStateUpdater(this.props.tradesList);
+      this.props.parentAddPosting(trade);
     }
   };
 

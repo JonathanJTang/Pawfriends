@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles.css";
+import produce from "immer";
 
 import CreateServiceForm from "./createServiceForm";
 import Service from "../Service";
@@ -28,12 +29,17 @@ class Services extends React.Component {
     }
   }
 
-  handleClick = () => {
+  showCreatePostingForm = () => {
     this.setState({ showCreatePosting: true });
   };
 
-  createPostingHandler = (updatedPostings) => {
-    this.setState({ showCreatePosting: false, servicesList: updatedPostings });
+  handleCreatePosting = (newPosting) => {
+    this.setState(
+      produce((draft) => {
+        draft.showCreatePosting = false;
+        draft.servicesList.unshift(newPosting);
+      })
+    );
   };
 
   setFilter = (e) => {
@@ -77,14 +83,11 @@ class Services extends React.Component {
           </h2>
           <h4>Looking for a specific service? Filter by poster name or tag!</h4>
           {this.state.showCreatePosting ? (
-            <CreateServiceForm
-              servicesList={this.state.servicesList}
-              parentStateUpdater={this.createPostingHandler}
-            />
+            <CreateServiceForm parentAddPosting={this.handleCreatePosting} />
           ) : (
             <button
               className="pawfriends-styled-button"
-              onClick={this.handleClick}
+              onClick={this.showCreatePostingForm}
             >
               Add a service
             </button>
@@ -109,7 +112,6 @@ class Services extends React.Component {
               <Service
                 key={service._id}
                 service={service}
-                serviceArrayIndex={index}
                 setFilterTag={this.setFilterTag}
               />
             ))}

@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles.css";
+import produce from "immer";
 
 import { Link } from "react-router-dom";
 import CreateTradeForm from "./createTradeForm";
@@ -27,16 +28,33 @@ class Trades extends React.Component {
     }
   }
 
-  handleToggle = () => {
+  showCreatePostingForm = () => {
     this.setState({ showCreatePosting: true });
   };
 
-  createPostingHandler = (updatedPostings) => {
-    this.setState({ showCreatePosting: false, trades: updatedPostings });
+  handleCreatePosting = (newPosting) => {
+    this.setState(
+      produce((draft) => {
+        draft.showCreatePosting = false;
+        draft.trades.unshift(newPosting);
+      })
+    );
   };
 
-  stateUpdate = (updatedTrades) => {
-    this.setState({ trades: updatedTrades });
+  handleSetTradeDone = (tradesIndex, tradeDone) => {
+    this.setState(
+      produce((draft) => {
+        draft.trades[tradesIndex].done = tradeDone;
+      })
+    );
+  };
+
+  handleRemoveTrade = (tradesIndex) => {
+    this.setState(
+      produce((draft) => {
+        draft.trades.splice(tradesIndex, 1);
+      })
+    );
   };
 
   filterCurrent = (trade) => {
@@ -79,14 +97,11 @@ class Trades extends React.Component {
           <h4>See what your other pet owners are trading!</h4>
           <h4>Click on "CREATE TRADE" to propose a trade!</h4>
           {this.state.showCreatePosting ? (
-            <CreateTradeForm
-              tradesList={this.state.trades}
-              parentStateUpdater={this.createPostingHandler}
-            />
+            <CreateTradeForm parentAddPosting={this.handleCreatePosting} />
           ) : (
             <button
               className="pawfriends-styled-button"
-              onClick={this.handleToggle}
+              onClick={this.showCreatePostingForm}
             >
               Create trade
             </button>
@@ -124,8 +139,10 @@ class Trades extends React.Component {
             <Trade
               key={trade._id}
               trade={trade}
-              trades={this.state.trades}
-              stateUpdate={this.stateUpdate}
+              parentSetTradeDone={(tradeDone) =>
+                this.handleSetTradeDone(index, tradeDone)
+              }
+              parentRemovePosting={() => this.handleRemoveTrade(index)}
             />
           ))}
         </div>

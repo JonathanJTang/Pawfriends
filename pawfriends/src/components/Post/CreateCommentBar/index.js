@@ -33,8 +33,7 @@ class CreateCommentBar extends React.Component {
       );
       if (comment !== undefined) {
         // Server call succeeded
-        this.props.postData.comments.push(comment);
-        this.props.parentStateUpdater(this.props.postData);
+        this.props.parentAddComment(comment);
 
         this.setState({ status: "default" });
         // Reset the create comment textarea
