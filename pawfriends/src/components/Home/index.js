@@ -122,19 +122,19 @@ class Home extends React.Component {
     return (
       <div className="home">
         <div>
-          <Link to={"/services"}>
+          <Link to={"/services"} className="page-link">
             <h1 className="sacramento-cursive">Services</h1>
           </Link>
           {allServices}
         </div>
         <div>
-          <Link to={"/posts"}>
+          <Link to={"/posts"} className="page-link">
             <h1 className="sacramento-cursive">New posts</h1>
           </Link>
           {allPosts}
         </div>
         <div>
-          <Link to={"/trades"}>
+          <Link to={"/trades"} className="page-link">
             <h1 className="sacramento-cursive">Trade pet supplies</h1>
           </Link>
           {allTrades}

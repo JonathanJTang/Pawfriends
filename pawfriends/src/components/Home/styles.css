@@ -6,9 +6,13 @@
   padding: 20px;
 }
 
-.home h1 {
+.home .page-link {
+  margin: -50px auto 0;
+  width: fit-content;
+}
+
+.home .page-link h1 {
   margin: auto;
-  margin-top: -50px;
 }
 
 /* These are the columns on the homepage*/
