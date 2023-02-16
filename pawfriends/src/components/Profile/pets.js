@@ -9,7 +9,6 @@ class Pets extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pets: this.props.userObj.pets,
       addPet: false,
       newPet: {
         name: "",
@@ -18,10 +17,6 @@ class Pets extends React.Component {
       },
     };
   }
-
-  stateUpdate = (petData) => {
-    this.setState({ pets: petData });
-  };
 
   handleClick = () => {
     this.state.addPet
@@ -35,24 +30,36 @@ class Pets extends React.Component {
     }));
   };
 
+  handlePetInfoUpdate = (index, recipeFunc) => {
+    this.props.petsStateUpdateRecipe((petsList) => {
+      // Changes made by recipeFunc are recognized by Immer
+      recipeFunc(petsList[index]);
+    });
+  };
+
+  handleRemovePet = (index) => {
+    this.props.petsStateUpdateRecipe((petsList) => {
+      petsList.splice(index, 1);
+    });
+  };
+
   handleSubmit = async (e) => {
     e.preventDefault();
-    const pet = await addPet(this.state.newPet, this.props.userObj.username);
+    const pet = await addPet(this.state.newPet, this.props.username);
     if (pet !== undefined) {
-      this.state.pets.push(pet);
-      this.setState({
-        pets: this.state.pets,
-        addPet: false,
+      this.props.petsStateUpdateRecipe((petsList) => {
+        petsList.push(pet);
       });
+      this.setState({ addPet: false });
     }
   };
 
   render() {
-    const { userObj, isOwnProfile } = this.props;
+    const { username, isOwnProfile } = this.props;
 
     return (
       <>
-        {Object.entries(userObj).length !== 0 && (
+        {username && (
           <div className="profile-pet">
             {isOwnProfile && (
               <button
@@ -94,13 +101,15 @@ class Pets extends React.Component {
                 />
               </form>
             )}
-            {this.state.pets.map((pet, index) => (
+            {this.props.pets.map((pet, index) => (
               <PetProfile
-                key={index}
-                username={userObj.username}
+                key={pet._id}
+                username={username}
                 pet={pet}
-                petsList={this.state.pets}
-                stateUpdate={this.stateUpdate}
+                parentUpdatePetInfoRecipe={(recipeFunc) =>
+                  this.handlePetInfoUpdate(index, recipeFunc)
+                }
+                parentRemovePet={() => this.handleRemovePet(index)}
                 isOwnProfile={isOwnProfile}
               />
             ))}

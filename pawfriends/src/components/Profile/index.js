@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles.css";
+import produce from "immer";
 
 import Info from "./info.js";
 import Pets from "./pets.js";
@@ -90,6 +91,15 @@ class Profile extends React.Component {
     }
   };
 
+  handlePetsStateUpdateRecipe = (recipeFunc) => {
+    this.setState(
+      produce((draft) => {
+        // Changes made by recipeFunc are recognized by Immer
+        recipeFunc(draft.userObj.pets);
+      })
+    );
+  };
+
   render() {
     const { userObj, currentUserObj } = this.state;
     const isOwnProfile =
@@ -151,7 +161,12 @@ class Profile extends React.Component {
           />
         )}
         {this.state.show === "pets" && (
-          <Pets userObj={userObj} isOwnProfile={isOwnProfile} />
+          <Pets
+            username={userObj.username}
+            pets={userObj.pets}
+            isOwnProfile={isOwnProfile}
+            petsStateUpdateRecipe={this.handlePetsStateUpdateRecipe}
+          />
         )}
         {this.state.show === "friends" && <Friends friends={userObj.friends} />}
       </div>

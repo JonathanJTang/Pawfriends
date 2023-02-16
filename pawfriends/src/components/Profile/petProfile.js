@@ -18,12 +18,13 @@ class PetProfile extends React.Component {
   };
 
   handleChange = async (e) => {
-    const pet = this.props.pet;
-    pet[e.target.name] = e.target.value;
+    this.props.parentUpdatePetInfoRecipe((pet) => {
+      pet[e.target.name] = e.target.value;
+    });
     this.setState({ infoUpdated: true });
   };
 
-  saveStatus = async () => {
+  saveInfo = async () => {
     if (this.state.infoUpdated) {
       // this.props.parentStateUpdater(this.props.pet);
       await editPet(this.props.pet, this.props.username, this.props.pet._id);
@@ -34,9 +35,8 @@ class PetProfile extends React.Component {
   remove = async () => {
     const response = await removePet(this.props.username, this.props.pet._id);
     if (response !== undefined) {
-      const i = this.props.petsList.indexOf(this.props.pet);
-      this.props.petsList.splice(i, 1);
-      this.props.stateUpdate(this.props.petsList);
+      this.props.parentRemovePet();
+      // this.toggleDeletePopup();
     }
   };
 
@@ -56,14 +56,19 @@ class PetProfile extends React.Component {
             className="pet-name sacramento-cursive"
             defaultValue={pet.name}
             onChange={this.handleChange}
-            onMouseLeave={this.saveStatus}
-            onBlur={this.saveStatus}
+            onMouseLeave={this.saveInfo}
+            onBlur={this.saveInfo}
             disabled={!isOwnProfile}
           />
         </div>
         <div className="pet-container pet-info">
           {this.state.toggleDeletePopup && (
-            <Popup confirm={this.remove} cancel={this.toggleDeletePopup} />
+            <Popup
+              title="Are you sure?"
+              content="Warning: Once deleted this can't be recovered!"
+              confirm={this.remove}
+              cancel={this.toggleDeletePopup}
+            />
           )}
           <span className="pet-info-likes-dislikes">
             <img
@@ -77,8 +82,8 @@ class PetProfile extends React.Component {
               maxLength="20"
               defaultValue={pet.likes}
               onChange={this.handleChange}
-              onMouseLeave={this.saveStatus}
-              onBlur={this.saveStatus}
+              onMouseLeave={this.saveInfo}
+              onBlur={this.saveInfo}
               disabled={!isOwnProfile}
             />
             <img
@@ -92,8 +97,8 @@ class PetProfile extends React.Component {
               maxLength="20"
               defaultValue={pet.dislikes}
               onChange={this.handleChange}
-              onMouseLeave={this.saveStatus}
-              onBlur={this.saveStatus}
+              onMouseLeave={this.saveInfo}
+              onBlur={this.saveInfo}
               disabled={!isOwnProfile}
             />
           </span>
@@ -106,8 +111,8 @@ class PetProfile extends React.Component {
               isOwnProfile ? "Write anything about your pet here" : ""
             }
             onChange={this.handleChange}
-            onMouseLeave={this.saveStatus}
-            onBlur={this.saveStatus}
+            onMouseLeave={this.saveInfo}
+            onBlur={this.saveInfo}
             disabled={!isOwnProfile}
           />
         </div>
