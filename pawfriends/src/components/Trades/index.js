@@ -95,7 +95,7 @@ class Trades extends React.Component {
           <h2>Trade pet supplies!</h2>
           <h4>Need some extra toys?</h4>
           <h4>See what your other pet owners are trading!</h4>
-          <h4>Click on "CREATE TRADE" to propose a trade!</h4>
+          <h4>Or propose your own trade!</h4>
           {this.state.showCreatePosting ? (
             <CreateTradeForm parentAddPosting={this.handleCreatePosting} />
           ) : (

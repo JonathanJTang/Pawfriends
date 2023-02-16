@@ -70,7 +70,7 @@ class Services extends React.Component {
     let filtered = this.state.servicesList;
 
     // Filter if applicable
-    const filters = { username: this.filterUser, tag: this.filterTag };
+    const filters = { userActualName: this.filterUser, tag: this.filterTag };
     if (this.state.filter !== "all" && this.state.filterkey !== "") {
       filtered = this.state.servicesList.filter(filters[this.state.filter]);
     }
@@ -81,7 +81,9 @@ class Services extends React.Component {
           <h2>
             Offer or receive services such as pet sitting and matchmaking!
           </h2>
-          <h4>Looking for a specific service? Filter by poster name or tag!</h4>
+          <h4>Looking for a specific service?</h4>
+          <h4>Filter by tags or the name of the poster!</h4>
+          <h4>Or offer your own services!</h4>
           {this.state.showCreatePosting ? (
             <CreateServiceForm parentAddPosting={this.handleCreatePosting} />
           ) : (
@@ -97,7 +99,7 @@ class Services extends React.Component {
           <div className="filter">
             <select value={this.state.filter} onChange={this.setFilter}>
               <option value="all">All</option>
-              <option value="username">Username</option>
+              <option value="userActualName">User Name</option>
               <option value="tag">Tag</option>
             </select>
             {this.state.filter !== "all" && (

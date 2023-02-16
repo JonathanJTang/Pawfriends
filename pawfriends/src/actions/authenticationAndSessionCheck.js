@@ -17,8 +17,8 @@ export const checkSession = (stateUpdater, history) => {
           currentUsername: json.currentUsername,
           isAdmin: json.isAdmin,
         });
-        console.log(`checkSession() got json obj below:`);
-        console.log(json);
+        // console.log(`checkSession() got json obj below:`);
+        // console.log(json);
       }
     })
     .catch((error) => {
