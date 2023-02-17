@@ -93,9 +93,11 @@ class Trade extends React.Component {
           <div className="trade-contact-info">
             <div>
               <strong>Email:</strong>
+              <strong>Phone:</strong>
             </div>
             <div>
-              <p>{tradeOwner.username}@email.com</p>
+              <p>{trade.email}</p>
+              <p>{trade.phone}</p>
             </div>
             <button
               className="pawfriends-styled-button"

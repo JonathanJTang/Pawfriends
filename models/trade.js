@@ -10,6 +10,8 @@ const TradeSchema = new mongoose.Schema({
   postTime: { type: Date, required: true },
   title: { type: String, required: true },
   location: { type: String, required: true },
+  email: { type: String, required: true },
+  phone: { type: String, required: true },
   images: [ImageSchema],
   done: { type: Boolean, required: true },
 });

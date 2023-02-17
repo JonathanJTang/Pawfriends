@@ -12,8 +12,11 @@ class AccountSettings extends React.Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    const oldPassword = formData.get("oldPassword");
     const newPassword = formData.get("newPassword");
     const newPasswordConfirm = formData.get("newPasswordConfirm");
+    e.currentTarget.reset(); // e.currentTarget is the form element
+
     if (newPassword !== newPasswordConfirm) {
       alert(
         "Error: Fields 'New Password' and 'Confirm New Password' do not match"
@@ -23,7 +26,7 @@ class AccountSettings extends React.Component {
 
     try {
       await changePassword(
-        { oldPassword: formData.get("oldPassword"), newPassword: newPassword },
+        { oldPassword: oldPassword, newPassword: newPassword },
         this.props.currentUsername
       );
       alert("Successfully changed password.");

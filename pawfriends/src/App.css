@@ -225,6 +225,10 @@ textarea.create-posting::-webkit-scrollbar {
   margin-right: auto;
 }
 
+.postings-list > div:last-child {
+  margin-bottom: 70px;
+}
+
 /* .trade and .service are for the Trade and Service components; styling put
    here because there is a lot of overlap */
 .trade,
