@@ -42,7 +42,7 @@ class ProfileSettings extends React.Component {
       this.props.currentUsername
     );
     if (done !== undefined) {
-      alert("Settings updated");
+      alert("Settings updated.");
     }
   };
 

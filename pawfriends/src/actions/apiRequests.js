@@ -28,12 +28,14 @@ const fetchRequest =
   process.env.NODE_ENV === "production"
     ? createFetchRequestFunc((request, error) => {
         // Don't show the user the error
-        alert(`Sorry we could not fetch the requested content from the server, \
-               please try again later`);
+        alert(
+          "Sorry we could not fetch the requested content from the server, please try again later"
+        );
       })
     : createFetchRequestFunc((request, error) => {
-        alert(`Sorry we could not fetch the requested content from the server, \
-               please try again later`);
+        alert(
+          "Sorry we could not fetch the requested content from the server, please try again later"
+        );
         // Just log the error and ignore it
         console.log("failed fetching " + request);
         console.log(error);

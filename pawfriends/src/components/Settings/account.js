@@ -26,6 +26,7 @@ class AccountSettings extends React.Component {
         { oldPassword: formData.get("oldPassword"), newPassword: newPassword },
         this.props.currentUsername
       );
+      alert("Successfully changed password.");
     } catch (error) {
       error.res
         .text()

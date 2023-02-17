@@ -143,8 +143,9 @@ const processFilesForEntry = async (filesObj, entry) => {
     });
   }
   if (hasImage && !isValidFileType) {
-    throw new TypeError(`${fileExt} is not one of the valid image file \
-                        extensions in ${globals.VALID_IMAGE_FILE_TYPES}`);
+    throw new TypeError(
+      `${fileExt} is not one of the valid image file extensions in ${globals.VALID_IMAGE_FILE_TYPES}`
+    );
   }
 };
 

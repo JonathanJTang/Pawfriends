@@ -23,8 +23,7 @@ router.post("/users", mongoChecker, async (req, res) => {
       res
         .status(400)
         .send(
-          "Username must be composed of 1 or more \
-                           alphanumeric characters (0-9, a-z, A-Z)"
+          "Username must be composed of 1 or more alphanumeric characters (0-9, a-z, A-Z)"
         );
       return;
     }
