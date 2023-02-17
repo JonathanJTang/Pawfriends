@@ -127,7 +127,85 @@ Users may adjust their profile information and account details, as well as recor
 6. Open the generated link in a browser
    (default local development link: `http://localhost:5000`)
 
+&nbsp;
+
 ## Overview of the backend routes
+
+### User account creation
+
+- `POST /users` : Create a new user with the given information.
+  - Usernames must be nonempty alphanumeric strings, while passwords must be longer than 4 characters.
+
+### Login and user session related
+
+- `POST /users/login` : Route expects a JSON with the following parameters
+
+  ```
+  {
+      username: "username example",  // must be alphanumeric
+      password: "pw example",        // minimum of 4 characters
+      actualName: "alex john",
+      gender: "Male",                // one of "Secret," "Male," "Female"
+      birthday: "April 7 1888",
+  }
+  ```
+
+  Creates a user for this webapp and returns a JSON with this format \
+  `{ currentUsername: String, isAdmin: Boolean }`
+
+- `GET /users/logout` : Log out the current user
+- `GET /users/check-session` : Check which user, if any, is logged in for the session associated with the request
+
+### Post related
+
+- `POST /api/posts` : Create a post
+  - Expects request to have nonempty string properties `title` and `content`, and optionally have an image uploaded by the form.
+- `GET /api/posts` : Get array of all posts created on the system
+- `GET /api/posts/:postId` : Get the post with `postId`
+- `DELETE /api/posts/:postId` : Delete the post with `postId`
+- `POST /api/posts/:postId/comment` : Add a comment to the post with `postId`
+- `PUT /api/posts/:postId/like` : Like or unlike the post with `postId`
+
+### Service posting related
+
+- `POST /api/services` : Create a new service posting
+- `GET /api/services` : Get array of all service postings in the DB
+- `GET /api/services/:serviceId` : Get the service posting with `serviceId`
+- `DELETE /api/services/:serviceId` : Delete the service posting with `serviceId`
+
+### Trade posting related
+
+- `POST /api/trades` : Create a new trade posting
+- `GET /api/trades` : Get array of all trade postings in the DB
+- `GET /api/trades/:tradeId` : Get the trade posting with `tradeId`
+- `DELETE /api/trades/:tradeId` : Delete the trade posting with `tradeId`
+- `PUT /api/trades/:tradeId/done` : Mark the trade with `tradeId` as complete
+
+### User profile related
+
+- `GET /api/users/:username` : Return information of the user with `username`
+- `PUT /api/users/:username/change-password` : Change the password for the user with `username`
+- `PUT /api/users/:username/status` : Update the status of the user with `username`
+- `PUT /api/users/:username/settings` : Update settings of the user with `username`
+- `POST /api/users/:username/pets` : Add a pet to the user with `username`
+- `PUT /api/users/:username/pets/:petId` : Update information of the pet with `petId` of the user with `username`
+- `DELETE /api/users/:username/pets/:petId` : Delete the pet with `petId` from the user with `username`
+- `PUT /api/users/:username/friends/:friendUsername` : Add `friendUsername` as a friend of the user with `username`
+- `DELETE /api/users/:username/friends/:friendUsername` : Remove `friendUsername` as a friend of the user with `username`
+
+Responses for posts, trades, and services have an "owner" property that represents the user who created the post/trade/service listing; the "owner" object has the following format:
+
+```
+{
+    _id:              // the post owner's ID
+    username:         // the post owner's login username
+    actualName:       // the post owner's name
+    profilePicture: {
+       imageId:         // Cloudinary public image id
+       imageUrl:        // Cloudinary image url
+    }
+}
+```
 
 &nbsp;
 

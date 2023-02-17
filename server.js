@@ -54,7 +54,7 @@ app.use(require("./routes/userRoutes/users"));
 
 /* Webpage routes */
 // These must be exact routes (not case-sensitive?)
-const goodPageRoutesExact = [
+const goodPageRoutesExact = new Set([
   "/",
   "/login",
   "/registration",
@@ -63,32 +63,33 @@ const goodPageRoutesExact = [
   "/posts",
   "/trades",
   "/services",
-  "/admindashboard",
-];
+  // "/admindashboard",
+]);
 // Routes beginning with these strings are acceptable
 const goodPageRoutesBeginning = [
   "/profile/",
-  "/posts/",
-  "/trades/",
-  "/services/",
+  // "/posts/",
+  // "/trades/",
+  // "/services/",
 ];
 
 // Serve the build
 app.use(express.static(path.join(__dirname, "/pawfriends/build")));
 
 app.get("*", (req, res) => {
-  // check for page routes that we expect in the frontend to provide correct status code.
+  // Check for page routes we expect the frontend to provide correct status code
+  console.log(req.url);
+  const cleanedUrl = req.url.toLowerCase();
   if (
-    !goodPageRoutesExact.includes(req.url.toLowerCase()) &&
-    !goodPageRoutesBeginning.some((str) =>
-      req.url.toLowerCase().startsWith(str)
-    )
+    !goodPageRoutesExact.has(cleanedUrl) &&
+    !goodPageRoutesBeginning.some((str) => cleanedUrl.startsWith(str))
   ) {
-    // if url not in expected page routes, set status to 404.
+    // If url not in expected page routes, set status to 404
+    // The frontend will redirect as necessary.
     res.status(404);
   }
 
-  // send index.html
+  // Send index.html
   res.sendFile(path.join(__dirname, "/pawfriends/build/index.html"));
 });
 
