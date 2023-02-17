@@ -14,7 +14,7 @@ const PetSchema = new mongoose.Schema({
   likes: String,
   dislikes: String,
   description: String,
-  // profilePicture: ImageSchema,
+  profilePicture: ImageSchema,
 });
 
 const UserSchema = new mongoose.Schema({

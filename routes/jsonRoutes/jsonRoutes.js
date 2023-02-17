@@ -37,10 +37,15 @@ cloudinary.config({
 const globals = {};
 globals.CLOUDINARY_IMAGE_FOLDER = "pawfriends/";
 globals.VALID_IMAGE_FILE_TYPES = ["png", "jpg", "jpeg", "gif"];
-globals.DEFAULT_AVATAR = {
+globals.DEFAULT_USER_AVATAR = {
   imageId: "pawfriends/defaultAvatar_sflv0g",
   imageUrl:
     "https://res.cloudinary.com/dypmf5kee/image/upload/v1607124490/pawfriends/defaultAvatar_sflv0g.png",
+};
+globals.DEFAULT_PET_AVATAR = {
+  imageId: "pawfriends/defaultPetAvatar",
+  imageUrl:
+    "https://res.cloudinary.com/dypmf5kee/image/upload/v1676417081/pawfriends/defaultPetAvatar.jpg",
 };
 // Only these fields are needed for display post- or comment-related information
 // on the frontend
@@ -92,7 +97,7 @@ const uploadImage = (imagePath) => {
         } else {
           resolve({
             imageId: result.public_id,
-            imageUrl: result.url, // TODO: can change url to secure_url for https version
+            imageUrl: result.secure_url, // TODO: can change url to secure_url for https version
           });
         }
       }
@@ -206,7 +211,7 @@ const addOwnerObjInfo = (responseOwner, owner) => {
 
   if (responseOwner.profilePicture === undefined) {
     // No avatar defined, use default
-    responseOwner.profilePicture = globals.DEFAULT_AVATAR;
+    responseOwner.profilePicture = globals.DEFAULT_USER_AVATAR;
   }
 };
 
@@ -657,13 +662,19 @@ jsonApiRouter.get("/users/:username", async (req, res) => {
 
     // Default values for optional fields
     if (userObj.profilePicture === undefined) {
-      userObj.profilePicture = globals.DEFAULT_AVATAR;
+      userObj.profilePicture = globals.DEFAULT_USER_AVATAR;
     }
     if (userObj.status === undefined) {
       userObj.status = "";
     }
     if (userObj.location === undefined) {
       userObj.location = "Somewhere, Earth";
+    }
+
+    for (const pet of userObj.pets) {
+      if (pet.profilePicture === undefined) {
+        pet.profilePicture = globals.DEFAULT_PET_AVATAR;
+      }
     }
 
     // Populate friends array with basic user info
